@@ -331,7 +331,7 @@ EchoStart(Task)
 switch Task
     
     case 'Motor'
-        TaskData = Familiarization.Motor;
+        TaskData = Motor.Task;
         
         %     case 'Familiarization'
         %         TaskData = Familiarization.Task;
@@ -426,7 +426,7 @@ set(handles.text_LastFileNameAnnouncer,'Visible','on')
 set(handles.text_LastFileName,         'Visible','on')
 set(handles.text_LastFileName,'String',DataFile(length(DataPath)+1:end))
 
-printResults(S.TaskData.ER)
+% printResults(S.TaskData.ER)
 
 WaitSecs(0.100);
 pause(0.100);
