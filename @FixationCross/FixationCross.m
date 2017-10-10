@@ -27,7 +27,7 @@ classdef FixationCross < baseObject
         %                           Constructor
         % -----------------------------------------------------------------
         function obj = FixationCross( dim , width ,  color , center )
-            % obj = Bip( dim=ScreenHeight/10 (pixels) , width=5 (pixels) ,  color=[128 128 128 255] from 0 to 255 , center = [ CenterX CenterY ] (pixels) )
+            % obj = FixationCross( dim=ScreenHeight/10 (pixels) , width=5 (pixels) ,  color=[128 128 128 255] from 0 to 255 , center = [ CenterX CenterY ] (pixels) )
             
             % ================ Check input argument =======================
             

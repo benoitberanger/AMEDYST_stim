@@ -32,9 +32,32 @@ try
     
     %%
     
-    Buttons.Draw
-    WhiteCross.Draw
-    Screen('Flip',S.PTB.wPtr);
+    Exit_flag = 0;
+    while ~Exit_flag
+        
+        [keyIsDown, secs, keyCode] = KbCheck;
+        
+        f = [];
+        if keyIsDown
+           if keyCode(S.Parameters.Fingers.Left(2))
+               f = 2;
+               elseif keyCode(S.Parameters.Fingers.Left(3))
+               f = 3;
+               elseif keyCode(S.Parameters.Fingers.Left(4))
+               f = 4;
+               elseif keyCode(S.Parameters.Fingers.Left(5))
+               f = 5;
+           end
+        end
+        
+%         Buttons.Draw(f)
+        WhiteCross.Draw
+        Screen('Flip',S.PTB.wPtr);
+        
+        
+        [ Exit_flag, StopTime ] = Common.Interrupt( keyCode, ER, RR, 0 );
+        
+    end
     
     return
     

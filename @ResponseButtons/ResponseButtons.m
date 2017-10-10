@@ -12,15 +12,17 @@ classdef ResponseButtons < baseObject
         height    = zeros(0)   % size of button base, in pixels
         side      = ''         % 'Left' or 'Right' buttons
         center    = zeros(0,2) % [ CenterX CenterY ], in pixels
+        baseColor = zeros(1,3) % [R G B] from 0 to 255
+        ovalColor = zeros(3,4) % [R G B] from 0 to 255
         
         % Internal variables
         
         width     = zeros(0)   % width of each arms, in pixels
         
         baseRect  = zeros(1,4) % rectangle for the base of buttons, in pixels (grey part, support)
-        baseColor = zeros(1,3) % [R G B] from 0 to 255
         ovalRect  = zeros(4,4) % rectangle for the 4 buttons, in pixels
-        ovalColor = zeros(3,4) % [R G B] from 0 to 255
+        
+        darkOvals = zeros(3,4) % [R G B] from 0 to 255
         
     end % properties
     
@@ -32,8 +34,9 @@ classdef ResponseButtons < baseObject
         % -----------------------------------------------------------------
         %                           Constructor
         % -----------------------------------------------------------------
-        function obj = ResponseButtons( height ,  side , center )
-            % obj = ResponseButtons( height=ScreenHeight*0.6 (pixels) , side='Left' , center = [ CenterX CenterY ] (pixels) )
+        function obj = ResponseButtons( height , side , center, baseColor, buttonsColor )
+            % obj = ResponseButtons( height=ScreenHeight*0.6 (pixels) , side='Left' , center = [ CenterX CenterY ] (pixels), ...
+            %                        baseColor = [R G B] uint8, buttonsColor [3x4] RGB uint8)
             
             % ================ Check input argument =======================
             
@@ -53,9 +56,20 @@ classdef ResponseButtons < baseObject
                 assert( isvector(center) && isnumeric(center) && all( center>0 ) && all(center == round(center)) , ...
                     'center = [ CenterX CenterY ] of the cross, in pixels' )
                 
+                % --- baseColor ----
+                assert( isvector(baseColor) && isnumeric(baseColor) && all( uint8(baseColor)==baseColor ) , ...
+                    'baseColor = [R G B] from 0 to 255 uint8' )
+                
+                % --- buttonsColor ----
+                assert( isnumeric(buttonsColor) && all(all( uint8(buttonsColor)==buttonsColor )) && ...
+                    size(buttonsColor,1)==3 && size(buttonsColor,2)==4 , ...
+                    'buttonsColor = [3x4] RGB uint8 from 0 to 255' )
+                
                 obj.height    = height;
-                obj.side   = side;
-                obj.center = center;
+                obj.side      = side;
+                obj.center    = center;
+                obj.baseColor = baseColor;
+                obj.ovalColor = buttonsColor;
                 
                 % ================== Callback =============================
                 

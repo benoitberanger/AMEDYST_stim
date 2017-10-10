@@ -63,10 +63,24 @@ Parameters.Text.Color = [0 0 0]; % [R G B] ( from 0 to 255 )
 %%%%%%%%%%%%%%%%%%%%%%
 %   Fixation cross   %
 %%%%%%%%%%%%%%%%%%%%%%
-Parameters.FixationCross.ScreenRatio    = 1/30;      % ratio : FixCrossDimPx       = ScreenWidePix*ration
-Parameters.FixationCross.lineWidthRatio = 1/10;      % ratio : FixCrossLineWidthPx = FixCrossDimPx*ration
-Parameters.FixationCross.BaseColor      = [0   0 0]; % [R G B] ( from 0 to 255 )
-Parameters.FixationCross.WrongColor     = [255 0 0]; % [R G B] ( from 0 to 255 )
+Parameters.FixationCross.ScreenRatio    = 1/30;          % ratio : dim   = ScreenWide *ratio_screen
+Parameters.FixationCross.lineWidthRatio = 1/10;          % ratio : width = dim        *ratio_width
+Parameters.FixationCross.Color          = [255 255 255]; % [R G B] ( from 0 to 255 )
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%  ResponseButtons  %
+%%%%%%%%%%%%%%%%%%%%%
+Parameters.ResponseButtons.ScreenRatio  = 0.6;           % height = ScreenHeight * ratio
+Parameters.ResponseButtons.Side         = S.Side;        % 'Left' or 'Right'
+Parameters.ResponseButtons.baseColor    = [128 128 128]; % [R G B] ( from 0 to 255 )
+Parameters.ResponseButtons.buttonsColor = ...
+    [255 80 60    % 5 == red
+    30 190 70     % 4 == green
+    255 224 54    % 3 == yellow
+    40 100 210]'; % 2 == blue
+% [R G B] ( from 0 to 255 )
+% colors here are both left and right buttons
 
 
 %%%%%%%%%%%%%%

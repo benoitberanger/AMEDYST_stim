@@ -1,7 +1,7 @@
 function [ SequenceHighLow ] = Randomize01( nr0, nr1 )
 
 iter = 0;
-maxiter = 1000;
+maxiter = 10000;
 
 while iter < maxiter
     

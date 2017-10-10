@@ -9,8 +9,6 @@ obj.width = 2*obj.height;
 obj.baseRect = [0 0 obj.width obj.height];
 obj.baseRect = CenterRectOnPoint(obj.baseRect, obj.center(1), obj.center(2) );
 
-% Rectangle of the base color
-obj.baseColor = [128 128 128];
 
 %% Ovals
 
@@ -24,6 +22,10 @@ for b = 1 : NrButtons
     obj.ovalRect(1:4,b) = CenterRectOnPoint([0 0 buttonDiameter buttonDiameter],xpos(b),obj.center(2))';
 end
 
-obj.ovalColor = rand(3,NrButtons)*255;
+
+%% Dark ovals
+
+obj.darkOvals = uint8(repmat(obj.baseColor',[1 4])*0.8);
+
 
 end % function

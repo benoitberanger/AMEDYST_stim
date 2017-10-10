@@ -1,6 +1,10 @@
-function Draw( obj )
+function Draw( obj, finger )
+
+if ~exist('finger','var')
+    finger = [];
+end
 
 obj.DrawBase
-obj.DrawOval
+obj.DrawOval(finger)
 
-end
+end % function
