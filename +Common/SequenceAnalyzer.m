@@ -29,4 +29,14 @@ results.speed = length(seq)/duration; % clicks per seconds
 completSeq = regexp(seq,sequence);
 results.completSeq = length(completSeq);
 
+% inter_tap_interval
+iti = diff(cell2mat(sidedata(:,2)));
+iti = round(iti*1000);
+results.iti      = iti;              % milliseconds
+results.iti_mean = round(mean(iti)); % milliseconds
+results.iti_std  = round(std(iti));  % milliseconds
+
+% error
+results.error = results.N - results.completSeq*length(sequence);
+
 end % function
