@@ -17,9 +17,13 @@ buttonDiameter = obj.width/(NrButtons+1);
 spacing = buttonDiameter/(NrButtons+1);
 
 xpos = @(oval) buttonDiameter/2+spacing + (buttonDiameter+spacing)*(oval-1) + obj.center(1)-obj.width/2;
+ypos = [+5 -5 -5 +5]; % percetage of displacement from the center
 
 for b = 1 : NrButtons
-    obj.ovalRect(1:4,b) = CenterRectOnPoint([0 0 buttonDiameter buttonDiameter],xpos(b),obj.center(2))';
+    obj.ovalRect(1:4,b) = CenterRectOnPoint( ...
+        [0 0 buttonDiameter buttonDiameter], ...
+        xpos(b), ...
+        obj.center(2)*(1+ypos(b)/100) )';
 end
 
 
