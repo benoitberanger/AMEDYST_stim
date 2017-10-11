@@ -18,9 +18,9 @@ try
     
     %% Prepare objects
     
-    [ WhiteCross ] = Common.PrepareFixationCross;
+    [ WhiteCross ] = Common.PrepareFixationCross  ;
     
-    [ Buttons ] = Common.PrepareResponseButtons;
+    [ Buttons    ] = Common.PrepareResponseButtons;
     
     
     %% Eyelink
@@ -68,7 +68,7 @@ try
                     case 'time'
                         crossOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
                 end
-                Common.SendParPortMessage('Rest'); % Parallel port
+                Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
                 ER.AddEvent({EP.Data{evt,1} crossOnset-StartTime [] []})
                 
                 % ~~~ Analyse the last key inputs ~~~
@@ -97,6 +97,7 @@ try
                 
                 DrawFormattedText(S.PTB.wPtr, EP.Data{evt+1,1}, 'center', 'center', S.Parameters.Text.Color);
                 instructionOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
+                Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
                 ER.AddEvent({EP.Data{evt,1} instructionOnset-StartTime [] []})
                 
                 
