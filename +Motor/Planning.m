@@ -4,7 +4,7 @@ global S
 if nargout < 1 % only to plot the paradigme when we execute the function outside of the main script
     S.Environement  = 'MRI';
     S.OperationMode = 'Acquisition';
-    S.Sequence      = '';
+    S.ComplexSequence      = '';
 end
 
 
@@ -12,7 +12,7 @@ end
 
 switch S.OperationMode
     case 'Acquisition'
-        SequenceDuration    = 30; % secondes
+        SequenceDuration    = 20; % secondes
         RestDuration        = 13; % secondes
         NrBlocksSimple      = 10;
         NrBlocksComplex     = 10;
@@ -50,7 +50,7 @@ Paradigme = { 'Rest' RestDuration [] ; 'Instruction' InstructionDuration [] }; %
 for n = 1:length(BlockOrder)
     
     if BlockOrder(n) % 1
-        Paradigme  = [ Paradigme ; { 'Complex' SequenceDuration S.Sequence } ]; %#ok<*AGROW>
+        Paradigme  = [ Paradigme ; { 'Complex' SequenceDuration S.ComplexSequence } ]; %#ok<*AGROW>
     else % 0
         Paradigme  = [ Paradigme ; { 'Simple'  SequenceDuration '5432' }     ];
     end

@@ -23,6 +23,17 @@ for b = 1 : NrButtons
 end
 
 
+%% Right side
+
+% Swap color if RIGHT
+if strcmpi(obj.side(1),'r')
+   obj.ovalColor = fliplr(obj.ovalColor);
+   obj.f2i = @(f) f-1;
+else % left
+    obj.f2i = @(f) -f+6;
+end
+
+
 %% Dark ovals
 
 obj.darkOvals = uint8(repmat(obj.baseColor',[1 4])*0.8);

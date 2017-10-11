@@ -93,13 +93,13 @@ end
 S.OperationMode = OperationMode;
 
 
-%% Sequence
+%% ComplexSequence
 
-Sequence = get(handles.edit_Sequence,'String');
-if isempty(Sequence)
-    error('Sequence is empty')
+ComplexSequence = get(handles.edit_ComplexSequence,'String');
+if isempty(ComplexSequence)
+    error('ComplexSequence is empty')
 end
-S.Sequence = Sequence;
+S.ComplexSequence = ComplexSequence;
 
 
 %% Subject ID & Run number

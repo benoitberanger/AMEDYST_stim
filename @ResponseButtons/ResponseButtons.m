@@ -24,6 +24,8 @@ classdef ResponseButtons < baseObject
         
         darkOvals = zeros(3,4) % [R G B] from 0 to 255
         
+        f2i       = @(f) f     % function handle : finger2index
+        
     end % properties
     
     
