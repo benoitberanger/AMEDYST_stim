@@ -20,28 +20,23 @@ end
 %% Prepare messages
 
 % % Finger tap
-% msg.finger_1 = 1;
-% msg.finger_2 = 2;
-% msg.finger_3 = 3;
-% msg.finger_4 = 4;
-% msg.finger_5 = 5;
+msg.finger_1 = 1;
+msg.finger_2 = 2;
+msg.finger_3 = 3;
+msg.finger_4 = 4;
+msg.finger_5 = 5;
 
 % Audio instructions
-msg.ReposRepos     = 10;
-msg.ComplexComplex = 20;
-msg.SimpleSimple   = 30;
-
-msg.WakeUp         = 40;
-
-% High / Low sounds
-msg.LowBip  = 100;
-msg.HighBip = 110;
+msg.Rest        = 10;
+msg.Instruction = 20;
+msg.Simple      = 30;
+msg.Complex     = 40;
 
 
 %% Finalize
 
 % Pulse duration
-msg.duration    = 0.001; % seconds
+msg.duration    = 0.003; % seconds
 
 ParPortMessages = msg; % shortcut
 

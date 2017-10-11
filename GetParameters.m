@@ -55,17 +55,17 @@ Parameters.Video.ScreenBackgroundColor = [50 50 50]; % [R G B] ( from 0 to 255 )
 %%%%%%%%%%%%
 %   Text   %
 %%%%%%%%%%%%
-Parameters.Text.Size  = 40;
+Parameters.Text.Size  = 60;
 Parameters.Text.Font  = 'Courier New';
-Parameters.Text.Color = [0 0 0]; % [R G B] ( from 0 to 255 )
+Parameters.Text.Color = [128 128 128]; % [R G B] ( from 0 to 255 )
 
 
 %%%%%%%%%%%%%%%%%%%%%%
 %   Fixation cross   %
 %%%%%%%%%%%%%%%%%%%%%%
-Parameters.FixationCross.ScreenRatio    = 1/30;          % ratio : dim   = ScreenWide *ratio_screen
+Parameters.FixationCross.ScreenRatio    = 1/20;          % ratio : dim   = ScreenWide *ratio_screen
 Parameters.FixationCross.lineWidthRatio = 1/10;          % ratio : width = dim        *ratio_width
-Parameters.FixationCross.Color          = [255 255 255]; % [R G B] ( from 0 to 255 )
+Parameters.FixationCross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
 
 
 %%%%%%%%%%%%%%%%%%%%%

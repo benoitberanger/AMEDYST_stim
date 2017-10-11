@@ -18,54 +18,24 @@ try
     
     %% Prepare objects
     
-    %     [ audioObj ] = Common.Audio.PrepareAudioFiles;
-    
     [ WhiteCross ] = Common.PrepareFixationCross;
     
     [ Buttons ] = Common.PrepareResponseButtons;
     
-    
-    
-    
-    
-    
-    
-    %%
-    
-    Exit_flag = 0;
-    while ~Exit_flag
-        
-        [keyIsDown, secs, keyCode] = KbCheck;
-        
-        f = [];
-        if keyIsDown
-           if keyCode(S.Parameters.Fingers.Left(2))
-               f = 2;
-               elseif keyCode(S.Parameters.Fingers.Left(3))
-               f = 3;
-               elseif keyCode(S.Parameters.Fingers.Left(4))
-               f = 4;
-               elseif keyCode(S.Parameters.Fingers.Left(5))
-               f = 5;
-           end
-        end
-        
-%         Buttons.Draw(f)
-        WhiteCross.Draw
-        Screen('Flip',S.PTB.wPtr);
-        
-        
-        [ Exit_flag, StopTime ] = Common.Interrupt( keyCode, ER, RR, 0 );
-        
-    end
-    
-    return
     
     %% Go
     
     % Initialize some varibles
     Exit_flag = 0;
     from      = 1;
+    
+    switch S.Side
+        case 'Left'
+            Side = S.Parameters.Fingers.Left; % shortcut
+        case 'Right'
+            Side = S.Parameters.Fingers.Right; % shortcut
+    end
+    limitType = 'time';
     
     % Loop over the EventPlanning
     for evt = 1 : size( EP.Data , 1 )
@@ -84,20 +54,111 @@ try
                 
             case 'Rest' % -------------------------------------------------
                 
-                %                 % Wrapper for the control condition. It's a script itself,
-                %                 % used across several tasks
-                %                 [ ER, from, Exit_flag, StopTime ] = Common.ControlCondition( EP, ER, RR, KL, StartTime, from, audioObj, evt, 'tap' );
+                
+                % ~~~ Display white cross ~~~
+                WhiteCross.Draw
+                switch limitType
+                    case 'tap'
+                        crossOnset = Screen('Flip',S.PTB.wPtr);
+                    case 'time'
+                        crossOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
+                end
+                Common.SendParPortMessage('Rest'); % Parallel port
+                ER.AddEvent({EP.Data{evt,1} crossOnset-StartTime [] []})
+                
+                % ~~~ Analyse the last key inputs ~~~
+                if ~strcmp(EP.Data{evt-1,1},'StartTime')
+                    KL.GetQueue;
+                    results = Common.SequenceAnalyzer(EP.Data{evt-1,4}, S.Side, EP.Data{evt-1,3}, from, KL.EventCount, KL);
+                    from = KL.EventCount;
+                    ER.Data{evt-1,4} = results;
+                    disp(results)
+                end
+                
+                % The WHILELOOP below is a trick so we can use ESCAPE key to quit
+                % earlier.
+                keyCode = zeros(1,256);
+                secs = crossOnset;
+                PTBtimeLimit = crossOnset + EP.Data{evt,3} - S.PTB.slack;
+                while ~( keyCode(S.Parameters.Keybinds.Stop_Escape_ASCII) || ( secs > PTBtimeLimit ) )
+                    [~, secs, keyCode] = KbCheck;
+                end
+                
+                % ~~~ ESCAPE key ? ~~~
+                [ Exit_flag, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                
+                
+            case 'Instruction'
+                
+                DrawFormattedText(S.PTB.wPtr, EP.Data{evt+1,1}, 'center', 'center', S.Parameters.Text.Color);
+                instructionOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
+                ER.AddEvent({EP.Data{evt,1} instructionOnset-StartTime [] []})
+                
+                
+            case {'Simple', 'Complex'}
+                
+                % Parameters for this block
+                sequence_str = EP.Data{evt,4};                                            % sequence of the block
+                limitValue   = StartTime + EP.Data{evt,2} + EP.Data{evt,3} - S.PTB.slack; % when to stop the block
+                
+                % Initilization
+                next_input = str2double(sequence_str(1));
+                condition = secs < limitValue;
+                
+                % Draw the first button to tap, save onst
+                Buttons.Draw(next_input);
+                blockOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
+                Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
+                ER.AddEvent({EP.Data{evt,1} blockOnset-StartTime [] []})
+                
+                % Counters
+                tap  = 0;
+                good = 0;
+                bad  = 0;
+                
+                while condition
+                    
+                    % Fetch keys
+                    [keyIsDown, secs, keyCode] = KbCheck;
+                    
+                    % Check condition
+                    condition = secs < limitValue;
+
+                    if keyIsDown
+                        
+                        if keyCode(Side(next_input))
+                            
+                            Common.SendParPortMessage(['finger_' next_input]); % Parallel port
+                            
+                            good = good + 1;
+                            sequence_str = circshift(sequence_str,[0 -1]);
+                            
+                            next_input = str2double(sequence_str(1));
+                            
+                            Buttons.Draw(next_input);
+                            Screen('Flip',S.PTB.wPtr);
+                            
+                        else
+                            good = 0; % reset the counter
+                            bad  = bad + 1;
+                        end
+                        tap  = tap  + 1;
+                            
+                        % ~~~ ESCAPE key ? ~~~
+                        [ Exit_flag, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if Exit_flag
+                            break
+                        end
+                        
+                    end
+                    
+                end % while
+                
                 
             otherwise % ---------------------------------------------------
                 
-                %                 vbl = WaitSecs('UntilTime',StartTime + ER.Data{evt-1,2} + EP.Data{evt-1,3} - S.PTB.anticipation);
-                %
-                %                 ER.AddEvent({EP.Data{evt,1} vbl-StartTime [] [] []})
-                %
-                %                 [ Exit_flag, StopTime ] = Common.DisplayInputsInCommandWindow( EP, ER, RR, evt, StartTime, audioObj, 'tap', Inf );
-                %                 if Exit_flag
-                %                     break
-                %                 end
+                error('unknown envent')
+                
                 
         end % switch
         

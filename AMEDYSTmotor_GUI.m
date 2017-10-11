@@ -1119,11 +1119,13 @@ end % function
 % -------------------------------------------------------------------------
 function edit_Seqeunce_Callback(hObject, ~)
 
+NrTap = 8;
+
 sequence_str = get(hObject,'String');
 
-if length(sequence_str) ~= 5
+if length(sequence_str) ~= NrTap
     set(hObject,'String','')
-    error('Sequence must be 5 non consecutive numbers')
+    error('Sequence must be %d non consecutive numbers', NrTap)
 end
 
 sequence_vect = (  cellstr(sequence_str')' );

@@ -42,24 +42,6 @@ switch get(hObject,'Tag')
     case 'pushbutton_EyelinkCalibration'
         Task = 'EyelinkCalibration';
         
-        %     case 'pushbutton_Familiarization'
-        %         Task = 'Familiarization';
-        %
-        %     case 'pushbutton_Training'
-        %         Task = 'Training';
-        %
-        %     case 'pushbutton_SpeedTest'
-        %         Task = 'SpeedTest';
-        %
-        %     case 'pushbutton_DualTask_Complex'
-        %         Task = 'DualTask_Complex';
-        %
-        %     case 'pushbutton_DualTask_Simple'
-        %         Task = 'DualTask_Simple';
-        %
-        %     case 'pushbutton_DreamDebrief'
-        %         Task = 'DreamDebrief';
-        
     otherwise
         error('AMEDYSTmotor:TaskSelection','Error in Task selection')
 end
@@ -111,26 +93,6 @@ end
 S.OperationMode = OperationMode;
 
 
-%% Name modulation selection
-
-% switch get(get(handles.uipanel_NameModulation,'SelectedObject'),'Tag')
-%     case 'radiobutton_Start'
-%         NameModulation = 'Start';
-%     case 'radiobutton_Pre'
-%         NameModulation = 'Pre';
-%     case 'radiobutton_PrePost'
-%         NameModulation = 'PrePost';
-%     case 'radiobutton_Post'
-%         NameModulation = 'Post';
-%     case 'radiobutton_End'
-%         NameModulation = 'End';
-%     otherwise
-%         warning('AMEDYSTmotor:NameModulation','Error in Name Modulation')
-% end
-%
-% S.NameModulation = NameModulation;
-
-
 %% Sequence
 
 Sequence = get(handles.edit_Sequence,'String');
@@ -150,31 +112,7 @@ end
 
 % Prepare path
 DataPath = [fileparts(pwd) filesep 'data' filesep SubjectID filesep];
-% DataPathNoRun = sprintf('%s_%s_%s_%s_', SubjectID, Task, Environement, NameModulation);
 
-% % Fetch content of the directory
-% dirContent = dir(DataPath);
-
-% % Is there file of the previous run ?
-% previousRun = nan(length(dirContent),1);
-% for f = 1 : length(dirContent)
-%     split = regexp(dirContent(f).name,DataPathNoRun,'split');
-%     if length(split) == 2 && str2double(split{2}(1)) % yes there is a file
-%         previousRun(f) = str2double(split{2}(1)); % save the previous run numbers
-%     else % no file found
-%         previousRun(f) = 0; % affect zero
-%     end
-% end
-
-% LastRunNumber = max(previousRun);
-% % If no previous run, LastRunNumber is 0
-% if isempty(LastRunNumber)
-%     LastRunNumber = 0;
-% end
-% RunNumber = num2str(LastRunNumber + 1);
-
-% DataFile = sprintf('%s%s_%s_%s_%s_%s_%s', DataPath, S.TimeStampFile, SubjectID, Task, Environement, NameModulation, RunNumber );
-% DataFile = sprintf('%s%s_%s_%s_%s_%s', DataPath, S.TimeStampFile, SubjectID, Task, Environement, NameModulation );
 DataFile = sprintf('%s%s_%s_%s_%s', DataPath, S.TimeStampFile, SubjectID, Task, Environement );
 
 
@@ -248,12 +186,12 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
         % 'Eyelink.m' exists ?
         status = which('Eyelink.m');
         if isempty(status)
-            error('SMACC:EyelinkToolbox','no ''Eyelink.m'' detected in the path')
+            error('AMEDYST:EyelinkToolbox','no ''Eyelink.m'' detected in the path')
         end
         
         % Save mode ?
         if strcmp(S.SaveMode,'NoSave')
-            error('SMACC:SaveModeForEyelink',' \n ---> Save mode should be turned on when using Eyelink <--- \n ')
+            error('AMEDYST:SaveModeForEyelink',' \n ---> Save mode should be turned on when using Eyelink <--- \n ')
         end
         
         % Eyelink connected ?
@@ -266,7 +204,7 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
         %             case 'Session'
         %                 task = ['S' get(handles.edit_IlluBlock,'String')];
         %             otherwise
-        %                 error('SMACC:Task','Task ?')
+        %                 error('AMEDYST:Task','Task ?')
         %         end
         %         EyelinkFile = [ SubjectID task sprintf('%.2d',str2double(RunNumber)) ];
         
@@ -274,7 +212,7 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
         
     otherwise
         
-        warning('SMACC:EyelinkMode','Error in Eyelink mode')
+        warning('AMEDYST:EyelinkMode','Error in Eyelink mode')
         
 end
 
@@ -312,7 +250,7 @@ switch get(handles.checkbox_WindowedScreen,'Value')
     case 0
         WindowedMode = 'Off';
     otherwise
-        warning('SMACC:WindowedScreen','Error in WindowedScreen')
+        warning('AMEDYST:WindowedScreen','Error in WindowedScreen')
         
 end
 
@@ -332,24 +270,6 @@ switch Task
     
     case 'Motor'
         TaskData = Motor.Task;
-        
-        %     case 'Familiarization'
-        %         TaskData = Familiarization.Task;
-        %
-        %     case 'Training'
-        %         TaskData = SpeedTest.Task;
-        %
-        %     case 'SpeedTest'
-        %         TaskData = SpeedTest.Task;
-        %
-        %     case 'DualTask_Complex'
-        %         TaskData = DualTask.Task;
-        %
-        %     case 'DualTask_Simple'
-        %         TaskData = DualTask.Task;
-        %
-        %     case 'DreamDebrief'
-        %         TaskData = DreamDebrief.Task;
         
     otherwise
         error('AMEDYSTmotor:Task','Task ?')
@@ -392,41 +312,19 @@ end
 
 %% Send S and SPM nod to workspace
 
-assignin('base', 'S', S);
-assignin('base', 'names', names);
-assignin('base', 'onsets', onsets);
+assignin('base', 'S'        , S        );
+assignin('base', 'names'    , names    );
+assignin('base', 'onsets'   , onsets   );
 assignin('base', 'durations', durations);
-
-
-%% Plot a summpup of everything that happened
-
-% % Do a normal plotStim
-% plotStim(S.TaskData.EP,S.TaskData.ER,S.TaskData.KL)
-%
-% % Plot the audio recordings
-% switch Task
-%
-%     case {'DualTask_Complex','DualTask_Simple'}
-%
-%         fullAudioSamples = [];
-%         for evt = 1:size(S.TaskData.ER.Data,1)
-%             fullAudioSamples = [fullAudioSamples S.TaskData.ER.Data{evt,5}]; %#ok<AGROW>
-%         end
-%         fullAudioSamples = fullAudioSamples/max(abs(fullAudioSamples)) + 0.5; % normalize + shift : for display
-%         timeAudioSamples = (1:1:(length(fullAudioSamples)))/S.Parameters.Audio.SamplingRate;
-%
-%         plot(timeAudioSamples,fullAudioSamples);
-%
-% end
 
 
 %% Ready for another run
 
-set(handles.text_LastFileNameAnnouncer,'Visible','on')
-set(handles.text_LastFileName,         'Visible','on')
-set(handles.text_LastFileName,'String',DataFile(length(DataPath)+1:end))
+set(handles.text_LastFileNameAnnouncer,'Visible','on'                             )
+set(handles.text_LastFileName,         'Visible','on'                             )
+set(handles.text_LastFileName,         'String' , DataFile(length(DataPath)+1:end))
 
-% printResults(S.TaskData.ER)
+printResults(S.TaskData.ER)
 
 WaitSecs(0.100);
 pause(0.100);

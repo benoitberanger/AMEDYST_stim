@@ -4,7 +4,7 @@ global S
 %% Prepare event record
 
 % Create
-ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'sequence_results' , 'voice_data' } , size(EP.Data,1) );
+ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'sequence_results' } , size(EP.Data,1) );
 
 % Prepare
 ER.AddStartTime( 'StartTime' , 0 );

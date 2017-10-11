@@ -12,20 +12,23 @@ end
 
 switch S.OperationMode
     case 'Acquisition'
-        SequenceDuration = 30; % secondes
-        RestDuration     = 15;  % secondes
-        NrBlocksSimple   = 10;
-        NrBlocksComplex  = 10;
+        SequenceDuration    = 30; % secondes
+        RestDuration        = 13; % secondes
+        NrBlocksSimple      = 10;
+        NrBlocksComplex     = 10;
+        InstructionDuration = 2;  % secondes
     case 'FastDebug'
-        SequenceDuration = 5; % secondes
-        RestDuration     = 2;  % secondes
-        NrBlocksSimple   = 1;
-        NrBlocksComplex  = 1;
+        SequenceDuration    = 5;  % secondes
+        RestDuration        = 2;  % secondes
+        NrBlocksSimple      = 1;
+        NrBlocksComplex     = 1;
+        InstructionDuration = 0.5; % secondes
     case 'RealisticDebug'
-        SequenceDuration = 30; % secondes
-        RestDuration     = 5;  % secondes
-        NrBlocksSimple   = 1;
-        NrBlocksComplex  = 1;
+        SequenceDuration    = 30; % secondes
+        RestDuration        = 5;  % secondes
+        NrBlocksSimple      = 1;
+        NrBlocksComplex     = 1;
+        InstructionDuration = 1;  % secondes
 end
 
 randomizeOrder = 1; % 0 or 1
@@ -42,14 +45,22 @@ switch randomizeOrder
 end
 
 
-Paradigme = { 'Rest' RestDuration [] }; % initilaise the container
+Paradigme = { 'Rest' RestDuration [] ; 'Instruction' InstructionDuration [] }; % initilaise the container
 
 for n = 1:length(BlockOrder)
     
     if BlockOrder(n) % 1
-        Paradigme  = [ Paradigme ; { 'Complex' SequenceDuration S.Sequence } ; { 'Rest' RestDuration [] } ]; %#ok<AGROW>
+        Paradigme  = [ Paradigme ; { 'Complex' SequenceDuration S.Sequence } ]; %#ok<*AGROW>
     else % 0
-        Paradigme  = [ Paradigme ; { 'Simple'  SequenceDuration '5432' }     ; { 'Rest' RestDuration [] } ]; %#ok<AGROW>
+        Paradigme  = [ Paradigme ; { 'Simple'  SequenceDuration '5432' }     ];
+    end
+    
+    % Add rest after between each block
+    Paradigme  = [ Paradigme ; { 'Rest' RestDuration [] } ];
+    
+    % Add instruction at the end of each rest
+    if n ~= length(BlockOrder)
+        Paradigme  = [ Paradigme ; { 'Instruction' InstructionDuration [] } ];
     end
     
 end
