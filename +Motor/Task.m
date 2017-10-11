@@ -23,6 +23,11 @@ try
     [ Buttons ] = Common.PrepareResponseButtons;
     
     
+    %% Eyelink
+    
+    Common.StartRecordingEyelink
+    
+    
     %% Go
     
     % Initialize some varibles

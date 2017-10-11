@@ -198,15 +198,43 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
         Eyelink.IsConnected
         
         % File name for the eyelink : 8 char maximum
-        %         switch Task
-        %             case 'EyelinkCalibration'
-        %                 task = 'EC';
-        %             case 'Session'
-        %                 task = ['S' get(handles.edit_IlluBlock,'String')];
-        %             otherwise
-        %                 error('AMEDYST:Task','Task ?')
-        %         end
-        %         EyelinkFile = [ SubjectID task sprintf('%.2d',str2double(RunNumber)) ];
+        switch Task
+            case 'EyelinkCalibration'
+                task = 'E';
+            case 'Motor'
+                task = 'M';
+            otherwise
+                error('AMEDYST:Task','Task ?')
+        end
+        
+        EyelinkFile_noRun = [ 'AD_' SubjectID task ];
+        
+        % Auto-incrementation of run number
+        % -----------------------------------------------------------------
+        % Fetch content of the directory
+        dirContent = dir(DataPath);
+        
+        % Is there file of the previous run ?
+        previousRun = nan(length(dirContent),1);
+        for f = 1 : length(dirContent)
+            split = regexp(dirContent(f).name,DataPathNoRun,'split');
+            if length(split) == 2 && str2double(split{2}(1)) % yes there is a file
+                previousRun(f) = str2double(split{2}(1)); % save the previous run numbers
+            else % no file found
+                previousRun(f) = 0; % affect zero
+            end
+        end
+        
+        LastRunNumber = max(previousRun);
+        % If no previous run, LastRunNumber is 0
+        if isempty(LastRunNumber)
+            LastRunNumber = 0;
+        end
+        
+        RunNumber = LastRunNumber + 1;
+        % -----------------------------------------------------------------
+        
+        EyelinkFile = [EyelinkFile_noRun sprintf('%0.2d',RunNumber)];
         
         S.EyelinkFile = EyelinkFile;
         
@@ -316,6 +344,24 @@ assignin('base', 'S'        , S        );
 assignin('base', 'names'    , names    );
 assignin('base', 'onsets'   , onsets   );
 assignin('base', 'durations', durations);
+
+
+%% End recording of Eyelink
+
+% Eyelink mode 'On' ?
+if strcmp(S.EyelinkMode,'On')
+    
+    % Stop recording and retrieve the file
+    Eyelink.StopRecording( S.EyelinkFile , S.DataPath )
+    
+    if ~strcmp(S.Task,'EyelinkCalibration')
+        
+        % Rename the file
+        movefile([S.DataPath EyelinkFile '.edf'], [S.DataFile '.edf'])
+        
+    end
+    
+end
 
 
 %% Ready for another run

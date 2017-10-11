@@ -106,7 +106,8 @@ else % Create the figure
         'Units', 'Normalized',...
         'Position',[e_sid.x e_sid.y e_sid.w e_sid.h],...
         'BackgroundColor',editBGcolor,...
-        'String','');
+        'String','',...
+        'Callback',@edit_SubjectID_Callback);
     
     
     % ---------------------------------------------------------------------
@@ -775,6 +776,23 @@ end % function
 %% GUI Functions
 
 % -------------------------------------------------------------------------
+function edit_SubjectID_Callback(hObject, ~)
+
+NrChar = 2;
+
+id_str = get(hObject,'String');
+
+if length(id_str) ~= NrChar
+    set(hObject,'String','')
+    error('SubjectID must be %d chars', NrChar)
+end
+
+fprintf('SubjectID OK : %s \n', id_str)
+
+end % function
+
+
+% -------------------------------------------------------------------------
 function edit_Seqeunce_Callback(hObject, ~)
 
 NrTap = 8;
@@ -801,6 +819,7 @@ end
 fprintf('ComplexSequence OK : %s \n', sequence_str)
 
 end % function
+
 
 % -------------------------------------------------------------------------
 function uipanel_EyelinkMode_SelectionChangeFcn(hObject, eventdata)
