@@ -22,7 +22,9 @@ else
     seq = seq(:,2)';
 end
 
-results       = struct;
+results         = struct;
+results.rawdata = sidedata;
+
 results.N     = length(seq);          % number of clicks
 results.speed = length(seq)/duration; % clicks per seconds
 
