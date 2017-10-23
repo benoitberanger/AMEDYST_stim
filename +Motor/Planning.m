@@ -14,8 +14,8 @@ switch S.OperationMode
     case 'Acquisition'
         SequenceDuration    = 20; % secondes
         RestDuration        = 13; % secondes
-        NrBlocksSimple      = 10;
-        NrBlocksComplex     = 10;
+        NrBlocksSimple      = 5;
+        NrBlocksComplex     = 5;
         InstructionDuration = 2;  % secondes
     case 'FastDebug'
         SequenceDuration    = 5;  % secondes

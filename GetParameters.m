@@ -94,9 +94,9 @@ Parameters.Keybinds.TTL_t_ASCII          = KbName('t'); % MRI trigger has to be 
 % Parameters.Keybinds.emulTTL_s_ASCII      = KbName('s');
 Parameters.Keybinds.Stop_Escape_ASCII    = KbName('ESCAPE');
 
-switch S.OperationMode
+switch S.Environement
     
-    case 'Acquisition'
+    case 'MRI'
         
         Parameters.Fingers.Right(1) = 1;           % Thumb, not on the response buttons, arbitrary number
         Parameters.Fingers.Right(2) = KbName('b'); % Index finger
@@ -110,7 +110,7 @@ switch S.OperationMode
         Parameters.Fingers.Left (4) = KbName('n'); % Ring finger
         Parameters.Fingers.Left (5) = KbName('d'); % Little finger
         
-    otherwise
+    case 'Practice'
         
         Parameters.Fingers.Left (1) = KbName('v'); % Thumb, not on the response buttons, arbitrary number
         Parameters.Fingers.Left (2) = KbName('f'); % Index finger
