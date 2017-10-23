@@ -147,14 +147,13 @@ switch get( handles.checkbox_ParPort , 'Value' )
     
     case 1
         ParPort = 'On';
-        S.ParPortMessages = Common.PrepareParPort;
-        
     case 0
         ParPort = 'Off';
 end
-
-handles.ParPort    = ParPort;
 S.ParPort = ParPort;
+S.ParPortMessages = Common.PrepareParPort;
+handles.ParPort    = ParPort;
+
 
 
 %% Left or right handed ?
@@ -217,7 +216,7 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
         % Is there file of the previous run ?
         previousRun = nan(length(dirContent),1);
         for f = 1 : length(dirContent)
-            split = regexp(dirContent(f).name,DataPathNoRun,'split');
+            split = regexp(dirContent(f).name,EyelinkFile_noRun,'split');
             if length(split) == 2 && str2double(split{2}(1)) % yes there is a file
                 previousRun(f) = str2double(split{2}(1)); % save the previous run numbers
             else % no file found

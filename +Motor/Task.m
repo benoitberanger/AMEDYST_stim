@@ -134,7 +134,7 @@ try
                         
                         if keyCode(Side(next_input))
                             
-                            Common.SendParPortMessage(['finger_' next_input]); % Parallel port
+                            Common.SendParPortMessage(sprintf('finger_%d',next_input)); % Parallel port
                             
                             good = good + 1;
                             sequence_str = circshift(sequence_str,[0 -1]);

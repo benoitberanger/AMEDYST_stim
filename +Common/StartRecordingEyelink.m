@@ -10,7 +10,7 @@ switch S.EyelinkMode
             
             case 'Acquisition'
                 
-                Eyelink.storeELfilename( S.DataPath, S.EyelinkFile, S.DataFile ) % security
+%                 Eyelink.storeELfilename( S.DataPath, S.EyelinkFile, S.DataFile ) % security
                 
                 Eyelink.StartRecording( S.EyelinkFile );
                 
