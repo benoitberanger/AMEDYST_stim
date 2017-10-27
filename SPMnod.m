@@ -18,6 +18,9 @@ try
                 'Complex'
                 };
             
+        case 'EyelinkCalibration'
+            names = {};
+            
     end
     
     % 'onsets' & 'durations' for SPM

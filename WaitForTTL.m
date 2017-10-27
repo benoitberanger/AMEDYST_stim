@@ -32,6 +32,11 @@ if strcmp(S.OperationMode,'Acquisition')
                         
                     elseif keyCode(S.Parameters.Keybinds.Stop_Escape_ASCII)
                         
+                        % Eyelink mode 'On' ?
+                        if strcmp(S.EyelinkMode,'On')
+                            Eyelink.STOP % Stop wrapper
+                        end
+                        
                         sca
                         stack = dbstack;
                         error('WaitingForTTL:Abort','\n ESCAPE key : %s aborted \n',stack.file)

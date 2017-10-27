@@ -113,13 +113,51 @@ end
 % Prepare path
 DataPath = [fileparts(pwd) filesep 'data' filesep SubjectID filesep];
 
-DataFile = sprintf('%s%s_%s_%s_%s', DataPath, S.TimeStampFile, SubjectID, Task, Environement );
+if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
+    
+    if ~exist(DataPath, 'dir')
+        mkdir(DataPath);
+    end
+    
+end
 
+% DataFile_noRun = sprintf('%s%s_%s_%s_%s', DataPath, S.TimeStampFile, SubjectID, Environement, Task );
+DataFile_noRun = sprintf('%s_%s_%s', SubjectID, Environement, Task );
 
-S.SubjectID = SubjectID;
-% S.RunNumber = RunNumber;
-S.DataPath  = DataPath;
-S.DataFile  = DataFile;
+% Auto-incrementation of run number
+% -----------------------------------------------------------------
+% Fetch content of the directory
+dirContent = dir(DataPath);
+
+% Is there file of the previous run ?
+previousRun = nan(length(dirContent)-2,1);
+for f = 3 : length(dirContent) % avoid . and ..
+    runNumber = regexp(dirContent(f).name,[DataFile_noRun '_run?(\d+)'],'tokens');
+    if ~isempty(runNumber) % yes there is a file
+        runNumber = runNumber{1}{:};
+        previousRun(f) = str2double(runNumber); % save the previous run numbers
+    else % no file found
+        previousRun(f) = 0; % affect zero
+    end
+end
+
+LastRunNumber = max(previousRun);
+% If no previous run, LastRunNumber is 0
+if isempty(LastRunNumber)
+    LastRunNumber = 0;
+end
+
+RunNumber = LastRunNumber + 1;
+% -----------------------------------------------------------------
+
+DataFile     = sprintf('%s%s_%s_%s_%s_run%0.2d', DataPath, S.TimeStampFile, SubjectID, Environement, Task, RunNumber );
+DataFileName = sprintf(  '%s_%s_%s_%s_run%0.2d',           S.TimeStampFile, SubjectID, Environement, Task, RunNumber  );
+
+S.SubjectID     = SubjectID;
+S.RunNumber     = RunNumber;
+S.DataPath      = DataPath;
+S.DataFile      = DataFile;
+S.DataFileName  = DataFileName;
 
 
 %% Controls for SubjectID depending on the Mode selected
@@ -208,31 +246,6 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
         
         EyelinkFile_noRun = [ 'AD_' SubjectID task ];
         
-        % Auto-incrementation of run number
-        % -----------------------------------------------------------------
-        % Fetch content of the directory
-        dirContent = dir(DataPath);
-        
-        % Is there file of the previous run ?
-        previousRun = nan(length(dirContent),1);
-        for f = 1 : length(dirContent)
-            split = regexp(dirContent(f).name,EyelinkFile_noRun,'split');
-            if length(split) == 2 && str2double(split{2}(1)) % yes there is a file
-                previousRun(f) = str2double(split{2}(1)); % save the previous run numbers
-            else % no file found
-                previousRun(f) = 0; % affect zero
-            end
-        end
-        
-        LastRunNumber = max(previousRun);
-        % If no previous run, LastRunNumber is 0
-        if isempty(LastRunNumber)
-            LastRunNumber = 0;
-        end
-        
-        RunNumber = LastRunNumber + 1;
-        % -----------------------------------------------------------------
-        
         EyelinkFile = [EyelinkFile_noRun sprintf('%0.2d',RunNumber)];
         
         S.EyelinkFile = EyelinkFile;
@@ -297,6 +310,10 @@ switch Task
     
     case 'Motor'
         TaskData = Motor.Task;
+        
+    case 'EyelinkCalibration'
+        Eyelink.Calibration(S.PTB.wPtr);
+        TaskData.ER.Data = {};
         
     otherwise
         error('AMEDYSTmotor:Task','Task ?')
@@ -369,7 +386,9 @@ set(handles.text_LastFileNameAnnouncer,'Visible','on'                           
 set(handles.text_LastFileName,         'Visible','on'                             )
 set(handles.text_LastFileName,         'String' , DataFile(length(DataPath)+1:end))
 
-printResults(S.TaskData.ER)
+if ~strcmp(Task,'EyelinkCalibration')
+    printResults(S.TaskData.ER)
+end
 
 WaitSecs(0.100);
 pause(0.100);
