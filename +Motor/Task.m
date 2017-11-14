@@ -20,7 +20,11 @@ try
     
     [ WhiteCross ] = Common.PrepareFixationCross  ;
     
-    [ Buttons    ] = Common.PrepareResponseButtons;
+    switch S.Feedback
+        case 'On'
+            [ Buttons ] = Common.PrepareResponseButtons;
+        case 'Off'
+    end
     
     
     %% Eyelink
@@ -57,7 +61,7 @@ try
                 
                 [ ER, RR, StopTime ] = Common.StopTimeEvent( EP, ER, RR, StartTime, evt );
                 
-            case 'Rest' % -------------------------------------------------
+            case 'Repos' % ------------------------------------------------
                 
                 
                 % ~~~ Display white cross ~~~
@@ -74,7 +78,12 @@ try
                 % ~~~ Analyse the last key inputs ~~~
                 if ~strcmp(EP.Data{evt-1,1},'StartTime')
                     KL.GetQueue;
-                    results = Common.SequenceAnalyzer(EP.Data{evt-1,4}, S.Side, EP.Data{evt-1,3}, from, KL.EventCount, KL);
+                    switch S.Feedback
+                        case 'On'
+                            results = Common.SequenceAnalyzer(EP.Data{evt-1,4}, S.Side, EP.Data{evt-1,3}, from, KL.EventCount, KL);
+                        case 'Off'
+                            results = Common.SequenceAnalyzer(EP.Data{evt-2,4}, S.Side, EP.Data{evt-2,3}, from, KL.EventCount, KL);
+                    end
                     from = KL.EventCount;
                     ER.Data{evt-1,4} = results;
                     disp(results)
@@ -101,7 +110,7 @@ try
                 ER.AddEvent({EP.Data{evt,1} instructionOnset-StartTime [] []})
                 
                 
-            case {'Simple', 'Complex'}
+            case {'Simple', 'Complexe'}
                 
                 % Parameters for this block
                 sequence_str = EP.Data{evt,4};                                            % sequence of the block
@@ -112,7 +121,12 @@ try
                 condition = secs < limitValue;
                 
                 % Draw the first button to tap, save onst
-                Buttons.Draw(next_input);
+                switch S.Feedback
+                    case 'On'
+                        Buttons.Draw(next_input);
+                    case 'Off'
+                        WhiteCross.Draw;
+                end
                 blockOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
                 Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
                 ER.AddEvent({EP.Data{evt,1} blockOnset-StartTime [] []})
@@ -129,7 +143,7 @@ try
                     
                     % Check condition
                     condition = secs < limitValue;
-
+                    
                     if keyIsDown
                         
                         if keyCode(Side(next_input))
@@ -141,7 +155,12 @@ try
                             
                             next_input = str2double(sequence_str(1));
                             
-                            Buttons.Draw(next_input);
+                            switch S.Feedback
+                                case 'On'
+                                    Buttons.Draw(next_input);
+                                case 'Off'
+                                    WhiteCross.Draw;
+                            end
                             Screen('Flip',S.PTB.wPtr);
                             
                         else
@@ -149,7 +168,7 @@ try
                             bad  = bad + 1;
                         end
                         tap  = tap  + 1;
-                            
+                        
                         % ~~~ ESCAPE key ? ~~~
                         [ Exit_flag, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
                         if Exit_flag

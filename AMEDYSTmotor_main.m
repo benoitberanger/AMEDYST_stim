@@ -208,6 +208,20 @@ end
 S.Side = Side;
 
 
+%% Left or right handed ?
+
+switch get(get(handles.uipanel_Feedback,'SelectedObject'),'Tag')
+    case 'radiobutton_FeedbackOn'
+        Feedback = 'On';
+    case 'radiobutton_FeedbackOff'
+        Feedback = 'Off';
+    otherwise
+        warning('AMEDYSTmotor:Feedback','Error in Feedback')
+end
+
+S.Feedback = Feedback;
+
+
 %% Check if Eyelink toolbox is available
 
 switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')

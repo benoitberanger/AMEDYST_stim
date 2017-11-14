@@ -13,9 +13,9 @@ try
         
         case 'Motor'
             names = {
-                'Rest'
+                'Repos'
                 'Simple'
-                'Complex'
+                'Complexe'
                 };
             
         case 'EyelinkCalibration'
@@ -37,12 +37,12 @@ try
         
         switch EventData{event,1}
             
-            case 'Rest'
+            case 'Repos'
                 onsets{1} = [onsets{1} ; EventData{event,2}];
                 
             case 'Simple'
                 onsets{2} = [onsets{2} ; EventData{event,2}];
-            case 'Complex'
+            case 'Complexe'
                 onsets{3} = [onsets{3} ; EventData{event,2}];
                 
         end
@@ -57,12 +57,12 @@ try
         
         switch EventData{event,1}
             
-            case 'Rest'
+            case 'Repos'
                 durations{1} = [ durations{1} ; EventData{event+1,2}-EventData{event,2}] ;
                 
             case 'Simple'
                 durations{2} = [ durations{2} ; EventData{event+1,2}-EventData{event,2}] ;
-            case 'Complex'
+            case 'Complexe'
                 durations{3} = [ durations{3} ; EventData{event+1,2}-EventData{event,2}] ;
         end
         

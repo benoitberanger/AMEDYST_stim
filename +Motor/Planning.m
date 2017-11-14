@@ -2,9 +2,10 @@ function [ EP ] = Planning
 global S
 
 if nargout < 1 % only to plot the paradigme when we execute the function outside of the main script
-    S.Environement  = 'MRI';
-    S.OperationMode = 'Acquisition';
-    S.ComplexSequence      = '';
+    S.Environement    = 'MRI';
+    S.OperationMode   = 'Acquisition';
+    S.ComplexSequence = '';
+    S.Feedback        = 'Off';
 end
 
 
@@ -45,18 +46,24 @@ switch randomizeOrder
 end
 
 
-Paradigme = { 'Rest' RestDuration [] ; 'Instruction' InstructionDuration [] }; % initilaise the container
+Paradigme = { 'Repos' RestDuration [] ; 'Instruction' InstructionDuration [] }; % initilaise the container
 
 for n = 1:length(BlockOrder)
     
     if BlockOrder(n) % 1
-        Paradigme  = [ Paradigme ; { 'Complex' SequenceDuration S.ComplexSequence } ]; %#ok<*AGROW>
+        Paradigme  = [ Paradigme ; { 'Complexe' SequenceDuration S.ComplexSequence } ]; %#ok<*AGROW>
     else % 0
         Paradigme  = [ Paradigme ; { 'Simple'  SequenceDuration '5432' }     ];
     end
     
     % Add rest after between each block
-    Paradigme  = [ Paradigme ; { 'Rest' RestDuration [] } ];
+    switch S.Feedback
+        case 'On'
+            
+        case 'Off'
+            Paradigme  = [ Paradigme ; { 'Instruction' InstructionDuration [] } ];
+    end
+    Paradigme  = [ Paradigme ; { 'Repos' RestDuration [] } ];
     
     % Add instruction at the end of each rest
     if n ~= length(BlockOrder)

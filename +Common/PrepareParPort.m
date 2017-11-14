@@ -27,10 +27,10 @@ msg.finger_4 = 4;
 msg.finger_5 = 5;
 
 % Audio instructions
-msg.Rest        = 10;
+msg.Repos       = 10;
 msg.Instruction = 20;
 msg.Simple      = 30;
-msg.Complex     = 40;
+msg.Complexe    = 40;
 
 
 %% Finalize
