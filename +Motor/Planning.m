@@ -14,7 +14,7 @@ end
 switch S.OperationMode
     case 'Acquisition'
         SequenceDuration    = 20; % secondes
-        RestDuration        = 13; % secondes
+        RestDuration        = 15; % secondes
         NrBlocksSimple      = 5;
         NrBlocksComplex     = 5;
         InstructionDuration = 2;  % secondes
@@ -23,9 +23,9 @@ switch S.OperationMode
         RestDuration        = 2;  % secondes
         NrBlocksSimple      = 1;
         NrBlocksComplex     = 1;
-        InstructionDuration = 0.5; % secondes
+        InstructionDuration = 1;  % secondes
     case 'RealisticDebug'
-        SequenceDuration    = 30; % secondes
+        SequenceDuration    = 20; % secondes
         RestDuration        = 5;  % secondes
         NrBlocksSimple      = 1;
         NrBlocksComplex     = 1;
@@ -45,15 +45,20 @@ switch randomizeOrder
         error('no randmization not coded yet !')
 end
 
-
-Paradigme = { 'Repos' RestDuration [] ; 'Instruction' InstructionDuration [] }; % initilaise the container
+% initilaise the container
+switch S.Feedback
+    case 'On'
+        Paradigm = { 'Repos' RestDuration [] };
+    case 'Off'
+        Paradigm = { 'Instruction' InstructionDuration []; 'Repos' RestDuration [] };
+end
 
 for n = 1:length(BlockOrder)
     
     if BlockOrder(n) % 1
-        Paradigme  = [ Paradigme ; { 'Complexe' SequenceDuration S.ComplexSequence } ]; %#ok<*AGROW>
+        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration []}; {'Complexe' SequenceDuration S.ComplexSequence} ]; %#ok<*AGROW>
     else % 0
-        Paradigme  = [ Paradigme ; { 'Simple'  SequenceDuration '5432' }     ];
+        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration []}; { 'Simple'  SequenceDuration '5432'           } ];
     end
     
     % Add rest after between each block
@@ -61,14 +66,9 @@ for n = 1:length(BlockOrder)
         case 'On'
             
         case 'Off'
-            Paradigme  = [ Paradigme ; { 'Instruction' InstructionDuration [] } ];
+            Paradigm  = [ Paradigm ; { 'Instruction' InstructionDuration [] } ];
     end
-    Paradigme  = [ Paradigme ; { 'Repos' RestDuration [] } ];
-    
-    % Add instruction at the end of each rest
-    if n ~= length(BlockOrder)
-        Paradigme  = [ Paradigme ; { 'Instruction' InstructionDuration [] } ];
-    end
+    Paradigm  = [ Paradigm ; { 'Repos' RestDuration [] } ];
     
 end
 
@@ -90,9 +90,9 @@ EP.AddPlanning({ 'StartTime' 0  0 [] });
 
 % --- Stim ----------------------------------------------------------------
 
-for p = 1 : size(Paradigme,1)
+for p = 1 : size(Paradigm,1)
     
-    EP.AddPlanning({ Paradigme{p,1} NextOnset(EP) Paradigme{p,2} Paradigme{p,3} });
+    EP.AddPlanning({ Paradigm{p,1} NextOnset(EP) Paradigm{p,2} Paradigm{p,3} });
     
 end
 

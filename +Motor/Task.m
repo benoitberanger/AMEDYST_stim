@@ -55,6 +55,9 @@ try
             
             case 'StartTime' % --------------------------------------------
                 
+                WhiteCross.Draw;
+                Screen('Flip',S.PTB.wPtr);
+                
                 StartTime = Common.StartTimeEvent;
                 
             case 'StopTime' % ---------------------------------------------
@@ -76,7 +79,13 @@ try
                 ER.AddEvent({EP.Data{evt,1} crossOnset-StartTime [] []})
                 
                 % ~~~ Analyse the last key inputs ~~~
-                if ~strcmp(EP.Data{evt-1,1},'StartTime')
+                switch S.Feedback
+                    case 'On'
+                        evt_to_check = evt-1;
+                    case 'Off'
+                        evt_to_check = evt-2;
+                end
+                if ~strcmp(EP.Data{evt_to_check,1},'StartTime') % it means S.Feedback==Off
                     KL.GetQueue;
                     switch S.Feedback
                         case 'On'
