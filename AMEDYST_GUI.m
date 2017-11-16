@@ -1,6 +1,6 @@
-function varargout = AMEDYSTmotor_GUI
-% AMEDYSTmotor_GUI is the function that creates (or bring to focus) AMEDYSTmotor GUI.
-% Then, AMEDYSTmotor_main is always called to start each task. It is the
+function varargout = AMEDYST_GUI
+% AMEDYST_GUI is the function that creates (or bring to focus) AMEDYST GUI.
+% Then, AMEDYST_main is always called to start each task. It is the
 % "main" program.
 
 % debug=1 closes previous figure and reopens it, and send the gui handles
@@ -20,7 +20,7 @@ if ~isempty(figPtr) % Figure exists so brings it to the focus
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%% DEBUG %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     if debug
         close(figPtr); %#ok<UNRCH>
-        AMEDYSTmotor_GUI;
+        AMEDYST_GUI;
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
@@ -600,7 +600,7 @@ else % Create the figure
         'String','Calibration',...
         'BackgroundColor',buttonBGcolor,...
         'Tag',b_cal.tag,...
-        'Callback',@AMEDYSTmotor_main);
+        'Callback',@AMEDYST_main);
     
     
     % ---------------------------------------------------------------------
@@ -703,22 +703,22 @@ else % Create the figure
     
     
     % ---------------------------------------------------------------------
-    % Pushbutton : Motor
+    % Pushbutton : SEQ
     
     p_tk.countO  = p_tk.countO + 1;
     b_motor.x   = p_tk.xposO(p_tk.countO);
     b_motor.y   = buttun_y;
     b_motor.w   = p_tk.Ow;
     b_motor.h   = buttun_h;
-    b_motor.tag = 'pushbutton_Motor';
+    b_motor.tag = 'pushbutton_SEQ';
     handles.(b_motor.tag) = uicontrol(handles.uipanel_Task,...
         'Style','pushbutton',...
         'Units', 'Normalized',...
         'Position',[b_motor.x b_motor.y b_motor.w b_motor.h],...
-        'String','Motor',...
+        'String','SEQ',...
         'BackgroundColor',buttonBGcolor,...
         'Tag',b_motor.tag,...
-        'Callback',@AMEDYSTmotor_main);
+        'Callback',@AMEDYST_main);
     
     
     %% Panel : Operation mode

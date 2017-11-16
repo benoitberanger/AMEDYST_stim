@@ -1,5 +1,5 @@
-function AMEDYSTmotor_main(hObject, ~)
-% AMEDYSTmotor_main is the main program, calling the different tasks and
+function AMEDYST_main(hObject, ~)
+% AMEDYST_main is the main program, calling the different tasks and
 % routines, accoding to the paramterts defined in the GUI
 
 
@@ -7,7 +7,7 @@ function AMEDYSTmotor_main(hObject, ~)
 
 if nargin == 0
     
-    AMEDYSTmotor_GUI;
+    AMEDYST_GUI;
     
     return
     
@@ -36,14 +36,14 @@ S.TimeStampFile = datestr(now, 30                ); % to sort automatically by t
 
 switch get(hObject,'Tag')
     
-    case 'pushbutton_Motor'
-        Task = 'Motor';
+    case 'pushbutton_SEQ'
+        Task = 'SEQ';
         
     case 'pushbutton_EyelinkCalibration'
         Task = 'EyelinkCalibration';
         
     otherwise
-        error('AMEDYSTmotor:TaskSelection','Error in Task selection')
+        error('AMEDYST:TaskSelection','Error in Task selection')
 end
 
 S.Task = Task;
@@ -57,7 +57,7 @@ switch get(get(handles.uipanel_Environement,'SelectedObject'),'Tag')
     case 'radiobutton_Practice'
         Environement = 'Practice';
     otherwise
-        warning('AMEDYSTmotor:ModeSelection','Error in Environement selection')
+        warning('AMEDYST:ModeSelection','Error in Environement selection')
 end
 
 S.Environement = Environement;
@@ -71,7 +71,7 @@ switch get(get(handles.uipanel_SaveMode,'SelectedObject'),'Tag')
     case 'radiobutton_NoSave'
         SaveMode = 'NoSave';
     otherwise
-        warning('AMEDYSTmotor:SaveSelection','Error in SaveMode selection')
+        warning('AMEDYST:SaveSelection','Error in SaveMode selection')
 end
 
 S.SaveMode = SaveMode;
@@ -87,7 +87,7 @@ switch get(get(handles.uipanel_OperationMode,'SelectedObject'),'Tag')
     case 'radiobutton_RealisticDebug'
         OperationMode = 'RealisticDebug';
     otherwise
-        warning('AMEDYSTmotor:ModeSelection','Error in Mode selection')
+        warning('AMEDYST:ModeSelection','Error in Mode selection')
 end
 
 S.OperationMode = OperationMode;
@@ -107,7 +107,7 @@ S.ComplexSequence = ComplexSequence;
 SubjectID = get(handles.edit_SubjectID,'String');
 
 if isempty(SubjectID)
-    error('AMEDYSTmotor:SubjectIDLength','\n SubjectID is required \n')
+    error('AMEDYST:SubjectIDLength','\n SubjectID is required \n')
 end
 
 % Prepare path
@@ -168,12 +168,12 @@ switch OperationMode
         
         % Empty subject ID
         if isempty(SubjectID)
-            error('AMEDYSTmotor:MissingSubjectID','\n For acquisition, SubjectID is required \n')
+            error('AMEDYST:MissingSubjectID','\n For acquisition, SubjectID is required \n')
         end
         
         % Acquisition => save data
         if ~get(handles.radiobutton_SaveData,'Value')
-            warning('AMEDYSTmotor:DataShouldBeSaved','\n\n\n In acquisition mode, data should be saved \n\n\n')
+            warning('AMEDYST:DataShouldBeSaved','\n\n\n In acquisition mode, data should be saved \n\n\n')
         end
         
 end
@@ -202,7 +202,7 @@ switch get(get(handles.uipanel_ParallelPortLeftRight,'SelectedObject'),'Tag')
     case 'radiobutton_RightButtons'
         Side = 'Right';
     otherwise
-        warning('AMEDYSTmotor:LeftRight','Error in LeftRight')
+        warning('AMEDYST:LeftRight','Error in LeftRight')
 end
 
 S.Side = Side;
@@ -216,7 +216,7 @@ switch get(get(handles.uipanel_Feedback,'SelectedObject'),'Tag')
     case 'radiobutton_FeedbackOff'
         Feedback = 'Off';
     otherwise
-        warning('AMEDYSTmotor:Feedback','Error in Feedback')
+        warning('AMEDYST:Feedback','Error in Feedback')
 end
 
 S.Feedback = Feedback;
@@ -252,7 +252,7 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
         switch Task
             case 'EyelinkCalibration'
                 task = 'E';
-            case 'Motor'
+            case 'SEQ'
                 task = 'M';
             otherwise
                 error('AMEDYST:Task','Task ?')
@@ -322,15 +322,15 @@ EchoStart(Task)
 
 switch Task
     
-    case 'Motor'
-        TaskData = Motor.Task;
+    case 'SEQ'
+        TaskData = SEQ.Task;
         
     case 'EyelinkCalibration'
         Eyelink.Calibration(S.PTB.wPtr);
         TaskData.ER.Data = {};
         
     otherwise
-        error('AMEDYSTmotor:Task','Task ?')
+        error('AMEDYST:Task','Task ?')
 end
 
 EchoStop(Task)

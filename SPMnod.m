@@ -11,7 +11,7 @@ try
     % 'names' for SPM
     switch S.Task
         
-        case 'Motor'
+        case 'SEQ'
             names = {
                 'Repos'
                 'Simple'

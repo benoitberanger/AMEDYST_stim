@@ -4,7 +4,7 @@ global S
 try
     %% Tunning of the task
     
-    [ EP ] = Motor.Planning;
+    [ EP ] = SEQ.Planning;
     
     % End of preparations
     EP.BuildGraph;
