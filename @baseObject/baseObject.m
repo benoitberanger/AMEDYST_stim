@@ -10,7 +10,7 @@ classdef baseObject < handle
     methods
         
         % --- Constructor -------------------------------------------------
-        % no constructor : this is a 'virtial' object
+        % no constructor : this is a 'virtual' object
         % -----------------------------------------------------------------
         
     end

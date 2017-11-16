@@ -1,11 +1,11 @@
 function [ Buttons ] = PrepareResponseButtons
 global S
 
-height    = round(S.PTB.wRect(end)*S.Parameters.ResponseButtons.ScreenRatio);
-side      = S.Parameters.ResponseButtons.Side;
+height    = round(S.PTB.wRect(end)*S.Parameters.SEQ.ResponseButtons.ScreenRatio);
+side      = S.Parameters.SEQ.ResponseButtons.Side;
 center    = [S.PTB.CenterH S.PTB.CenterV];
-baseColor = S.Parameters.ResponseButtons.baseColor;
-ovalColor = S.Parameters.ResponseButtons.buttonsColor;
+baseColor = S.Parameters.SEQ.ResponseButtons.baseColor;
+ovalColor = S.Parameters.SEQ.ResponseButtons.buttonsColor;
 
 Buttons = ResponseButtons( height , side , center, baseColor, ovalColor );
 

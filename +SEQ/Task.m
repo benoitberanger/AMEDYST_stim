@@ -18,11 +18,11 @@ try
     
     %% Prepare objects
     
-    [ WhiteCross ] = Common.PrepareFixationCross  ;
+    [ WhiteCross ] = SEQ.PrepareFixationCross;
     
     switch S.Feedback
         case 'On'
-            [ Buttons ] = Common.PrepareResponseButtons;
+            [ Buttons ] = SEQ.PrepareResponseButtons;
         case 'Off'
     end
     
@@ -35,8 +35,8 @@ try
     %% Go
     
     % Initialize some varibles
-    Exit_flag = 0;
-    from      = 1;
+    EXIT = 0;
+    from = 1;
     
     switch S.Side
         case 'Left'
@@ -108,7 +108,7 @@ try
                 end
                 
                 % ~~~ ESCAPE key ? ~~~
-                [ Exit_flag, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
                 
                 
             case 'Instruction'
@@ -145,6 +145,13 @@ try
                 good = 0;
                 bad  = 0;
                 
+                switch S.Feedback
+                    case 'On'
+                    case 'Off'
+                        WhiteCross.Draw;
+                        Screen('Flip',S.PTB.wPtr);
+                end
+                
                 while condition
                     
                     % Fetch keys
@@ -167,10 +174,9 @@ try
                             switch S.Feedback
                                 case 'On'
                                     Buttons.Draw(next_input);
+                                    Screen('Flip',S.PTB.wPtr);
                                 case 'Off'
-                                    WhiteCross.Draw;
                             end
-                            Screen('Flip',S.PTB.wPtr);
                             
                         else
                             good = 0; % reset the counter
@@ -179,8 +185,8 @@ try
                         tap  = tap  + 1;
                         
                         % ~~~ ESCAPE key ? ~~~
-                        [ Exit_flag, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
-                        if Exit_flag
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
                             break
                         end
                         
@@ -197,7 +203,7 @@ try
         end % switch
         
         % This flag comes from Common.Interrupt, if ESCAPE is pressed
-        if Exit_flag
+        if EXIT
             break
         end
         

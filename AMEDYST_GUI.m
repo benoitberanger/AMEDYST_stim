@@ -622,7 +622,7 @@ else % Create the figure
     %% Panel : Display feedback
     
     p_feedback.x = panelProp.xposP;
-    p_feedback.w = panelProp.wP;
+    p_feedback.w = panelProp.wP/2;
     
     panelProp.countP = panelProp.countP - 1;
     p_feedback.y = panelProp.yposP(panelProp.countP);
@@ -693,7 +693,7 @@ else % Create the figure
         'Position',[p_tk.x p_tk.y p_tk.w p_tk.h],...
         'BackgroundColor',figureBGcolor);
     
-    p_tk.nbO    = 1; % Number of objects
+    p_tk.nbO    = 2; % Number of objects
     p_tk.Ow     = 1/(p_tk.nbO + 1); % Object width
     p_tk.countO = 0; % Object counter
     p_tk.xposO  = @(countO) p_tk.Ow/(p_tk.nbO+1)*countO + (countO-1)*p_tk.Ow;
@@ -706,18 +706,37 @@ else % Create the figure
     % Pushbutton : SEQ
     
     p_tk.countO  = p_tk.countO + 1;
-    b_motor.x   = p_tk.xposO(p_tk.countO);
-    b_motor.y   = buttun_y;
-    b_motor.w   = p_tk.Ow;
-    b_motor.h   = buttun_h;
-    b_motor.tag = 'pushbutton_SEQ';
-    handles.(b_motor.tag) = uicontrol(handles.uipanel_Task,...
+    b_seq.x   = p_tk.xposO(p_tk.countO);
+    b_seq.y   = buttun_y;
+    b_seq.w   = p_tk.Ow;
+    b_seq.h   = buttun_h;
+    b_seq.tag = 'pushbutton_SEQ';
+    handles.(b_seq.tag) = uicontrol(handles.uipanel_Task,...
         'Style','pushbutton',...
         'Units', 'Normalized',...
-        'Position',[b_motor.x b_motor.y b_motor.w b_motor.h],...
+        'Position',[b_seq.x b_seq.y b_seq.w b_seq.h],...
         'String','SEQ',...
         'BackgroundColor',buttonBGcolor,...
-        'Tag',b_motor.tag,...
+        'Tag',b_seq.tag,...
+        'Callback',@AMEDYST_main);
+    
+    
+    % ---------------------------------------------------------------------
+    % Pushbutton : ADAPT
+    
+    p_tk.countO  = p_tk.countO + 1;
+    b_adapt.x   = p_tk.xposO(p_tk.countO);
+    b_adapt.y   = buttun_y;
+    b_adapt.w   = p_tk.Ow;
+    b_adapt.h   = buttun_h;
+    b_adapt.tag = 'pushbutton_ADAPT';
+    handles.(b_adapt.tag) = uicontrol(handles.uipanel_Task,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_adapt.x b_adapt.y b_adapt.w b_adapt.h],...
+        'String','ADAPT',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_adapt.tag,...
         'Callback',@AMEDYST_main);
     
     
@@ -818,6 +837,20 @@ else % Create the figure
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     figPtr = figHandle;
+    
+    fprintf('\n')
+    fprintf('Response buttuns (fORRP 932) : \n')
+    fprintf('\n')
+    fprintf('1) SEQ :\n')
+    fprintf('USB \n')
+    fprintf('HHSC - 2x4 - C \n')
+    fprintf('HID NAR BYGRT \n')
+    fprintf('\n')
+    fprintf('1) ADAPT :\n')
+    fprintf('USB \n')
+    fprintf('TETHYX \n')
+    fprintf('HID JOYSTICK \n')
+    fprintf('\n')
     
     
 end

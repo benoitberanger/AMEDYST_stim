@@ -2,13 +2,6 @@ function [ Parameters ] = GetParameters
 % GETPARAMETERS Prepare common parameters
 global S
 
-fprintf('\n')
-fprintf('Response buttuns (fORRP 932) : \n')
-fprintf('USB \n')
-fprintf('HHSC - 2x4 - CYL \n')
-fprintf('HID NAR BYGRT \n')
-fprintf('\n')
-
 
 %% Echo in command window
 
@@ -60,27 +53,36 @@ Parameters.Text.Font  = 'Courier New';
 Parameters.Text.Color = [128 128 128]; % [R G B] ( from 0 to 255 )
 
 
-%%%%%%%%%%%%%%%%%%%%%%
-%   Fixation cross   %
-%%%%%%%%%%%%%%%%%%%%%%
-Parameters.FixationCross.ScreenRatio    = 1/20;          % ratio : dim   = ScreenWide *ratio_screen
-Parameters.FixationCross.lineWidthRatio = 1/10;          % ratio : width = dim        *ratio_width
-Parameters.FixationCross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
+%%%%%%%%%%%%
+%   SEQ    %
+%%%%%%%%%%%%
 
+% Fixation cross 
+Parameters.SEQ.FixationCross.ScreenRatio    = 1/20;          % ratio : dim   = ScreenWide *ratio_screen
+Parameters.SEQ.FixationCross.lineWidthRatio = 1/10;          % ratio : width = dim        *ratio_width
+Parameters.SEQ.FixationCross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
 
-%%%%%%%%%%%%%%%%%%%%%
-%  ResponseButtons  %
-%%%%%%%%%%%%%%%%%%%%%
-Parameters.ResponseButtons.ScreenRatio  = 0.6;           % height = ScreenHeight * ratio
-Parameters.ResponseButtons.Side         = S.Side;        % 'Left' or 'Right'
-Parameters.ResponseButtons.baseColor    = [128 128 128]; % [R G B] ( from 0 to 255 )
-Parameters.ResponseButtons.buttonsColor = ...
+% ResponseButtons 
+Parameters.SEQ.ResponseButtons.ScreenRatio  = 0.6;           % height = ScreenHeight * ratio
+Parameters.SEQ.ResponseButtons.Side         = S.Side;        % 'Left' or 'Right'
+Parameters.SEQ.ResponseButtons.baseColor    = [128 128 128]; % [R G B] ( from 0 to 255 )
+Parameters.SEQ.ResponseButtons.buttonsColor = ...
     [255 80 60    % 5 == red
     30 190 70     % 4 == green
     255 224 54    % 3 == yellow
     40 100 210]'; % 2 == blue
 % [R G B] ( from 0 to 255 )
 % colors here are both left and right buttons
+
+
+%%%%%%%%%%%%%%
+%   ADAPT    %
+%%%%%%%%%%%%%%
+
+% Small cross at the center
+Parameters.ADAPT.Cross.ScreenRatio    = 1/50;          % ratio : dim   = ScreenWide *ratio_screen
+Parameters.ADAPT.Cross.lineWidthRatio = 1/10;          % ratio : width = dim        *ratio_width
+Parameters.ADAPT.Cross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
 
 
 %%%%%%%%%%%%%%

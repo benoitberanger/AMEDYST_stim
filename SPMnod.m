@@ -18,6 +18,9 @@ try
                 'Complexe'
                 };
             
+        case 'ADAPT'
+            names = {};
+            
         case 'EyelinkCalibration'
             names = {};
             

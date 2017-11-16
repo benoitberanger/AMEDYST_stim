@@ -39,6 +39,9 @@ switch get(hObject,'Tag')
     case 'pushbutton_SEQ'
         Task = 'SEQ';
         
+    case 'pushbutton_ADAPT'
+        Task = 'ADAPT';
+        
     case 'pushbutton_EyelinkCalibration'
         Task = 'EyelinkCalibration';
         
@@ -253,7 +256,9 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
             case 'EyelinkCalibration'
                 task = 'E';
             case 'SEQ'
-                task = 'M';
+                task = 'S';
+            case 'ADAPT'
+                task = 'A';
             otherwise
                 error('AMEDYST:Task','Task ?')
         end
@@ -324,6 +329,9 @@ switch Task
     
     case 'SEQ'
         TaskData = SEQ.Task;
+        
+    case 'ADAPT'
+        TaskData = ADAPT.Task;
         
     case 'EyelinkCalibration'
         Eyelink.Calibration(S.PTB.wPtr);

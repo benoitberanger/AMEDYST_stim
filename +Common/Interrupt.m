@@ -1,4 +1,4 @@
-function [ Exit_flag, StopTime ] = Interrupt( keyCode, ER, RR, StartTime )
+function [ EXIT, StopTime ] = Interrupt( keyCode, ER, RR, StartTime )
 global S
 
 % % Escape ?
@@ -7,7 +7,7 @@ global S
 if keyCode(S.Parameters.Keybinds.Stop_Escape_ASCII)
     
     % Flag
-    Exit_flag = 1;
+    EXIT = 1;
     
     % Stop time
     StopTime = GetSecs;
@@ -23,7 +23,7 @@ if keyCode(S.Parameters.Keybinds.Stop_Escape_ASCII)
     
 else
     
-    Exit_flag = 0;
+    EXIT = 0;
     StopTime  = [];
     
 end

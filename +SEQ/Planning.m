@@ -13,23 +13,26 @@ end
 
 switch S.OperationMode
     case 'Acquisition'
-        SequenceDuration    = 20; % secondes
-        RestDuration        = 15; % secondes
+        SequenceDuration    = 20; % seconds
+        RestDuration        = 15; % seconds
         NrBlocksSimple      = 5;
         NrBlocksComplex     = 5;
-        InstructionDuration = 2;  % secondes
+        InstructionDuration = 2;  % seconds
+        InterTapInterval    = 0.5;% seconds
     case 'FastDebug'
-        SequenceDuration    = 5;  % secondes
-        RestDuration        = 2;  % secondes
+        SequenceDuration    = 5;  % seconds
+        RestDuration        = 2;  % seconds
         NrBlocksSimple      = 1;
         NrBlocksComplex     = 1;
-        InstructionDuration = 1;  % secondes
+        InstructionDuration = 1;  % seconds
+        InterTapInterval    = 0.5;% seconds
     case 'RealisticDebug'
-        SequenceDuration    = 20; % secondes
+        SequenceDuration    = 20; % seconds
         RestDuration        = 5;  % secondes
         NrBlocksSimple      = 1;
         NrBlocksComplex     = 1;
-        InstructionDuration = 1;  % secondes
+        InstructionDuration = 1;  % seconds
+        InterTapInterval    = 0.5;% seconds
 end
 
 randomizeOrder = 1; % 0 or 1
@@ -48,17 +51,17 @@ end
 % initilaise the container
 switch S.Feedback
     case 'On'
-        Paradigm = { 'Repos' RestDuration [] };
+        Paradigm = { 'Repos' RestDuration [] []};
     case 'Off'
-        Paradigm = { 'Instruction' InstructionDuration []; 'Repos' RestDuration [] };
+        Paradigm = { 'Instruction' InstructionDuration [] []; 'Repos' RestDuration [] []};
 end
 
 for n = 1:length(BlockOrder)
     
     if BlockOrder(n) % 1
-        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration []}; {'Complexe' SequenceDuration S.ComplexSequence} ]; %#ok<*AGROW>
+        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; {'Complexe' SequenceDuration S.ComplexSequence InterTapInterval} ]; %#ok<*AGROW>
     else % 0
-        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration []}; { 'Simple'  SequenceDuration '5432'           } ];
+        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; { 'Simple'  SequenceDuration '5432'            InterTapInterval} ];
     end
     
     % Add rest after between each block
@@ -66,9 +69,9 @@ for n = 1:length(BlockOrder)
         case 'On'
             
         case 'Off'
-            Paradigm  = [ Paradigm ; { 'Instruction' InstructionDuration [] } ];
+            Paradigm  = [ Paradigm ; { 'Instruction' InstructionDuration [] []} ];
     end
-    Paradigm  = [ Paradigm ; { 'Repos' RestDuration [] } ];
+    Paradigm  = [ Paradigm ; { 'Repos' RestDuration [] []} ];
     
 end
 
@@ -77,7 +80,7 @@ end
 
 
 % Create and prepare
-header = { 'event_name' , 'onset(s)' , 'duration(s)' 'SequenceFingers(vect)' };
+header = { 'event_name' , 'onset(s)' , 'duration(s)' 'SequenceFingers(vect)' 'InterTapInterval(s)'};
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration
@@ -86,19 +89,19 @@ NextOnset = @(EP) EP.Data{end,2} + EP.Data{end,3};
 
 % --- Start ---------------------------------------------------------------
 
-EP.AddPlanning({ 'StartTime' 0  0 [] });
+EP.AddPlanning({ 'StartTime' 0  0 [] []});
 
 % --- Stim ----------------------------------------------------------------
 
 for p = 1 : size(Paradigm,1)
     
-    EP.AddPlanning({ Paradigm{p,1} NextOnset(EP) Paradigm{p,2} Paradigm{p,3} });
+    EP.AddPlanning({ Paradigm{p,1} NextOnset(EP) Paradigm{p,2} Paradigm{p,3} Paradigm{p,4}});
     
 end
 
 % --- Stop ----------------------------------------------------------------
 
-EP.AddPlanning({ 'StopTime' NextOnset(EP) 0 [] });
+EP.AddPlanning({ 'StopTime' NextOnset(EP) 0 [] []});
 
 
 %% Display

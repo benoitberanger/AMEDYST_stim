@@ -1,10 +1,9 @@
 function [ WhiteCross ] = PrepareFixationCross
 global S
 
-
-dim   = round(S.PTB.wRect(end)*S.Parameters.FixationCross.ScreenRatio);
-width = round(dim * S.Parameters.FixationCross.lineWidthRatio);
-color = S.Parameters.FixationCross.Color;
+dim   = round(S.PTB.wRect(end)*S.Parameters.SEQ.FixationCross.ScreenRatio);
+width = round(dim * S.Parameters.SEQ.FixationCross.lineWidthRatio);
+color = S.Parameters.SEQ.FixationCross.Color;
 
 WhiteCross = FixationCross(...
     dim   ,...                       % dimension in pixels
