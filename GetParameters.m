@@ -20,12 +20,12 @@ EchoStart(mfilename)
 %%%%%%%%%%%
 
 % Parameters.Audio.SamplingRate            = 44100; % Hz
-% 
+%
 % Parameters.Audio.Playback_Mode           = 1; % 1 = playback, 2 = record
 % Parameters.Audio.Playback_LowLatencyMode = 1; % {0,1,2,3,4}
 % Parameters.Audio.Playback_freq           = Parameters.Audio.SamplingRate ;
 % Parameters.Audio.Playback_Channels       = 2; % 1 = mono, 2 = stereo
-% 
+%
 % Parameters.Audio.Record_Mode             = 2; % 1 = playback, 2 = record
 % Parameters.Audio.Record_LowLatencyMode   = 0; % {0,1,2,3,4}
 % Parameters.Audio.Record_freq             = Parameters.Audio.SamplingRate;
@@ -44,7 +44,6 @@ Parameters.Video.ScreenHeightM   = 0.030; % m
 
 Parameters.Video.ScreenBackgroundColor = [50 50 50]; % [R G B] ( from 0 to 255 )
 
-
 %%%%%%%%%%%%
 %   Text   %
 %%%%%%%%%%%%
@@ -52,20 +51,19 @@ Parameters.Text.Size  = 60;
 Parameters.Text.Font  = 'Courier New';
 Parameters.Text.Color = [128 128 128]; % [R G B] ( from 0 to 255 )
 
-
 %%%%%%%%%%%%
 %   SEQ    %
 %%%%%%%%%%%%
 
-% Fixation cross 
+% Fixation cross
 Parameters.SEQ.FixationCross.ScreenRatio    = 1/20;          % ratio : dim   = ScreenWide *ratio_screen
 Parameters.SEQ.FixationCross.lineWidthRatio = 1/10;          % ratio : width = dim        *ratio_width
 Parameters.SEQ.FixationCross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
 
-% ResponseButtons 
+% ResponseButtons
 Parameters.SEQ.ResponseButtons.ScreenRatio  = 0.6;           % height = ScreenHeight * ratio
 Parameters.SEQ.ResponseButtons.Side         = S.Side;        % 'Left' or 'Right'
-Parameters.SEQ.ResponseButtons.baseColor    = [128 128 128]; % [R G B] ( from 0 to 255 )
+Parameters.SEQ.ResponseButtons.frameColor   = [128 128 128]; % [R G B] ( from 0 to 255 )
 Parameters.SEQ.ResponseButtons.buttonsColor = ...
     [255 80 60    % 5 == red
     30 190 70     % 4 == green

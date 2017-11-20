@@ -7,10 +7,11 @@ classdef FixationCross < baseObject
         
         % Parameters
         
-        dim       = zeros(0)   % size of cross arms, in pixels
-        width     = zeros(0)   % width of each arms, in pixels
-        color     = zeros(0,4) % [R G B a] from 0 to 255
-        center    = zeros(0,2) % [ CenterX CenterY ] of the cross, in pixels
+        dim          = zeros(0)   % size of cross arms, in pixels
+        width        = zeros(0)   % width of each arms, in pixels
+        baseColor    = zeros(0,4) % [R G B a] from 0 to 255
+        currentColor = zeros(0,4) % [R G B a] from 0 to 255
+        center       = zeros(0,2) % [ CenterX CenterY ] of the cross, in pixels
         
         % Internal variables
         
@@ -50,10 +51,11 @@ classdef FixationCross < baseObject
                 assert( isvector(center) && isnumeric(center) && all( center>0 ) && all(center == round(center)) , ...
                     'center = [ CenterX CenterY ] of the cross, in pixels' )
                 
-                obj.dim    = dim;
-                obj.width  = width;
-                obj.color  = color;
-                obj.center = center;
+                obj.dim          = dim;
+                obj.width        = width;
+                obj.baseColor    = color;
+                obj.currentColor = color;
+                obj.center       = center;
                 
                 % ================== Callback =============================
                 

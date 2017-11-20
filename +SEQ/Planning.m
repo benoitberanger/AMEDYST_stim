@@ -20,7 +20,7 @@ switch S.OperationMode
         InstructionDuration = 2;   % seconds
         TapFrequency        = 1.5; % Hz
     case 'FastDebug'
-        SequenceDuration    = 5;  % seconds
+        SequenceDuration    = 6;  % seconds
         RestDuration        = 2;  % seconds
         NrBlocksSimple      = 1;
         NrBlocksComplex     = 1;
@@ -38,8 +38,18 @@ end
 randomizeOrder = 1; % 0 or 1
 
 
-%% Backend setup
+% Check if SequenceDuration and TapFrequency are coherent
+N_cycles_per_block = SequenceDuration*TapFrequency;
+if N_cycles_per_block ~= round(N_cycles_per_block)
+    warning([...
+        'N_cycles_per_block = SequenceDuration*TapFrequency = %f is not an integer. \n' ...
+        'There will be visual glitch/jump at the end of each sequence block'...
+        ]...
+        ,N_cycles_per_block)
+end
 
+
+%% Backend setup
 
 switch randomizeOrder
     case 1

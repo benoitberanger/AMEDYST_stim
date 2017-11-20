@@ -19,7 +19,6 @@ try
     %% Prepare objects
     
     [ WhiteCross ] = SEQ.PrepareFixationCross;
-    crossBaseColor = WhiteCross.color;
     
     switch S.Feedback
         case 'On'
@@ -122,92 +121,93 @@ try
                 
             case {'Simple', 'Complexe'}
                 
-                N = round(EP.Data{evt,3}/S.PTB.IFI);
+                % Prepare color variations
+                switch S.Feedback
+                    case 'On'
+                        
+                        % Prepare inputs
+                        sequence_str = EP.Data{evt,4}; % sequence of the block
+                        next_input = str2double(sequence_str(1));
+                        
+                        maxColor  = Buttons.ovalBaseColor;
+                        minColor  = Buttons.darkOvals;
+                        
+                    case 'Off'
+                        
+                        maxColor  = WhiteCross.baseColor;
+                        minColor  = S.Parameters.Video.ScreenBackgroundColor;
+                        
+                end
                 
-                amplitude = (crossBaseColor-S.Parameters.Video.ScreenBackgroundColor)/2;
-                offcet    = (crossBaseColor+S.Parameters.Video.ScreenBackgroundColor)/2 ;
-                frequency = EP.Data{evt,5}*S.PTB.IFI;
+                % Color morphing
+                amplitude = (maxColor-minColor)/2;
+                offcet    = (maxColor+minColor)/2 ;
+                frequency = EP.Data{evt,5};
                 phase     =  -pi/2 ;
                 
-                colorScale = @(frame_counter) amplitude*square( 2*pi*frequency*frame_counter + phase ) + offcet;
+                colorScale = @(frame_counter) amplitude*square( 2*pi*frequency*(frame_counter*S.PTB.IFI) + phase ) + offcet;
                 
-                % Wait for the beguining of the block 
-                WaitSecs('UntilTime',StartTime + EP.Data{evt,2} - S.PTB.slack);
+                % How many images in this block ?
+                Nframes       = round(EP.Data{evt,3}/S.PTB.IFI);
+                FramesInCycle = round(1/frequency   /S.PTB.IFI);
                 
+                % Wait for the begining of the block
+                onset = WaitSecs('UntilTime',StartTime + EP.Data{evt,2} - S.PTB.slack/2);
                 
-                for n = 0 : N-1
-                    WhiteCross.color =  colorScale(n);
+                % Display
+                for frame = 0 : Nframes-1
                     
-                    WhiteCross.Draw;
-                    onset = Screen('Flip',S.PTB.wPtr);
+                    % colorScale(n) % <= for diagnostic
+                    
+                    switch S.Feedback
+                        case 'On'
+                            
+                            Buttons.ovalCurrentColor = colorScale(frame);
+                            Buttons.Draw(next_input);
+                            
+                            % Change input button at the end each flickering cycle
+                            if frame>0 && mod(frame,FramesInCycle)== 0
+                                % Fetch next input
+                                sequence_str = circshift(sequence_str,[0 -1]);
+                                next_input = str2double(sequence_str(1));
+                            end
+                            
+                        case 'Off'
+                            
+                            WhiteCross.currentColor = colorScale(frame);
+                            WhiteCross.Draw;
+                            
+                    end
+                    
+                    Screen('DrawingFinished',S.PTB.wPtr);
+                    Screen('Flip'           ,S.PTB.wPtr);
                     
                     % Block onset
-                    if n == 0
+                    if frame == 0
                         Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
                         ER.AddEvent({EP.Data{evt,1} onset-StartTime [] []})
                     end
                     
-                end
-                
-                %                 % Parameters for this block
-                %                 sequence_str = EP.Data{evt,4};                                            % sequence of the block
-                %                 limitValue   = StartTime + EP.Data{evt,2} + EP.Data{evt,3} - S.PTB.slack; % when to stop the block
-                %
-                %                 % Initilization
-                %                 next_input = str2double(sequence_str(1));
-                %                 condition = secs < limitValue;
-                %
-                %                 % Draw the first button to tap, save onset
-                %                 switch S.Feedback
-                %                     case 'On'
-                %                         Buttons.Draw(next_input);
-                %                     case 'Off'
-                %                         WhiteCross.Draw;
-                %                 end
-                %                 blockOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
-                %                 Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
-                %                 ER.AddEvent({EP.Data{evt,1} blockOnset-StartTime [] []})
-                %
-                %                 lastOnset = blockOnset;
-                %
-                %                 while condition
-                %
-                %                     % Fetch keys
-                %                     [keyIsDown, secs, keyCode] = KbCheck;
-                %
-                %                     % Check condition
-                %                     condition = secs < limitValue;
-                %
-                %                     if secs >= lastOnset + EP.Data{evt,4}
-                %
-                %                         % Prepare next input
-                %                         sequence_str = circshift(sequence_str,[0 -1]);
-                %                         next_input = str2double(sequence_str(1));
-                %
-                %                         switch S.Feedback
-                %                             case 'On'
-                %                                 Buttons.Draw(next_input);
-                %                                 Screen('Flip',S.PTB.wPtr);
-                %                             case 'Off'
-                %                         end
-                %                     end
-                %
-                %                 end
-                %
-                %                 if keyIsDown
-                %
-                %                     if keyCode(Side(next_input))
-                %                         Common.SendParPortMessage(sprintf('finger_%d',next_input)); % Parallel port
-                %                     end
-                %
-                %                     % ~~~ ESCAPE key ? ~~~
-                %                     [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
-                %                     if EXIT
-                %                         break
-                %                     end
-                %
-                %                 end % while
-                
+                    % Fetch keys
+                    [keyIsDown, ~, keyCode] = KbCheck;
+                    
+                    if keyIsDown
+                        
+                        % Key press ?
+                        if any(keyCode(Side))
+                            key_input = find(keyCode(Side),1);
+                            Common.SendParPortMessage(sprintf('finger_%d',key_input)); % Parallel port
+                        end
+                        
+                        % ~~~ ESCAPE key ? ~~~
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
+                            break
+                        end
+                        
+                    end
+                    
+                end % for Nframes
                 
             otherwise % ---------------------------------------------------
                 

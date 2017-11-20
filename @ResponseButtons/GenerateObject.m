@@ -1,13 +1,13 @@
 function GenerateObject( obj )
 
-% Width of the base
+% Width of the frame
 obj.width = 2*obj.height;
 
 %% Base
 
-% Rectangle of the base coordinates
-obj.baseRect = [0 0 obj.width obj.height];
-obj.baseRect = CenterRectOnPoint(obj.baseRect, obj.center(1), obj.center(2) );
+% Rectangle of the frame coordinates
+obj.frameRect = [0 0 obj.width obj.height];
+obj.frameRect = CenterRectOnPoint(obj.frameRect, obj.center(1), obj.center(2) );
 
 
 %% Ovals
@@ -31,16 +31,18 @@ end
 
 % Swap color if RIGHT
 if strcmpi(obj.side(1),'r')
-   obj.ovalColor = fliplr(obj.ovalColor);
+   obj.ovalBaseColor = fliplr(obj.ovalBaseColor);
    obj.f2i = @(f) f-1;
 else % left
     obj.f2i = @(f) -f+6;
 end
 
+obj.ovalCurrentColor = obj.ovalBaseColor;
+
 
 %% Dark ovals
 
-obj.darkOvals = uint8(repmat(obj.baseColor',[1 4])*0.8);
+obj.darkOvals = repmat(obj.frameColor',[1 4])*0.8;
 
 
 end % function

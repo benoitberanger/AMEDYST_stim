@@ -1,5 +1,5 @@
 function DrawBase( obj )
 
-Screen('FillRect', obj.wPtr, obj.baseColor, obj.baseRect);
+Screen('FillRect', obj.wPtr, obj.frameColor, obj.frameRect);
 
 end % function
