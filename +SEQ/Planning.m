@@ -13,26 +13,26 @@ end
 
 switch S.OperationMode
     case 'Acquisition'
-        SequenceDuration    = 20; % seconds
-        RestDuration        = 15; % seconds
+        SequenceDuration    = 20;  % seconds
+        RestDuration        = 15;  % seconds
         NrBlocksSimple      = 5;
         NrBlocksComplex     = 5;
-        InstructionDuration = 2;  % seconds
-        InterTapInterval    = 0.5;% seconds
+        InstructionDuration = 2;   % seconds
+        TapFrequency        = 1.5; % Hz
     case 'FastDebug'
         SequenceDuration    = 5;  % seconds
         RestDuration        = 2;  % seconds
         NrBlocksSimple      = 1;
         NrBlocksComplex     = 1;
         InstructionDuration = 1;  % seconds
-        InterTapInterval    = 0.5;% seconds
+        TapFrequency        = 1.5; % Hz
     case 'RealisticDebug'
         SequenceDuration    = 20; % seconds
         RestDuration        = 5;  % secondes
         NrBlocksSimple      = 1;
         NrBlocksComplex     = 1;
         InstructionDuration = 1;  % seconds
-        InterTapInterval    = 0.5;% seconds
+        TapFrequency        = 1.5; % Hz
 end
 
 randomizeOrder = 1; % 0 or 1
@@ -59,9 +59,9 @@ end
 for n = 1:length(BlockOrder)
     
     if BlockOrder(n) % 1
-        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; {'Complexe' SequenceDuration S.ComplexSequence InterTapInterval} ]; %#ok<*AGROW>
+        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; {'Complexe' SequenceDuration S.ComplexSequence TapFrequency} ]; %#ok<*AGROW>
     else % 0
-        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; { 'Simple'  SequenceDuration '5432'            InterTapInterval} ];
+        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; { 'Simple'  SequenceDuration '5432'            TapFrequency} ];
     end
     
     % Add rest after between each block
@@ -80,7 +80,7 @@ end
 
 
 % Create and prepare
-header = { 'event_name' , 'onset(s)' , 'duration(s)' 'SequenceFingers(vect)' 'InterTapInterval(s)'};
+header = { 'event_name' , 'onset(s)' , 'duration(s)' 'SequenceFingers(vect)' 'TapFrequency(Hz)'};
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration

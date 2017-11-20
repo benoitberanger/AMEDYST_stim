@@ -19,6 +19,7 @@ try
     %% Prepare objects
     
     [ WhiteCross ] = SEQ.PrepareFixationCross;
+    crossBaseColor = WhiteCross.color;
     
     switch S.Feedback
         case 'On'
@@ -121,78 +122,91 @@ try
                 
             case {'Simple', 'Complexe'}
                 
-                % Parameters for this block
-                sequence_str = EP.Data{evt,4};                                            % sequence of the block
-                limitValue   = StartTime + EP.Data{evt,2} + EP.Data{evt,3} - S.PTB.slack; % when to stop the block
+                N = round(EP.Data{evt,3}/S.PTB.IFI);
                 
-                % Initilization
-                next_input = str2double(sequence_str(1));
-                condition = secs < limitValue;
+                amplitude = (crossBaseColor-S.Parameters.Video.ScreenBackgroundColor)/2;
+                offcet    = (crossBaseColor+S.Parameters.Video.ScreenBackgroundColor)/2 ;
+                frequency = EP.Data{evt,5}*S.PTB.IFI;
+                phase     =  -pi/2 ;
                 
-                % Draw the first button to tap, save onst
-                switch S.Feedback
-                    case 'On'
-                        Buttons.Draw(next_input);
-                    case 'Off'
-                        WhiteCross.Draw;
-                end
-                blockOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
-                Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
-                ER.AddEvent({EP.Data{evt,1} blockOnset-StartTime [] []})
+                colorScale = @(frame_counter) amplitude*square( 2*pi*frequency*frame_counter + phase ) + offcet;
                 
-                % Counters
-                tap  = 0;
-                good = 0;
-                bad  = 0;
+                % Wait for the beguining of the block 
+                WaitSecs('UntilTime',StartTime + EP.Data{evt,2} - S.PTB.slack);
                 
-                switch S.Feedback
-                    case 'On'
-                    case 'Off'
-                        WhiteCross.Draw;
-                        Screen('Flip',S.PTB.wPtr);
-                end
                 
-                while condition
+                for n = 0 : N-1
+                    WhiteCross.color =  colorScale(n);
                     
-                    % Fetch keys
-                    [keyIsDown, secs, keyCode] = KbCheck;
+                    WhiteCross.Draw;
+                    onset = Screen('Flip',S.PTB.wPtr);
                     
-                    % Check condition
-                    condition = secs < limitValue;
-                    
-                    if keyIsDown
-                        
-                        if keyCode(Side(next_input))
-                            
-                            Common.SendParPortMessage(sprintf('finger_%d',next_input)); % Parallel port
-                            
-                            good = good + 1;
-                            sequence_str = circshift(sequence_str,[0 -1]);
-                            
-                            next_input = str2double(sequence_str(1));
-                            
-                            switch S.Feedback
-                                case 'On'
-                                    Buttons.Draw(next_input);
-                                    Screen('Flip',S.PTB.wPtr);
-                                case 'Off'
-                            end
-                            
-                        else
-                            good = 0; % reset the counter
-                            bad  = bad + 1;
-                        end
-                        tap  = tap  + 1;
-                        
-                        % ~~~ ESCAPE key ? ~~~
-                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
-                        if EXIT
-                            break
-                        end
-                        
+                    % Block onset
+                    if n == 0
+                        Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
+                        ER.AddEvent({EP.Data{evt,1} onset-StartTime [] []})
                     end
                     
-                end % while
+                end
+                
+                %                 % Parameters for this block
+                %                 sequence_str = EP.Data{evt,4};                                            % sequence of the block
+                %                 limitValue   = StartTime + EP.Data{evt,2} + EP.Data{evt,3} - S.PTB.slack; % when to stop the block
+                %
+                %                 % Initilization
+                %                 next_input = str2double(sequence_str(1));
+                %                 condition = secs < limitValue;
+                %
+                %                 % Draw the first button to tap, save onset
+                %                 switch S.Feedback
+                %                     case 'On'
+                %                         Buttons.Draw(next_input);
+                %                     case 'Off'
+                %                         WhiteCross.Draw;
+                %                 end
+                %                 blockOnset = Screen('Flip',S.PTB.wPtr,StartTime + EP.Data{evt,2} - S.PTB.slack);
+                %                 Common.SendParPortMessage(EP.Data{evt,1}); % Parallel port
+                %                 ER.AddEvent({EP.Data{evt,1} blockOnset-StartTime [] []})
+                %
+                %                 lastOnset = blockOnset;
+                %
+                %                 while condition
+                %
+                %                     % Fetch keys
+                %                     [keyIsDown, secs, keyCode] = KbCheck;
+                %
+                %                     % Check condition
+                %                     condition = secs < limitValue;
+                %
+                %                     if secs >= lastOnset + EP.Data{evt,4}
+                %
+                %                         % Prepare next input
+                %                         sequence_str = circshift(sequence_str,[0 -1]);
+                %                         next_input = str2double(sequence_str(1));
+                %
+                %                         switch S.Feedback
+                %                             case 'On'
+                %                                 Buttons.Draw(next_input);
+                %                                 Screen('Flip',S.PTB.wPtr);
+                %                             case 'Off'
+                %                         end
+                %                     end
+                %
+                %                 end
+                %
+                %                 if keyIsDown
+                %
+                %                     if keyCode(Side(next_input))
+                %                         Common.SendParPortMessage(sprintf('finger_%d',next_input)); % Parallel port
+                %                     end
+                %
+                %                     % ~~~ ESCAPE key ? ~~~
+                %                     [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                %                     if EXIT
+                %                         break
+                %                     end
+                %
+                %                 end % while
                 
                 
             otherwise % ---------------------------------------------------
