@@ -50,27 +50,44 @@ try
                 
             case '' % ------------------------------------------------
                 
-                BigCircle.Move(0,0)
-                BigCircle.Draw
-                
-                Cross.Draw
-                
-                Target.Move((BigCircle.diameter-BigCircle.thickness)/2,30)
-                Target.Draw
-                
-                Target.Move([],100)
-                Target.Draw
-                
-                Cursor.Move(-200,50)
-                Cursor.Draw
-                Cursor.Move(0,0)
-                Cursor.Draw
-                
-                [x,y] = GetMouse;
-                Cursor.Move(x-Cursor.Xorigin,-y -Cursor.Yorigin +Cursor.screenY)
-                Cursor.Draw
-                
-                Screen('Flip',S.PTB.wPtr);
+                while 1
+                    
+                    BigCircle.Move(0,0)
+                    BigCircle.Draw
+                    
+                    Cross.Draw
+                    
+                    Target.Move((BigCircle.diameter-BigCircle.thickness)/2,30)
+                    Target.Draw
+                    
+                    Target.Move([],100)
+                    Target.Draw
+                    
+                    Cursor.Move(-200,50)
+                    Cursor.Draw
+                    Cursor.Move(0,0)
+                    Cursor.Draw
+                    
+                    tic
+                    Cursor.DrawMouse
+                    toc*1000
+                    
+                    Screen('Flip',S.PTB.wPtr);
+                    
+                    % Fetch keys
+                    [keyIsDown, ~, keyCode] = KbCheck;
+                    
+                    if keyIsDown
+                        
+                        % ~~~ ESCAPE key ? ~~~
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
+                            break
+                        end
+                        
+                    end
+                    
+                end
                 
                 %%
                 
