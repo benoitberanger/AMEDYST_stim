@@ -24,6 +24,9 @@ classdef Circle < baseObject
         Xptb         = zeros(0)   % X coordiantes in PTB referential of the center, in pixels
         Yptb         = zeros(0)   % Y coordiantes in PTB referential of the center, in pixels
         
+        R            = zeros(0)   % distance between (Xorigin,Yorigin) and the circle center
+        THETA        = zeros(0)   % angle    between (Xorigin,Yorigin) and the circle center
+        
         Rect         = zeros(0,4) % Rectangle for PTB draw Screen('FrameOval') function
         
     end % properties
