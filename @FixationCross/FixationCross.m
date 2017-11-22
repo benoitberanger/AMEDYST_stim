@@ -46,7 +46,7 @@ classdef FixationCross < baseObject
                 % --- color ----
                 assert( isvector(color) && isnumeric(color) && all( uint8(color)==color ) , ...
                     'color = [R G B a] from 0 to 255' )
-                               
+                
                 % --- center ----
                 assert( isvector(center) && isnumeric(center) && all( center>0 ) && all(center == round(center)) , ...
                     'center = [ CenterX CenterY ] of the cross, in pixels' )

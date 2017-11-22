@@ -1,9 +1,9 @@
-function [ Cross ] = PrepareFixationCross
+function [ Cross ] = PrepareCross
 global S
 
-dim   = round(S.PTB.wRect(end)*S.Parameters.SEQ.FixationCross.ScreenRatio);
-width = round(dim * S.Parameters.SEQ.FixationCross.lineWidthRatio);
-color = S.Parameters.SEQ.FixationCross.Color;
+dim   = round(S.PTB.wRect(end)*S.Parameters.ADAPT.Cross.ScreenRatio);
+width = round(dim * S.Parameters.ADAPT.Cross.lineWidthRatio);
+color = S.Parameters.ADAPT.Cross.Color;
 
 Cross = FixationCross(...
     dim   ,...                       % dimension in pixels

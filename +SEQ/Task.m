@@ -18,7 +18,7 @@ try
     
     %% Prepare objects
     
-    [ WhiteCross ] = SEQ.PrepareFixationCross;
+    [ Cross ] = SEQ.PrepareFixationCross;
     
     switch S.Feedback
         case 'On'
@@ -55,7 +55,7 @@ try
             
             case 'StartTime' % --------------------------------------------
                 
-                WhiteCross.Draw;
+                Cross.Draw;
                 Screen('Flip',S.PTB.wPtr);
                 
                 StartTime = Common.StartTimeEvent;
@@ -68,7 +68,7 @@ try
                 
                 
                 % ~~~ Display white cross ~~~
-                WhiteCross.Draw
+                Cross.Draw
                 switch limitType
                     case 'tap'
                         crossOnset = Screen('Flip',S.PTB.wPtr);
@@ -134,7 +134,7 @@ try
                         
                     case 'Off'
                         
-                        maxColor  = WhiteCross.baseColor;
+                        maxColor  = Cross.baseColor;
                         minColor  = S.Parameters.Video.ScreenBackgroundColor;
                         
                 end
@@ -174,8 +174,8 @@ try
                             
                         case 'Off'
                             
-                            WhiteCross.currentColor = colorScale(frame);
-                            WhiteCross.Draw;
+                            Cross.currentColor = colorScale(frame);
+                            Cross.Draw;
                             
                     end
                     

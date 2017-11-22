@@ -7,4 +7,4 @@ catch err
     rethrow(err)
 end
 
-end
+end % function
