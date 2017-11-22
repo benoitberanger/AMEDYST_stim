@@ -1,5 +1,5 @@
-classdef Circle < baseObject
-    %CIRCLE Class to prepare and draw a circle==target in PTB
+classdef Dot < baseObject
+    %DOT Class to prepare and draw a dot==cursor in PTB
     
     %% Properties
     
@@ -8,10 +8,6 @@ classdef Circle < baseObject
         % Parameters for the creation
         
         diameter          = zeros(0)   % in pixels
-        thickness         = zeros(0)   % width of each arms, in pixels
-        
-        frameBaseColor    = zeros(0,4) % [R G B a] from 0 to 255
-        frameCurrentColor = zeros(0,4) % [R G B a] from 0 to 255
         
         Xorigin           = zeros(0)   % X coordiantes (in PTB referential) of the origin, in pixels
         Yorigin           = zeros(0)   % Y coordiantes (in PTB referential) of the origin, in pixels
@@ -24,15 +20,13 @@ classdef Circle < baseObject
         
         % Internal variables
         
+        X                 = zeros(0)   % X coordiantes from (Xorigin,Yorigin), in pixels
+        Y                 = zeros(0)   % Y coordiantes from (Xorigin,Yorigin), in pixels
+        
         Xptb              = zeros(0)   % X coordiantes in PTB referential of the center, in pixels
         Yptb              = zeros(0)   % Y coordiantes in PTB referential of the center, in pixels
         
-        R                 = zeros(0)   % distance between (Xorigin,Yorigin) and the circle center
-        THETA             = zeros(0)   % angle    between (Xorigin,Yorigin) and the circle center
-        
         Rect              = zeros(0,4) % Rectangle for PTB draw Screen('FrameOval') function
-        
-        filled            = true       % flag to fill or not inside the circle
         
     end % properties
     
@@ -44,11 +38,9 @@ classdef Circle < baseObject
         % -----------------------------------------------------------------
         %                           Constructor
         % -----------------------------------------------------------------
-        function obj = Circle( diameter, thickness,  frameColor, diskColor, Xorigin, Yorigin, screenX, screenY )
+        function obj = Dot( diameter, diskColor, Xorigin, Yorigin, screenX, screenY )
             % obj = FixationCross(
             % diameter=ScreenHeight*0.9 (pixels) ,
-            % thickness=5 (pixels) ,
-            % frameColor=[128 128 128 255] from 0 to 255 ,
             % diskColor=[128 128 128 255] from 0 to 255 ,
             % Xorigin = CenterX (pixels) ,
             % Yorigin = CenterX (pixels) ,
@@ -63,14 +55,6 @@ classdef Circle < baseObject
                 % --- diameter ----
                 assert( isscalar(diameter) && isnumeric(diameter) && diameter>0 , ...
                     'diameter = diameter of the circle, in pixels' )
-                
-                % --- thickness ----
-                assert( isscalar(thickness) && isnumeric(thickness) && thickness>0 , ...
-                    'thickness = thickness of the circle, in pixels' )
-                
-                % --- frameColor ----
-                assert( isvector(frameColor) && isnumeric(frameColor) && all( uint8(frameColor)==frameColor ) , ...
-                    'frameColor = [R G B a] from 0 to 255' )
                 
                 % --- diskColor ----
                 assert( isvector(diskColor) && isnumeric(diskColor) && all( uint8(diskColor)==diskColor ) , ...
@@ -93,9 +77,6 @@ classdef Circle < baseObject
                     'screenY = number of vertical pixels of the PTB window' )
                 
                 obj.diameter          = diameter;
-                obj.thickness         = thickness;
-                obj.frameBaseColor    = frameColor;
-                obj.frameCurrentColor = frameColor;
                 obj.diskBaseColor     = diskColor;
                 obj.diskCurrentColor  = diskColor;
                 obj.Xorigin           = Xorigin;

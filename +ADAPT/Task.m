@@ -21,7 +21,7 @@ try
     Cross     = ADAPT.PrepareCross    ;
     BigCircle = ADAPT.PrepareBigCircle;
     Target    = ADAPT.PrepareTarget   ;
-    
+    Cursor    = ADAPT.PrepareCursor   ;
     
     %% Eyelink
     
@@ -53,14 +53,22 @@ try
                 BigCircle.Move(0,0)
                 BigCircle.Draw
                 
+                Cross.Draw
+                
                 Target.Move((BigCircle.diameter-BigCircle.thickness)/2,30)
                 Target.Draw
                 
                 Target.Move([],100)
                 Target.Draw
                 
-                Cross.Draw
+                Cursor.Move(-200,50)
+                Cursor.Draw
+                Cursor.Move(0,0)
+                Cursor.Draw
                 
+                [x,y] = GetMouse;
+                Cursor.Move(x-Cursor.Xorigin,-y -Cursor.Yorigin +Cursor.screenY)
+                Cursor.Draw
                 
                 Screen('Flip',S.PTB.wPtr);
                 
