@@ -2,9 +2,10 @@ function Draw( obj )
 
 obj.AssertReady
 
-Screen('FrameOval',obj.wPtr,...
-    obj.currentColor,...
-    obj.Rect,...
-    obj.thickness);
+if obj.filled
+    obj.DrawDisk
+end
+
+obj.DrawFrame
 
 end % function

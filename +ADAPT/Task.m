@@ -56,6 +56,9 @@ try
                 Target.Move((BigCircle.diameter-BigCircle.thickness)/2,30)
                 Target.Draw
                 
+                Target.Move([],100)
+                Target.Draw
+                
                 Cross.Draw
                 
                 

@@ -7,27 +7,32 @@ classdef Circle < baseObject
         
         % Parameters for the creation
         
-        diameter     = zeros(0)   % in pixels
-        thickness    = zeros(0)   % width of each arms, in pixels
+        diameter          = zeros(0)   % in pixels
+        thickness         = zeros(0)   % width of each arms, in pixels
         
-        baseColor    = zeros(0,4) % [R G B a] from 0 to 255
-        currentColor = zeros(0,4) % [R G B a] from 0 to 255
+        frameBaseColor    = zeros(0,4) % [R G B a] from 0 to 255
+        frameCurrentColor = zeros(0,4) % [R G B a] from 0 to 255
         
-        Xorigin      = zeros(0)   % X coordiantes (in PTB referential) of the origin, in pixels
-        Yorigin      = zeros(0)   % Y coordiantes (in PTB referential) of the origin, in pixels
+        Xorigin           = zeros(0)   % X coordiantes (in PTB referential) of the origin, in pixels
+        Yorigin           = zeros(0)   % Y coordiantes (in PTB referential) of the origin, in pixels
         
-        screenX      = zeros(0)   % number of horizontal pixels of the screen
-        screenY      = zeros(0)   % number of vertical   pixels of the screen
+        screenX           = zeros(0)   % number of horizontal pixels of the screen
+        screenY           = zeros(0)   % number of vertical   pixels of the screen
+        
+        diskBaseColor     = zeros(0,4) % [R G B a] from 0 to 255
+        diskCurrentColor  = zeros(0,4) % [R G B a] from 0 to 255
         
         % Internal variables
         
-        Xptb         = zeros(0)   % X coordiantes in PTB referential of the center, in pixels
-        Yptb         = zeros(0)   % Y coordiantes in PTB referential of the center, in pixels
+        Xptb              = zeros(0)   % X coordiantes in PTB referential of the center, in pixels
+        Yptb              = zeros(0)   % Y coordiantes in PTB referential of the center, in pixels
         
-        R            = zeros(0)   % distance between (Xorigin,Yorigin) and the circle center
-        THETA        = zeros(0)   % angle    between (Xorigin,Yorigin) and the circle center
+        R                 = zeros(0)   % distance between (Xorigin,Yorigin) and the circle center
+        THETA             = zeros(0)   % angle    between (Xorigin,Yorigin) and the circle center
         
-        Rect         = zeros(0,4) % Rectangle for PTB draw Screen('FrameOval') function
+        Rect              = zeros(0,4) % Rectangle for PTB draw Screen('FrameOval') function
+        
+        filled            = true       % flag to fill or not inside the circle
         
     end % properties
     
@@ -39,11 +44,12 @@ classdef Circle < baseObject
         % -----------------------------------------------------------------
         %                           Constructor
         % -----------------------------------------------------------------
-        function obj = Circle( diameter, thickness,  color, Xorigin, Yorigin, screenX, screenY )
+        function obj = Circle( diameter, thickness,  frameColor, diskColor, Xorigin, Yorigin, screenX, screenY )
             % obj = FixationCross(
             % diameter=ScreenHeight*0.9 (pixels) ,
             % width=5 (pixels) ,
-            % color=[128 128 128 255] from 0 to 255 ,
+            % frameColor=[128 128 128 255] from 0 to 255 ,
+            % diskColor=[128 128 128 255] from 0 to 255 ,
             % Xorigin = CenterX (pixels) ,
             % Yorigin = CenterX (pixels) ,
             % screenX = wRect(3) (pixels) ,
@@ -62,9 +68,13 @@ classdef Circle < baseObject
                 assert( isscalar(thickness) && isnumeric(thickness) && thickness>0 , ...
                     'thickness = thickness of the circle, in pixels' )
                 
-                % --- color ----
-                assert( isvector(color) && isnumeric(color) && all( uint8(color)==color ) , ...
-                    'color = [R G B a] from 0 to 255' )
+                % --- frameColor ----
+                assert( isvector(frameColor) && isnumeric(frameColor) && all( uint8(frameColor)==frameColor ) , ...
+                    'frameColor = [R G B a] from 0 to 255' )
+                
+                % --- diskColor ----
+                assert( isvector(diskColor) && isnumeric(diskColor) && all( uint8(diskColor)==diskColor ) , ...
+                    'diskColor = [R G B a] from 0 to 255' )
                 
                 % --- Xorigin ----
                 assert( isscalar(Xorigin) && isnumeric(Xorigin) && Xorigin>0 && Xorigin==round(Xorigin) , ...
@@ -82,14 +92,16 @@ classdef Circle < baseObject
                 assert( isscalar(screenY) && isnumeric(screenY) && screenY>0 && screenY==round(screenY) , ...
                     'screenY = number of vertical pixels of the PTB window' )
                 
-                obj.diameter     = diameter;
-                obj.thickness    = thickness;
-                obj.baseColor    = color;
-                obj.currentColor = color;
-                obj.Xorigin      = Xorigin;
-                obj.Yorigin      = Yorigin;
-                obj.screenX      = screenX;
-                obj.screenY      = screenY;
+                obj.diameter          = diameter;
+                obj.thickness         = thickness;
+                obj.frameBaseColor    = frameColor;
+                obj.frameCurrentColor = frameColor;
+                obj.diskBaseColor     = diskColor;
+                obj.diskCurrentColor  = diskColor;
+                obj.Xorigin           = Xorigin;
+                obj.Yorigin           = Yorigin;
+                obj.screenX           = screenX;
+                obj.screenY           = screenY;
                 
                 % ================== Callback =============================
                 
