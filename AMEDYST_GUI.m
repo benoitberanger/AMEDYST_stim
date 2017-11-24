@@ -5,7 +5,7 @@ function varargout = AMEDYST_GUI
 
 % debug=1 closes previous figure and reopens it, and send the gui handles
 % to base workspace.
-debug = 0;
+debug = 1;
 
 
 %% Open a singleton figure, or gring the actual into focus.
@@ -622,7 +622,7 @@ else % Create the figure
     %% Panel : Display feedback
     
     p_feedback.x = panelProp.xposP;
-    p_feedback.w = panelProp.wP/2;
+    p_feedback.w = panelProp.wP/2*0.95;
     
     panelProp.countP = panelProp.countP - 1;
     p_feedback.y = panelProp.yposP(panelProp.countP);
@@ -644,18 +644,18 @@ else % Create the figure
     % RadioButton : Feedback Off
     
     p_feedback.countO = p_feedback.countO + 1;
-    r_right.x   = p_feedback.xposO(p_feedback.countO);
-    r_right.y   = 0.1 ;
-    r_right.w   = p_feedback.Ow;
-    r_right.h   = 0.8;
-    r_right.tag = 'radiobutton_FeedbackOff';
-    handles.(r_right.tag) = uicontrol(handles.uipanel_Feedback,...
+    r_fboff.x   = p_feedback.xposO(p_feedback.countO);
+    r_fboff.y   = 0.1 ;
+    r_fboff.w   = p_feedback.Ow;
+    r_fboff.h   = 0.8;
+    r_fboff.tag = 'radiobutton_FeedbackOff';
+    handles.(r_fboff.tag) = uicontrol(handles.uipanel_Feedback,...
         'Style','radiobutton',...
         'Units', 'Normalized',...
-        'Position',[r_right.x r_right.y r_right.w r_right.h],...
+        'Position',[r_fboff.x r_fboff.y r_fboff.w r_fboff.h],...
         'String','Off',...
         'HorizontalAlignment','Center',...
-        'Tag',r_right.tag,...
+        'Tag',r_fboff.tag,...
         'BackgroundColor',figureBGcolor);
     
     
@@ -663,19 +663,84 @@ else % Create the figure
     % RadioButton : Feedback On
     
     p_feedback.countO = p_feedback.countO + 1;
-    r_left.x   = p_feedback.xposO(p_feedback.countO);
-    r_left.y   = 0.1 ;
-    r_left.w   = p_feedback.Ow;
-    r_left.h   = 0.8;
-    r_left.tag = 'radiobutton_FeedbackOn';
-    handles.(r_left.tag) = uicontrol(handles.uipanel_Feedback,...
+    r_fbon.x   = p_feedback.xposO(p_feedback.countO);
+    r_fbon.y   = 0.1 ;
+    r_fbon.w   = p_feedback.Ow;
+    r_fbon.h   = 0.8;
+    r_fbon.tag = 'radiobutton_FeedbackOn';
+    handles.(r_fbon.tag) = uicontrol(handles.uipanel_Feedback,...
         'Style','radiobutton',...
         'Units', 'Normalized',...
-        'Position',[r_left.x r_left.y r_left.w r_left.h],...
+        'Position',[r_fbon.x r_fbon.y r_fbon.w r_fbon.h],...
         'String','On',...
         'HorizontalAlignment','Center',...
-        'Tag',r_left.tag,...
+        'Tag',r_fbon.tag,...
         'BackgroundColor',figureBGcolor);
+    
+    
+    %% Panel : Cursor input method
+    
+    p_cursorinput.x = panelProp.xposP + panelProp.wP/2*1.05;
+    p_cursorinput.w = panelProp.wP/2*0.95;
+    
+    p_cursorinput.y = panelProp.yposP(panelProp.countP);
+    p_cursorinput.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    
+    handles.uipanel_CursorInput = uibuttongroup(handles.(mfilename),...
+        'Title','Display visual feeedback',...
+        'Units', 'Normalized',...
+        'Position',[p_cursorinput.x p_cursorinput.y p_cursorinput.w p_cursorinput.h],...
+        'BackgroundColor',figureBGcolor,...
+        'SelectionChangeFcn',@uipanel_CursorInput_SelectionChangeFcn);
+    
+    
+    p_cursorinput.nbO    = 2; % Number of objects
+    p_cursorinput.Ow     = 1/(p_cursorinput.nbO + 1); % Object width
+    p_cursorinput.countO = 0; % Object counter
+    p_cursorinput.xposO  = @(countO) p_cursorinput.Ow/(p_cursorinput.nbO+1)*countO + (countO-1)*p_cursorinput.Ow;
+    
+    
+    % ---------------------------------------------------------------------
+    % RadioButton : Joystick
+    
+    p_cursorinput.countO = p_cursorinput.countO + 1;
+    r_joystick.x   = p_cursorinput.xposO(p_cursorinput.countO);
+    r_joystick.y   = 0.1 ;
+    r_joystick.w   = p_cursorinput.Ow;
+    r_joystick.h   = 0.8;
+    r_joystick.tag = 'radiobutton_Joystick';
+    handles.(r_joystick.tag) = uicontrol(handles.uipanel_CursorInput,...
+        'Style','radiobutton',...
+        'Units', 'Normalized',...
+        'Position',[r_joystick.x r_joystick.y r_joystick.w r_joystick.h],...
+        'String','Joystick',...
+        'HorizontalAlignment','Center',...
+        'Tag',r_joystick.tag,...
+        'BackgroundColor',figureBGcolor,...
+        'ButtonDownFcn','joymex2_test',...
+        'Tooltip','Right click will open a test');
+    
+    
+    % ---------------------------------------------------------------------
+    % RadioButton : Mouse
+    
+    p_cursorinput.countO = p_cursorinput.countO + 1;
+    r_mouse.x   = p_cursorinput.xposO(p_cursorinput.countO);
+    r_mouse.y   = 0.1 ;
+    r_mouse.w   = p_cursorinput.Ow;
+    r_mouse.h   = 0.8;
+    r_mouse.tag = 'radiobutton_Mouse';
+    handles.(r_mouse.tag) = uicontrol(handles.uipanel_CursorInput,...
+        'Style','radiobutton',...
+        'Units', 'Normalized',...
+        'Position',[r_mouse.x r_mouse.y r_mouse.w r_mouse.h],...
+        'String','Mouse',...
+        'HorizontalAlignment','Center',...
+        'Tag',r_mouse.tag,...
+        'BackgroundColor',figureBGcolor);
+    
+    % Uncheck the button : this is my way to force the user to select a method
+    set(handles.uipanel_CursorInput,'SelectedObject','')
     
     
     %% Panel : Task
@@ -928,6 +993,33 @@ switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
         set(handles.pushbutton_IsConnected       ,'Visible','on')
         set(handles.pushbutton_ForceShutDown     ,'Visible','on')
         set(handles.pushbutton_Initialize        ,'Visible','on')
+end
+
+end % function
+
+
+% -------------------------------------------------------------------------
+function uipanel_CursorInput_SelectionChangeFcn(hObject, eventdata)
+handles = guidata(hObject);
+
+% Check if joymex2 exists in the path
+if isempty( which('joymex2') )
+    disp('joymex2 NOT DETECTED : check https://github.com/escabe/joymex2')
+    set(hObject,'SelectedObject',handles.radiobutton_Mouse);
+end
+
+try
+    switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
+        case 'radiobutton_Joystick'
+            joymex2('open',0);
+        case 'radiobutton_Mouse'
+            % joymex2('close',0);
+            clear joymex2 % more stable on linux than "joymex2('close',0);"
+    end
+    
+catch err
+    set(hObject,'SelectedObject',handles.radiobutton_Mouse);
+    rethrow(err)
 end
 
 end % function

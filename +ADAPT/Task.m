@@ -68,9 +68,7 @@ try
                     Cursor.Move(0,0)
                     Cursor.Draw
                     
-                    tic
                     Cursor.DrawMouse
-                    toc*1000
                     
                     Screen('Flip',S.PTB.wPtr);
                     
