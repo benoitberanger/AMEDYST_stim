@@ -5,7 +5,7 @@ function varargout = AMEDYST_GUI
 
 % debug=1 closes previous figure and reopens it, and send the gui handles
 % to base workspace.
-debug = 1;
+debug = 0;
 
 
 %% Open a singleton figure, or gring the actual into focus.

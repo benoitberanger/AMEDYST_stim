@@ -5,11 +5,12 @@ if nargout < 1 % only to plot the paradigme when we execute the function outside
     S.Environement    = 'MRI';
     S.OperationMode   = 'Acquisition';
     S.ComplexSequence = '';
-    S.Feedback        = 'Off';
 end
 
 
 %% Paradigme
+
+SIMPLE = '5432';
 
 switch S.OperationMode
     case 'Acquisition'
@@ -59,29 +60,17 @@ switch randomizeOrder
 end
 
 % initilaise the container
-switch S.Feedback
-    case 'On'
-        Paradigm = { 'Repos' RestDuration [] []};
-    case 'Off'
-        Paradigm = { 'Instruction' InstructionDuration [] []; 'Repos' RestDuration [] []};
-end
+Paradigm = { 'Instruction' InstructionDuration [] []; 'Repos' RestDuration SIMPLE TapFrequency};
 
 for n = 1:length(BlockOrder)
     
     if BlockOrder(n) % 1
         Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; {'Complexe' SequenceDuration S.ComplexSequence TapFrequency} ]; %#ok<*AGROW>
     else % 0
-        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; { 'Simple'  SequenceDuration '5432'            TapFrequency} ];
+        Paradigm  = [ Paradigm ; {'Instruction' InstructionDuration [] []}; {'Simple'   SequenceDuration SIMPLE            TapFrequency} ];
     end
     
-    % Add rest after between each block
-    switch S.Feedback
-        case 'On'
-            
-        case 'Off'
-            Paradigm  = [ Paradigm ; { 'Instruction' InstructionDuration [] []} ];
-    end
-    Paradigm  = [ Paradigm ; { 'Repos' RestDuration [] []} ];
+    Paradigm  = [ Paradigm ; { 'Instruction' InstructionDuration [] []} ; {'Repos' RestDuration SIMPLE TapFrequency} ];
     
 end
 
