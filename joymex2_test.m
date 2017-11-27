@@ -42,6 +42,8 @@ while(running)
     set(b1,'Ydata',a.buttons);
     %         set(h1,'Xdata',a.hats.right -  a.hats.left,'Ydata',a.hats.up - a.hats.down);
     
+    fprintf('%d %d \n',a.axes(1),-a.axes(2))
+    
     % Force update of plot
     drawnow
 end

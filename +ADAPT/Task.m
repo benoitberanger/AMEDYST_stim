@@ -55,11 +55,13 @@ try
                     
                     BigCircle.Draw
                     
-                    Target.Move((BigCircle.diameter-BigCircle.thickness)/2,30)
+                    Target.Move((BigCircle.diameter-BigCircle.thickness)/2,0)
                     Target.Draw
                     
-                    Target.Move([],100)
-                    Target.Draw
+                    %                     for angle = 15:15:360
+                    %                         Target.Move([],angle)
+                    %                         Target.Draw
+                    %                     end
                     
                     Target.Move(0,0)
                     Target.Draw
