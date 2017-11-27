@@ -16,8 +16,8 @@ if ~isempty(Y)
 end
 
 
-obj.Xptb =  X + obj.Xorigin               ;
-obj.Yptb = -Y - obj.Yorigin + obj.screenY ;
+obj.Xptb =  obj.X + obj.Xorigin               ;
+obj.Yptb = -obj.Y - obj.Yorigin + obj.screenY ;
 
 obj.Rect = CenterRectOnPoint([0 0 obj.diameter obj.diameter], obj.Xptb, obj.Yptb);
 

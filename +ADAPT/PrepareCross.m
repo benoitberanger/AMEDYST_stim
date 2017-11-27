@@ -1,7 +1,7 @@
 function [ Cross ] = PrepareCross
 global S
 
-dim   = round(S.PTB.wRect(end)*S.Parameters.ADAPT.Cross.ScreenRatio);
+dim   = round(S.PTB.wRect(4)*S.Parameters.ADAPT.Cross.ScreenRatio);
 width = round(dim * S.Parameters.ADAPT.Cross.lineWidthRatio);
 color = S.Parameters.ADAPT.Cross.Color;
 

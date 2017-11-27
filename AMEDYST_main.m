@@ -211,7 +211,7 @@ end
 S.Side = Side;
 
 
-%% Left or right handed ?
+%% SEQ : visual feedback ?
 
 switch get(get(handles.uipanel_Feedback,'SelectedObject'),'Tag')
     case 'radiobutton_FeedbackOn'
@@ -223,6 +223,21 @@ switch get(get(handles.uipanel_Feedback,'SelectedObject'),'Tag')
 end
 
 S.Feedback = Feedback;
+
+
+%% ADAPT : input method ?
+
+switch get(get(handles.uipanel_CursorInput,'SelectedObject'),'Tag')
+    case 'radiobutton_Joystick'
+        InputMethod = 'Joystick';
+        joymex2('open',0);
+    case 'radiobutton_Mouse'
+        InputMethod = 'Mouse';
+    otherwise
+        warning('AMEDYST:InputMethod','Error in InputMethod')
+end
+
+S.InputMethod = InputMethod;
 
 
 %% Check if Eyelink toolbox is available
@@ -254,7 +269,7 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
         % File name for the eyelink : 8 char maximum
         switch Task
             case 'EyelinkCalibration'
-                task = 'E';
+                task = 'E'; % don't care...
             case 'SEQ'
                 task = 'S';
             case 'ADAPT'

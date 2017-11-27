@@ -47,6 +47,7 @@ while(running)
 end
 
 % Clear MEX-file to release joystick
+% joymex2('close',0); WARNING : dont use this methode, its not stable !!
 clear joymex2
 
     function onClose(src,evt)

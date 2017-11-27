@@ -23,6 +23,7 @@ try
     Target    = ADAPT.PrepareTarget   ;
     Cursor    = ADAPT.PrepareCursor   ;
     
+    
     %% Eyelink
     
     Common.StartRecordingEyelink
@@ -52,10 +53,7 @@ try
                 
                 while 1
                     
-                    BigCircle.Move(0,0)
                     BigCircle.Draw
-                    
-                    Cross.Draw
                     
                     Target.Move((BigCircle.diameter-BigCircle.thickness)/2,30)
                     Target.Draw
@@ -63,12 +61,17 @@ try
                     Target.Move([],100)
                     Target.Draw
                     
-                    Cursor.Move(-200,50)
-                    Cursor.Draw
-                    Cursor.Move(0,0)
-                    Cursor.Draw
+                    Target.Move(0,0)
+                    Target.Draw
                     
-                    Cursor.DrawMouse
+                    Cross.Draw
+                    
+                    switch S.InputMethod
+                        case 'Joystick'
+                            Cursor.DrawJoystick
+                        case 'Mouse'
+                            Cursor.DrawMouse
+                    end
                     
                     Screen('Flip',S.PTB.wPtr);
                     

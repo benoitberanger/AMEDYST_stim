@@ -56,12 +56,12 @@ Parameters.Text.Color = [128 128 128]; % [R G B] ( from 0 to 255 )
 %%%%%%%%%%%%
 
 % Fixation cross
-Parameters.SEQ.FixationCross.ScreenRatio    = 1/20;          % ratio : dim   = ScreenWide *ratio_screen
-Parameters.SEQ.FixationCross.lineWidthRatio = 1/10;          % ratio : width = dim        *ratio_width
+Parameters.SEQ.FixationCross.ScreenRatio    = 0.10;          % ratio : dim   = ScreenWide *ratio_screen
+Parameters.SEQ.FixationCross.lineWidthRatio = 0.05;          % ratio : width = dim        *ratio_width
 Parameters.SEQ.FixationCross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
 
 % ResponseButtons
-Parameters.SEQ.ResponseButtons.ScreenRatio  = 0.6;           % height = ScreenHeight * ratio
+Parameters.SEQ.ResponseButtons.ScreenRatio  = 0.60;           % height = ScreenHeight * ratio
 Parameters.SEQ.ResponseButtons.Side         = S.Side;        % 'Left' or 'Right'
 Parameters.SEQ.ResponseButtons.frameColor   = [128 128 128]; % [R G B] ( from 0 to 255 )
 Parameters.SEQ.ResponseButtons.buttonsColor = ...
@@ -78,24 +78,24 @@ Parameters.SEQ.ResponseButtons.buttonsColor = ...
 %%%%%%%%%%%%%%
 
 % Big circle => @Circle
-Parameters.ADAPT.Circle.DimensionRatio = 0.90;                                   % diameter = DimensionRatio*ScreenHeight
-Parameters.ADAPT.Circle.WidthRatio     = 1/100;                                  % width    = WidthRatio    *ScreenHeight
+Parameters.ADAPT.Circle.DimensionRatio = 0.90;                                   % diameter  = DimensionRatio*ScreenHeight
+Parameters.ADAPT.Circle.WidthRatio     = 0.01;                                   % thickness = WidthRatio    *ScreenHeight
 Parameters.ADAPT.Circle.FrameColor     = [128 128 128];                          % [R G B] ( from 0 to 255 )
 Parameters.ADAPT.Circle.DiskColor      = Parameters.Video.ScreenBackgroundColor; % [R G B] ( from 0 to 255 )
 
 % Target => @Circle
-Parameters.ADAPT.Target.DimensionRatio = 1/10;          % diameter = DimensionRatio*ScreenHeight
-Parameters.ADAPT.Target.WidthRatio     = 1/100;         % width    = WidthRatio    *ScreenHeight
-Parameters.ADAPT.Target.FrameColor     = [255 255 255]; % [R G B] ( from 0 to 255 )
-Parameters.ADAPT.Target.DiskColor      = [255 0 0];     % [R G B] ( from 0 to 255 )
+Parameters.ADAPT.Target.DimensionRatio = 0.10;                                   % diameter  = DimensionRatio*ScreenHeight
+Parameters.ADAPT.Target.WidthRatio     = 0.01;                                   % thickness = WidthRatio    *ScreenHeight
+Parameters.ADAPT.Target.FrameColor     = [255 255 255];                          % [R G B] ( from 0 to 255 )
+Parameters.ADAPT.Target.DiskColor      = Parameters.Video.ScreenBackgroundColor; % [R G B] ( from 0 to 255 )
 
 % Cursor => @Dot
-Parameters.ADAPT.Cursor.DimensionRatio = 1/40;  % diameter = DimensionRatio*ScreenHeight
-Parameters.ADAPT.Cursor.DiskColor      = [0 255 0]; % [R G B] ( from 0 to 255 )
+Parameters.ADAPT.Cursor.DimensionRatio = 0.05;      % diameter = DimensionRatio*ScreenHeight
+Parameters.ADAPT.Cursor.DiskColor      = [255 255 0]; % [R G B] ( from 0 to 255 )
 
 % Small cross at the center => @FixationCross
-Parameters.ADAPT.Cross.ScreenRatio    = 1/50;          % ratio : dim   = ScreenWide *ratio_screen
-Parameters.ADAPT.Cross.lineWidthRatio = 1/10;          % ratio : width = dim        *ratio_width
+Parameters.ADAPT.Cross.ScreenRatio    = 0.05;          % ratio : dim   = ScreenHeight*ratio_screen
+Parameters.ADAPT.Cross.lineWidthRatio = 0.05;          % ratio : width = dim         *ratio_width
 Parameters.ADAPT.Cross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
 
 

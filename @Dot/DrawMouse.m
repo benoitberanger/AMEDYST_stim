@@ -1,8 +1,8 @@
 function DrawMouse( obj )
 
-[x,y] = GetMouse(obj.wPtr);
-
 obj.AssertReady
+
+[x,y] = GetMouse(obj.wPtr);
 
 Screen('FillOval',obj.wPtr,...
     obj.diskCurrentColor,...
