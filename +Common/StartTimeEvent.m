@@ -1,13 +1,12 @@
 function StartTime = StartTimeEvent
-
-global S  reverseStr
-reverseStr = '';
+global S
 
 switch S.OperationMode
     case 'Acquisition'
-        HideCursor;
+        HideCursor(S.ScreenID)
     case 'FastDebug'
     case 'RealisticDebug'
+        HideCursor(S.ScreenID)
     otherwise
 end
 

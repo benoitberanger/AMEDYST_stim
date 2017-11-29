@@ -312,7 +312,7 @@ S.Parameters = GetParameters;
 % Screen mode selection
 AvalableDisplays = get(handles.listbox_Screens,'String');
 SelectedDisplay = get(handles.listbox_Screens,'Value');
-S.Parameters.Video.ScreenMode = str2double( AvalableDisplays(SelectedDisplay) );
+S.ScreenID = str2double( AvalableDisplays(SelectedDisplay) );
 
 
 %% Windowed screen ?

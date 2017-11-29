@@ -56,7 +56,7 @@ switch S.WindowedMode
         WindowRect = [];
     case 'On'
         factor = 0.5;
-        [ScreenWidth, ScreenHeight]=Screen('WindowSize', Video.ScreenMode);
+        [ScreenWidth, ScreenHeight]=Screen('WindowSize', S.ScreenID);
         SmallWindow = ScaleRect( [0 0 ScreenWidth ScreenHeight] , factor , factor );
         WindowRect = CenterRectOnPoint( SmallWindow , ScreenWidth/2 , ScreenHeight/2 );
     otherwise
@@ -66,11 +66,11 @@ color_depth = []; % bit, only assigna specific value for backward compatibility
 multisample = 4; % samples for anti-aliasing
 
 try
-    [PTB.wPtr,PTB.wRect] = Screen('OpenWindow',Video.ScreenMode,Video.ScreenBackgroundColor,WindowRect,color_depth,[],[],multisample);
+    [PTB.wPtr,PTB.wRect] = Screen('OpenWindow',S.ScreenID,Video.ScreenBackgroundColor,WindowRect,color_depth,[],[],multisample);
 catch err
     disp(err)
     Screen('Preference', 'SkipSyncTests', 1)
-    [PTB.wPtr,PTB.wRect] = Screen('OpenWindow',Video.ScreenMode,Video.ScreenBackgroundColor,WindowRect,color_depth,[],[],multisample);
+    [PTB.wPtr,PTB.wRect] = Screen('OpenWindow',S.ScreenID,Video.ScreenBackgroundColor,WindowRect,color_depth,[],[],multisample);
 end
 
 % Set max priority

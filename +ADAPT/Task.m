@@ -43,18 +43,22 @@ try
             
             case 'StartTime' % --------------------------------------------
                 
-                StartTime = Common.StartTimeEvent;
-                
+                % Fetch initialization data
                 switch S.InputMethod
                     case 'Joystick'
-                        [x, y] = QueryJoystickData(S.PTB.wRect(3),S.PTB.wRect(4)); % Fetch initialization data
-                        Cursor.Move(x,y)                                           % Initialize cursor positon
-                        prev_x = x;
-                        prev_y = y;
+                        [newX, newY] = ADAPT.QueryJoystickData( Cursor.screenX, Cursor.screenY );
                     case 'Mouse'
                         SetMouse(Cursor.Xptb,Cursor.Yptb,Cursor.wPtr);
-                        Cursor.DrawMouse
+                        [newX, newY] = ADAPT.QueryMouseData( Cursor.wPtr, Cursor.Xorigin, Cursor.Yorigin, Cursor.screenY );
                 end
+                
+                Cursor.Move(newX,newY);
+                Cursor.Draw
+                
+                prevX = newX;
+                prevY = newY;
+                
+                StartTime = Common.StartTimeEvent;
                 
             case 'StopTime' % ---------------------------------------------
                 
@@ -69,10 +73,10 @@ try
                     Target.Move((BigCircle.diameter-BigCircle.thickness)/2,0)
                     Target.Draw
                     
-                    for angle = 15:15:360
-                        Target.Move([],angle)
-                        Target.Draw
-                    end
+                    %                     for angle = 15:15:360
+                    %                         Target.Move([],angle)
+                    %                         Target.Draw
+                    %                     end
                     
                     Target.Move(0,0)
                     Target.Draw
@@ -81,36 +85,31 @@ try
                     
                     switch S.InputMethod
                         case 'Joystick'
-                            
-                            % Fetch joystick data
-                            [x, y] = QueryJoystickData(S.PTB.wRect(3),S.PTB.wRect(4));
-                            
-                            % If new data, then apply deviation
-                            if ~(x == prev_x && y == prev_y)
-                                
-                                deviation = EP.Data{evt,5};
-                                
-                                dX = x - prev_x;
-                                dY = y - prev_y;
-                                
-                                dR     = sqrt(dX*dX + dY*dY); % pixels
-                                dTheta = atan2(dY,dX);        % rad
-                                
-                                dXc = dR * cos(dTheta + deviation*pi/180); % pixels
-                                dYc = dR * sin(dTheta + deviation*pi/180); % pixels
-                                
-                                Cursor.Move(Cursor.X + dXc, Cursor.Y + dYc)
-                                
-                                prev_x = x;
-                                prev_y = y;
-                                
-                            end
-                            
-                            Cursor.Draw
-                            
+                            [newX, newY] = ADAPT.QueryJoystickData( Cursor.screenX, Cursor.screenY );
                         case 'Mouse'
-                            Cursor.DrawMouse
+                            [newX, newY] = ADAPT.QueryMouseData( Cursor.wPtr, Cursor.Xorigin, Cursor.Yorigin, Cursor.screenY );
                     end
+                    
+                    % If new data, then apply deviation
+                    if ~(newX == prevX && newY == prevY)
+                        
+                        switch EP.Data{evt,1}
+                            case 'Direct'
+                                deviation = 0;
+                            case 'Deviation'
+                                deviation = EP.Data{evt,5};
+                        end
+                        
+                        [ dXc, dYc ] = ADAPT.ApplyDeviation( prevX, prevY, newX, newY, deviation );
+                        
+                        Cursor.Move(Cursor.X + dXc, Cursor.Y + dYc)
+                        
+                        prevX = newX;
+                        prevY = newY;
+                        
+                    end
+                    
+                    Cursor.Draw
                     
                     Screen('Flip',S.PTB.wPtr);
                     
