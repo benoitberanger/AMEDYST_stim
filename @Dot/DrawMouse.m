@@ -2,10 +2,16 @@ function DrawMouse( obj )
 
 obj.AssertReady
 
-[x,y] = GetMouse(obj.wPtr);
+% Fetch data
+[x,y] = GetMouse(obj.wPtr); % (x,y) in PTB coordiantes
 
-Screen('FillOval',obj.wPtr,...
-    obj.diskCurrentColor,...
-    CenterRectOnPoint([0 0 obj.diameter obj.diameter], x, y));
+% PTB coordinates to Origin coordinates
+X =  x - obj.Xorigin               ;
+Y = -y - obj.Yorigin + obj.screenY ;
+
+obj.Move(X,Y);
+
+% Draw
+obj.Draw
 
 end % function

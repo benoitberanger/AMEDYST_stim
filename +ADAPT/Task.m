@@ -4,7 +4,7 @@ global S
 try
     %% Tunning of the task
     
-    [ EP ] = ADAPT.Planning;
+    [ EP, Parameters ] = ADAPT.Planning;
     
     % End of preparations
     EP.BuildGraph;
@@ -45,11 +45,22 @@ try
                 
                 StartTime = Common.StartTimeEvent;
                 
+                switch S.InputMethod
+                    case 'Joystick'
+                        [x, y] = QueryJoystickData(S.PTB.wRect(3),S.PTB.wRect(4)); % Fetch initialization data
+                        Cursor.Move(x,y)                                           % Initialize cursor positon
+                        prev_x = x;
+                        prev_y = y;
+                    case 'Mouse'
+                        SetMouse(Cursor.Xptb,Cursor.Yptb,Cursor.wPtr);
+                        Cursor.DrawMouse
+                end
+                
             case 'StopTime' % ---------------------------------------------
                 
                 [ ER, RR, StopTime ] = Common.StopTimeEvent( EP, ER, RR, StartTime, evt );
                 
-            case '' % ------------------------------------------------
+            case {'Direct', 'Deviation'} % ------------------------------------------------
                 
                 while 1
                     
@@ -58,10 +69,10 @@ try
                     Target.Move((BigCircle.diameter-BigCircle.thickness)/2,0)
                     Target.Draw
                     
-                    %                     for angle = 15:15:360
-                    %                         Target.Move([],angle)
-                    %                         Target.Draw
-                    %                     end
+                    for angle = 15:15:360
+                        Target.Move([],angle)
+                        Target.Draw
+                    end
                     
                     Target.Move(0,0)
                     Target.Draw
@@ -70,7 +81,33 @@ try
                     
                     switch S.InputMethod
                         case 'Joystick'
-                            Cursor.DrawJoystick
+                            
+                            % Fetch joystick data
+                            [x, y] = QueryJoystickData(S.PTB.wRect(3),S.PTB.wRect(4));
+                            
+                            % If new data, then apply deviation
+                            if ~(x == prev_x && y == prev_y)
+                                
+                                deviation = EP.Data{evt,5};
+                                
+                                dX = x - prev_x;
+                                dY = y - prev_y;
+                                
+                                dR     = sqrt(dX*dX + dY*dY); % pixels
+                                dTheta = atan2(dY,dX);        % rad
+                                
+                                dXc = dR * cos(dTheta + deviation*pi/180); % pixels
+                                dYc = dR * sin(dTheta + deviation*pi/180); % pixels
+                                
+                                Cursor.Move(Cursor.X + dXc, Cursor.Y + dYc)
+                                
+                                prev_x = x;
+                                prev_y = y;
+                                
+                            end
+                            
+                            Cursor.Draw
+                            
                         case 'Mouse'
                             Cursor.DrawMouse
                     end
@@ -92,7 +129,7 @@ try
                     
                 end
                 
-                %%
+                
                 
             otherwise % ---------------------------------------------------
                 
@@ -112,6 +149,8 @@ try
     %% End of stimulation
     
     TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, StartTime, StopTime );
+    
+    TaskData.Parameters = Parameters;
     
     
 catch err

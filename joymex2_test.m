@@ -23,9 +23,12 @@ set(gca,'xlim',axslims,'ylim',axslims); axis square
 %     set(gca,'xlim',[-2 2],'ylim',[-2 2]); axis square
 
 subplot(1,2,2)
-b1=bar(zeros(1,8));
+% b1=bar(zeros(1,8));
+b1=bar(zeros(1,3));
 title('Button States')
-set(gca,'xlim',[0 9],'ylim',[0 1]); axis square
+% set(gca,'xlim',[0 9],'ylim',[0 1]); axis square
+set(gca,'xlim',[0 4],'ylim',[0 1]); axis square
+
 
 while(running)
     % Query postion and button state of joystick 0

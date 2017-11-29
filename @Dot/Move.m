@@ -1,5 +1,5 @@
 function Move( obj, X, Y )
-% Note: R and THETA can be empty (no modifiaction) or not
+% Note: X and Y can be empty (no modifiaction) or not
 
 % --- X ----
 if ~isempty(X)
