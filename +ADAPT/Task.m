@@ -1,5 +1,5 @@
 function [ TaskData ] = Task
-global S
+global S prevX prevY newX newY
 
 try
     %% Tunning of the task
@@ -31,8 +31,13 @@ try
     
     %% Go
     
-    % Initialize some varibles
+    % Initialize some variables
     EXIT = 0;
+    TrialIndex = 0;
+    TargetBigCirclePosition = (BigCircle.diameter-BigCircle.thickness)/2;
+    
+    Green = [0 255 0];
+    Red   = [255 0 0];
     
     % Loop over the EventPlanning
     for evt = 1 : size( EP.Data , 1 )
@@ -64,71 +69,59 @@ try
                 
                 [ ER, RR, StopTime ] = Common.StopTimeEvent( EP, ER, RR, StartTime, evt );
                 
-            case {'Direct', 'Deviation'} % ------------------------------------------------
+            case {'Direct', 'Deviation'} % --------------------------------
                 
-                while 1
+                for trialIndexInBlock = 1 : EP.Data{evt,4}
+                    
+                    % Counter = trial index
+                    TrialIndex = TrialIndex + 1;
+                    
+                    trialRunning = 1;
+                    
+                    % ~~~ Step 1 : Draw target  ~~~
                     
                     BigCircle.Draw
-                    
-                    Target.Move((BigCircle.diameter-BigCircle.thickness)/2,0)
-                    Target.Draw
-                    
-                    %                     for angle = 15:15:360
-                    %                         Target.Move([],angle)
-                    %                         Target.Draw
-                    %                     end
-                    
-                    Target.Move(0,0)
-                    Target.Draw
-                    
                     Cross.Draw
                     
-                    switch S.InputMethod
-                        case 'Joystick'
-                            [newX, newY] = ADAPT.QueryJoystickData( Cursor.screenX, Cursor.screenY );
-                        case 'Mouse'
-                            [newX, newY] = ADAPT.QueryMouseData( Cursor.wPtr, Cursor.Xorigin, Cursor.Yorigin, Cursor.screenY );
-                    end
+                    Target.diskCurrentColor = Target.diskBaseColor;
+                    Target.Move( TargetBigCirclePosition, Parameters.ParadigmeAngle(TrialIndex,3) )
+                    Target.Draw
                     
-                    % If new data, then apply deviation
-                    if ~(newX == prevX && newY == prevY)
+                    Screen('DrawingFinished',S.PTB.wPtr);
+                    trialStartOnset = Screen('Flip',S.PTB.wPtr);
+                    
+                    % ~~~ Step 2 : Draw target  ~~~
+                    
+                    while trialRunning
                         
-                        switch EP.Data{evt,1}
-                            case 'Direct'
-                                deviation = 0;
-                            case 'Deviation'
-                                deviation = EP.Data{evt,5};
+                        BigCircle.Draw
+                        Cross.Draw
+                        Target.Draw
+                        ADAPT.UpdateCursor(Cursor, EP, evt)
+                        
+                        Screen('DrawingFinished',S.PTB.wPtr);
+                        Screen('Flip',S.PTB.wPtr);
+                        
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        % Fetch keys
+                        [keyIsDown, secs, keyCode] = KbCheck;
+                        if keyIsDown
+                            % ~~~ ESCAPE key ? ~~~
+                            [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                            if EXIT
+                                break
+                            end
                         end
-                        
-                        [ dXc, dYc ] = ADAPT.ApplyDeviation( prevX, prevY, newX, newY, deviation );
-                        
-                        Cursor.Move(Cursor.X + dXc, Cursor.Y + dYc)
-                        
-                        prevX = newX;
-                        prevY = newY;
-                        
-                    end
-                    
-                    Cursor.Draw
-                    
-                    Screen('Flip',S.PTB.wPtr);
-                    
-                    % Fetch keys
-                    [keyIsDown, ~, keyCode] = KbCheck;
-                    
-                    if keyIsDown
-                        
-                        % ~~~ ESCAPE key ? ~~~
-                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
-                        if EXIT
-                            break
+                        % Time's up ?
+                        if secs > trialStartOnset + Parameters.TrialMaxDuration
+                            trialRunning = 0;
                         end
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                         
-                    end
+                    end % while : Setp 2
                     
-                end
-                
-                
+                    
+                end % for : trial in block
                 
             otherwise % ---------------------------------------------------
                 
