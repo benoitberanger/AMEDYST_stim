@@ -76,9 +76,7 @@ try
                     % Counter = trial index
                     TrialIndex = TrialIndex + 1;
                     
-                    trialRunning = 1;
-                    
-                    % ~~~ Step 1 : Draw target  ~~~
+                    %% ~~~ Step 1 : Draw target @ big ring ~~~
                     
                     BigCircle.Draw
                     Cross.Draw
@@ -89,10 +87,15 @@ try
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
                     trialStartOnset = Screen('Flip',S.PTB.wPtr);
+                    ER.AddEvent({EP.Data{evt,1} trialStartOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5}})
                     
-                    % ~~~ Step 2 : Draw target  ~~~
                     
-                    while trialRunning
+                    %% ~~~ Step 2 : Move cursor to target @ big ring  ~~~
+                    
+                    startCursorInTarget = [];
+                    step2Running = 1;
+                    
+                    while step2Running
                         
                         BigCircle.Draw
                         Cross.Draw
@@ -100,11 +103,27 @@ try
                         ADAPT.UpdateCursor(Cursor, EP, evt)
                         
                         Screen('DrawingFinished',S.PTB.wPtr);
-                        Screen('Flip',S.PTB.wPtr);
+                        lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                        
+                        % Is cursor center in target ?
+                        if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
+                            
+                            Target.diskCurrentColor = Green;
+                            
+                            if isempty(startCursorInTarget) % Cursor has just reached the target
+                                startCursorInTarget = lastFlipOnset;
+                            elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
+                                step2Running = 0;
+                            end
+                            
+                        else % no, then reset
+                            startCursorInTarget = []; % reset
+                            Target.diskCurrentColor = Target.diskBaseColor;
+                        end
                         
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                         % Fetch keys
-                        [keyIsDown, secs, keyCode] = KbCheck;
+                        [keyIsDown, ~, keyCode] = KbCheck;
                         if keyIsDown
                             % ~~~ ESCAPE key ? ~~~
                             [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
@@ -112,13 +131,79 @@ try
                                 break
                             end
                         end
-                        % Time's up ?
-                        if secs > trialStartOnset + Parameters.TrialMaxDuration
-                            trialRunning = 0;
-                        end
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                         
                     end % while : Setp 2
+                    
+                    Target.diskCurrentColor = Target.diskBaseColor;
+                    
+                    if EXIT
+                        break
+                    end
+                    
+                    
+                    %% ~~~ Step 3 : Draw target @ center ~~~
+                    
+                    BigCircle.Draw
+                    Cross.Draw
+                    Target.Move(0,0)
+                    Target.Draw
+                    ADAPT.UpdateCursor(Cursor, EP, evt)
+                    
+                    Screen('DrawingFinished',S.PTB.wPtr);
+                    Screen('Flip',S.PTB.wPtr);
+                    
+                    
+                    %% ~~~ Step 4 : Move cursor to target @ center ~~~
+                    
+                    startCursorInTarget = [];
+                    step4Running = 1;
+                    
+                    while step4Running
+                        
+                        BigCircle.Draw
+                        Cross.Draw
+                        Target.Draw
+                        ADAPT.UpdateCursor(Cursor, EP, evt)
+                        
+                        Screen('DrawingFinished',S.PTB.wPtr);
+                        lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                        
+                        % Is cursor center in target ?
+                        if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
+                            
+                            Target.diskCurrentColor = Green;
+                            
+                            if isempty(startCursorInTarget) % Cursor has just reached the target
+                                startCursorInTarget = lastFlipOnset;
+                            elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
+                                step4Running = 0;
+                            end
+                            
+                        else % no, then reset
+                            startCursorInTarget = []; % reset
+                            Target.diskCurrentColor = Target.diskBaseColor;
+                        end
+                        
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        % Fetch keys
+                        [keyIsDown, ~, keyCode] = KbCheck;
+                        if keyIsDown
+                            % ~~~ ESCAPE key ? ~~~
+                            [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                            if EXIT
+                                break
+                            end
+                        end
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        
+                    end % while : Setp 4
+                    
+                    Target.diskCurrentColor = Target.diskBaseColor;
+                    
+                    if EXIT
+                        break
+                    end
                     
                     
                 end % for : trial in block

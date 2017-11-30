@@ -4,7 +4,13 @@ global S
 %% Prepare event record
 
 % Create
-ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'sequence_results' } , size(EP.Data,1) );
+switch S.Task
+    case 'SEQ'
+        ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'sequence_results'                  } , size(EP.Data,1) );
+    case 'ADAPT'
+        ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'NrTrials'         , 'Deviation(°)' } , size(EP.Data,1) );
+    case 'EyelinkCalibration'
+end
 
 % Prepare
 ER.AddStartTime( 'StartTime' , 0 );

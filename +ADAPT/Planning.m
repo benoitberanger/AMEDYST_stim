@@ -12,7 +12,7 @@ end
 Parameters.TrialMaxDuration            = 5; % seconds
 Parameters.TimeSpentOnTargetToValidate = 0.5; % seconds
 Parameters.MinPauseBetweenTrials       = 0.5; % seconds
-Parameters.MaxPaiseBetweenTrials       = 0.5; % seconds
+Parameters.MaxPauseBetweenTrials       = 0.5; % seconds
 Parameters.TargetAngles                = 45 : 90 : 4*90;
 
 switch S.OperationMode
@@ -55,19 +55,19 @@ angleList = Shuffle(Parameters.TargetAngles);
 
 TrialIndex = 0;
 for block = 1 : NrBlocks
-   for dontcare = 1 :  Paradigm(block,2)
-       
-       % Counter = trial index
-       TrialIndex = TrialIndex + 1;
-       
-       % If angleList is empty, generate a new one
-       if isempty(angleList)
-           angleList = Shuffle(Parameters.TargetAngles);
-       end
-       ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1) Paradigm(block,1) angleList(end) ]; % Use the last angle from the current list
-       angleList(end) = [];                                                                  % Remove the last angle used
-       
-   end
+    for dontcare = 1 :  Paradigm(block,2)
+        
+        % Counter = trial index
+        TrialIndex = TrialIndex + 1;
+        
+        % If angleList is empty, generate a new one
+        if isempty(angleList)
+            angleList = Shuffle(Parameters.TargetAngles);
+        end
+        ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1) Paradigm(block,1) angleList(end) ]; % Use the last angle from the current list
+        angleList(end) = [];                                                                  % Remove the last angle used
+        
+    end
 end
 
 Parameters.ParadigmeAngle = ParadigmeAngle;

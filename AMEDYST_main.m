@@ -419,11 +419,11 @@ end
 
 %% Ready for another run
 
-set(handles.text_LastFileNameAnnouncer,'Visible','on'                             )
-set(handles.text_LastFileName,         'Visible','on'                             )
-set(handles.text_LastFileName,         'String' , DataFile(length(DataPath)+1:end))
+set(handles.text_LastFileNameAnnouncer, 'Visible','on'                             )
+set(handles.text_LastFileName         , 'Visible','on'                             )
+set(handles.text_LastFileName         , 'String' , DataFile(length(DataPath)+1:end))
 
-if ~strcmp(Task,'EyelinkCalibration')
+if strcmp(Task,'SEQ')
     printResults(S.TaskData.ER)
 end
 
