@@ -1,4 +1,4 @@
-function TaskData = EndOfStimulation( TaskData, EP, ER, RR, KL, StartTime, StopTime )
+function TaskData = EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime )
 global S
 
 %% End of stimulation
@@ -47,6 +47,9 @@ KL.ComputeDurations;
 KL.BuildGraph;
 TaskData.KL = KL;
 
+% SampleRecorder
+SR.ClearEmptySamples
+
 % Save some values
 TaskData.StartTime = StartTime;
 TaskData.StopTime  = StopTime;
@@ -58,6 +61,7 @@ assignin('base','EP',EP)
 assignin('base','ER',ER)
 assignin('base','RR',RR)
 assignin('base','KL',KL)
+assignin('base','SR',SR)
 
 assignin('base','TaskData',TaskData)
 

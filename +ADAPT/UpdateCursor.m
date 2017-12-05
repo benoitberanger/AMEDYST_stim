@@ -1,4 +1,4 @@
-function UpdateCursor( Cursor, EP, evt )
+function UpdateCursor( Cursor, deviation )
 global S prevX prevY newX newY
 
 switch S.InputMethod
@@ -10,13 +10,6 @@ end
 
 % If new data, then apply deviation
 if ~(newX == prevX && newY == prevY)
-    
-    switch EP.Data{evt,1}
-        case 'Direct'
-            deviation = 0;
-        case 'Deviation'
-            deviation = EP.Data{evt,5};
-    end
     
     [ dXc, dYc ] = ADAPT.ApplyDeviation( prevX, prevY, newX, newY, deviation );
     

@@ -13,7 +13,7 @@ try
     
     %% Prepare event record and keybinf logger
     
-    [ ER, RR, KL ] = Common.PrepareRecorders( EP );
+    [ ER, RR, KL, SR ] = Common.PrepareRecorders( EP );
     
     
     %% Prepare objects
@@ -67,7 +67,14 @@ try
                 
             case 'StopTime' % ---------------------------------------------
                 
-                [ ER, RR, StopTime ] = Common.StopTimeEvent( EP, ER, RR, StartTime, evt );
+                StopTime = GetSecs;
+                
+                % Record StopTime
+                ER.AddStopTime( 'StopTime' , StopTime - StartTime );
+                RR.AddStopTime( 'StopTime' , StopTime - StartTime );
+                
+                ShowCursor;
+                Priority( 0 );
                 
             case {'Direct', 'Deviation'} % --------------------------------
                 
@@ -87,10 +94,11 @@ try
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
                     trialStartOnset = Screen('Flip',S.PTB.wPtr);
+                    SR.AddSample([trialStartOnset-StartTime Cursor.X Cursor.Y])
                     ER.AddEvent({EP.Data{evt,1} trialStartOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5}})
                     
                     
-                    %% ~~~ Step 2 : Move cursor to target @ big ring  ~~~
+                    %% ~~~ Step 2 : User moves cursor to target @ big ring  ~~~
                     
                     startCursorInTarget = [];
                     step2Running = 1;
@@ -100,10 +108,11 @@ try
                         BigCircle.Draw
                         Cross.Draw
                         Target.Draw
-                        ADAPT.UpdateCursor(Cursor, EP, evt)
+                        ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                         
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
                         
                         % Is cursor center in target ?
                         if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
@@ -148,13 +157,14 @@ try
                     Cross.Draw
                     Target.Move(0,0)
                     Target.Draw
-                    ADAPT.UpdateCursor(Cursor, EP, evt)
+                    ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
-                    Screen('Flip',S.PTB.wPtr);
+                    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
                     
                     
-                    %% ~~~ Step 4 : Move cursor to target @ center ~~~
+                    %% ~~~ Step 4 : User moves cursor to target @ center ~~~
                     
                     startCursorInTarget = [];
                     step4Running = 1;
@@ -164,10 +174,11 @@ try
                         BigCircle.Draw
                         Cross.Draw
                         Target.Draw
-                        ADAPT.UpdateCursor(Cursor, EP, evt)
+                        ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                         
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
                         
                         % Is cursor center in target ?
                         if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
@@ -222,10 +233,17 @@ try
         
     end % for
     
+    % "The end"
+    BigCircle.Draw
+    Cross.Draw
+    Screen('DrawingFinished',S.PTB.wPtr);
+    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
+    
     
     %% End of stimulation
     
-    TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, StartTime, StopTime );
+    TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime );
     
     TaskData.Parameters = Parameters;
     

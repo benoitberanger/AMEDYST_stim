@@ -15,30 +15,32 @@ Parameters.MinPauseBetweenTrials       = 0.5; % seconds
 Parameters.MaxPauseBetweenTrials       = 0.5; % seconds
 Parameters.TargetAngles                = 45 : 90 : 4*90;
 
+randSign = sign(rand-0.5);
+
 switch S.OperationMode
     
     case 'Acquisition'
         
         Paradigm = [
-            0  30
-            35 60
-            0  30
+            0           30
+            randSign*45 60
+            0           30
             ];
         
     case 'FastDebug'
         
         Paradigm = [
-            0  1
-            35 1
-            0  1
+            0           1
+            randSign*45 1
+            0           1
             ];
         
     case 'RealisticDebug'
         
         Paradigm = [
-            0  5
-            35 5
-            0  5
+            0           5
+            randSign*45 5
+            0           5
             ];
         
 end

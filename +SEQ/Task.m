@@ -13,7 +13,7 @@ try
     
     %% Prepare event record and keybinf logger
     
-    [ ER, RR, KL ] = Common.PrepareRecorders( EP );
+    [ ER, RR, KL, SR ] = Common.PrepareRecorders( EP );
     
     
     %% Prepare objects
@@ -278,7 +278,7 @@ try
     
     %% End of stimulation
     
-    TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, StartTime, StopTime );
+    TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime );
     
     
 catch err

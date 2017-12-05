@@ -227,6 +227,10 @@ S.Feedback = Feedback;
 
 %% ADAPT : input method ?
 
+if isempty(get(handles.uipanel_CursorInput,'SelectedObject'))
+    error('Select a cursor input method')
+end
+
 switch get(get(handles.uipanel_CursorInput,'SelectedObject'),'Tag')
     case 'radiobutton_Joystick'
         InputMethod = 'Joystick';
