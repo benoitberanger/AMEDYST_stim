@@ -83,19 +83,64 @@ try
                     % Counter = trial index
                     TrialIndex = TrialIndex + 1;
                     
+                    
+                    %% ~~~ Step 0 : Jitter between trials ~~~
+                    
+                    step0Running = 1;
+                    counter_step0 = 0;
+                    
+                    while step0Running
+                        
+                        counter_step0 = counter_step0 + 1;
+                        
+                        BigCircle.Draw
+                        Cross.Draw
+                        ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
+                        
+                        Screen('DrawingFinished',S.PTB.wPtr);
+                        lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
+                        
+                        % Record trial onset
+                        if counter_step0 == 1
+                            ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5}})
+                            step0onset = lastFlipOnset;
+                        end
+                        
+                        if lastFlipOnset >= step0onset + Parameters.ParadigmeAngle(TrialIndex,3)
+                            step0Running = 0;
+                        end
+                        
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        % Fetch keys
+                        [keyIsDown, ~, keyCode] = KbCheck;
+                        if keyIsDown
+                            % ~~~ ESCAPE key ? ~~~
+                            [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                            if EXIT
+                                break
+                            end
+                        end
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        
+                    end % while : step 0
+                    
+                    if EXIT
+                        break
+                    end
+                    
+                    
                     %% ~~~ Step 1 : Draw target @ big ring ~~~
                     
                     BigCircle.Draw
                     Cross.Draw
                     
                     Target.diskCurrentColor = Target.diskBaseColor;
-                    Target.Move( TargetBigCirclePosition, Parameters.ParadigmeAngle(TrialIndex,3) )
+                    Target.Move( TargetBigCirclePosition, Parameters.ParadigmeAngle(TrialIndex,2) )
                     Target.Draw
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
-                    trialStartOnset = Screen('Flip',S.PTB.wPtr);
-                    SR.AddSample([trialStartOnset-StartTime Cursor.X Cursor.Y])
-                    ER.AddEvent({EP.Data{evt,1} trialStartOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5}})
+                    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
                     
                     
                     %% ~~~ Step 2 : User moves cursor to target @ big ring  ~~~
@@ -109,6 +154,7 @@ try
                         Cross.Draw
                         Target.Draw
                         ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
+                        Cursor.Draw
                         
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
@@ -158,6 +204,7 @@ try
                     Target.Move(0,0)
                     Target.Draw
                     ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
+                    Cursor.Draw
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
                     lastFlipOnset = Screen('Flip',S.PTB.wPtr);
@@ -175,6 +222,7 @@ try
                         Cross.Draw
                         Target.Draw
                         ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
+                        Cursor.Draw
                         
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);

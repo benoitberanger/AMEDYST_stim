@@ -19,7 +19,10 @@ try
                 };
             
         case 'ADAPT'
-            names = {};
+            names = {
+                'Direct'
+                'Deviation'
+                };
             
         case 'EyelinkCalibration'
             names = {};
@@ -48,6 +51,11 @@ try
             case 'Complexe'
                 onsets{3} = [onsets{3} ; EventData{event,2}];
                 
+            case 'Direct'
+                onsets{1} = [onsets{1} ; EventData{event,2}];
+            case 'Deviation'
+                onsets{2} = [onsets{2} ; EventData{event,2}];
+                
         end
         
     end
@@ -67,6 +75,12 @@ try
                 durations{2} = [ durations{2} ; EventData{event+1,2}-EventData{event,2}] ;
             case 'Complexe'
                 durations{3} = [ durations{3} ; EventData{event+1,2}-EventData{event,2}] ;
+                
+            case 'Direct'
+                durations{1} = [ durations{1} ; EventData{event+1,2}-EventData{event,2}] ;
+            case 'Deviation'
+                durations{2} = [ durations{2} ; EventData{event+1,2}-EventData{event,2}] ;
+                
         end
         
     end

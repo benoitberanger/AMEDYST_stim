@@ -20,6 +20,4 @@ if ~(newX == prevX && newY == prevY)
     
 end
 
-Cursor.Draw
-
 end % function
