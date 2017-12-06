@@ -10,6 +10,8 @@ global S
 ER.ClearEmptyEvents;
 ER.ComputeDurations;
 ER.BuildGraph;
+ER.MakeBlocks;
+ER.BuildGraph('block');
 TaskData.ER = ER;
 
 switch S.Task

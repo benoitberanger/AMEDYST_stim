@@ -34,7 +34,7 @@ try
     durations = cell(size(names));
     
     % Shortcut
-    EventData = S.TaskData.ER.Data;
+    EventData = S.TaskData.ER.GraphData;
     
     
     %% Onsets building

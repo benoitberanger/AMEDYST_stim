@@ -58,7 +58,6 @@ try
                 end
                 
                 Cursor.Move(newX,newY);
-                Cursor.Draw
                 
                 prevX = newX;
                 prevY = newY;
