@@ -1,4 +1,4 @@
-function [ Target ] = PrepareTarget
+function [ Target, PrevTarget ] = PrepareTarget
 global S
 
 diameter   = S.Parameters.ADAPT.Target.DimensionRatio*S.PTB.wRect(4);
@@ -23,5 +23,7 @@ Target = Circle(...
 Target.LinkToWindowPtr( S.PTB.wPtr )
 
 Target.AssertReady % just to check
+
+PrevTarget = Target.CopyObject;
 
 end % function

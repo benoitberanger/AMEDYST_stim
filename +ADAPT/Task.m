@@ -13,15 +13,15 @@ try
     
     %% Prepare event record and keybinf logger
     
-    [ ER, RR, KL, SR ] = Common.PrepareRecorders( EP );
+    [ ER, RR, KL, SR, OutRecorder, InRecorder ] = Common.PrepareRecorders( EP );
     
     
     %% Prepare objects
     
-    Cross     = ADAPT.PrepareCross    ;
-    BigCircle = ADAPT.PrepareBigCircle;
-    Target    = ADAPT.PrepareTarget   ;
-    Cursor    = ADAPT.PrepareCursor   ;
+    Cross                  = ADAPT.PrepareCross    ;
+    BigCircle              = ADAPT.PrepareBigCircle;
+    [ Target, PrevTarget ] = ADAPT.PrepareTarget   ;
+    Cursor                 = ADAPT.PrepareCursor   ;
     
     
     %% Eyelink
@@ -57,6 +57,7 @@ try
                         [newX, newY] = ADAPT.QueryMouseData( Cursor.wPtr, Cursor.Xorigin, Cursor.Yorigin, Cursor.screenY );
                 end
                 
+                % Here at initialization, we don't apply deviation, just fetche raw data
                 Cursor.Move(newX,newY);
                 
                 prevX = newX;
@@ -98,7 +99,7 @@ try
                         
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
-                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
+                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                         
                         % Record trial onset
                         if counter_step0 == 1
@@ -138,8 +139,15 @@ try
                     Target.Move( TargetBigCirclePosition, Parameters.ParadigmeAngle(TrialIndex,2) )
                     Target.Draw
                     
+                    PrevTarget.diskCurrentColor = Red;
+                    PrevTarget.Move( 0, 0 )
+                    PrevTarget.Draw
+                    
+                    ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
+                    
                     Screen('DrawingFinished',S.PTB.wPtr);
-                    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                    flipOnset_step_1 = Screen('Flip',S.PTB.wPtr);
+                    SR.AddSample([flipOnset_step_1-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     
                     %% ~~~ Step 2 : User moves cursor to target @ big ring  ~~~
@@ -147,17 +155,35 @@ try
                     startCursorInTarget = [];
                     step2Running = 1;
                     
+                    draw_PrevTraget      = 1;
+                    has_already_traveled = 0;
+                    
+                    frame_start = SR.SampleCount;
+                    
                     while step2Running
                         
                         BigCircle.Draw
                         Cross.Draw
                         Target.Draw
+                        if draw_PrevTraget
+                            PrevTarget.Draw
+                        end
                         ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                         Cursor.Draw
                         
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
-                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
+                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                        
+                        % Is cursor center in the previous target (@ center) ?
+                        if     IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) &&  draw_PrevTraget % yes
+                        elseif IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) && ~draw_PrevTraget % back inside
+                        elseif draw_PrevTraget % just outside
+                            PrevTarget.diskCurrentColor = PrevTarget.diskBaseColor;
+                            draw_PrevTraget = 0;
+                            ReactionTimeOUT = lastFlipOnset - flipOnset_step_1;
+                        else
+                        end
                         
                         % Is cursor center in target ?
                         if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
@@ -165,7 +191,14 @@ try
                             Target.diskCurrentColor = Green;
                             
                             if isempty(startCursorInTarget) % Cursor has just reached the target
+                                
                                 startCursorInTarget = lastFlipOnset;
+                                
+                                if ~has_already_traveled
+                                    TravelTimeOUT = lastFlipOnset - flipOnset_step_1;
+                                    has_already_traveled = 1;
+                                end
+                                
                             elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
                                 step2Running = 0;
                             end
@@ -190,9 +223,12 @@ try
                     end % while : Setp 2
                     
                     Target.diskCurrentColor = Target.diskBaseColor;
+                    frame_stop = SR.SampleCount;
                     
                     if EXIT
                         break
+                    else
+                        OutRecorder.AddEvent({TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop ReactionTimeOUT TravelTimeOUT})
                     end
                     
                     
@@ -200,14 +236,21 @@ try
                     
                     BigCircle.Draw
                     Cross.Draw
+                    
+                    Target.diskCurrentColor = Target.diskBaseColor;
                     Target.Move(0,0)
                     Target.Draw
+                    
+                    PrevTarget.diskCurrentColor = Red;
+                    PrevTarget.Move( TargetBigCirclePosition, Parameters.ParadigmeAngle(TrialIndex,2) )
+                    PrevTarget.Draw
+                    
                     ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                     Cursor.Draw
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
-                    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
-                    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
+                    flipOnset_step_3 = Screen('Flip',S.PTB.wPtr);
+                    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     
                     %% ~~~ Step 4 : User moves cursor to target @ center ~~~
@@ -215,17 +258,35 @@ try
                     startCursorInTarget = [];
                     step4Running = 1;
                     
+                    draw_PrevTraget      = 1;
+                    has_already_traveled = 0;
+                    
+                    frame_start = SR.SampleCount;
+                    
                     while step4Running
                         
                         BigCircle.Draw
                         Cross.Draw
                         Target.Draw
+                        if draw_PrevTraget
+                            PrevTarget.Draw
+                        end
                         ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                         Cursor.Draw
                         
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
-                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
+                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                        
+                        % Is cursor center in the previous target (@ ring) ?
+                        if     IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) &&  draw_PrevTraget % yes
+                        elseif IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) && ~draw_PrevTraget % back inside
+                        elseif draw_PrevTraget % just outside
+                            PrevTarget.diskCurrentColor = PrevTarget.diskBaseColor;
+                            draw_PrevTraget = 0;
+                            ReactionTimeIN = lastFlipOnset - flipOnset_step_3;
+                        else
+                        end
                         
                         % Is cursor center in target ?
                         if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
@@ -233,7 +294,14 @@ try
                             Target.diskCurrentColor = Green;
                             
                             if isempty(startCursorInTarget) % Cursor has just reached the target
+                                
                                 startCursorInTarget = lastFlipOnset;
+                                
+                                if ~has_already_traveled
+                                    TravelTimeIN = lastFlipOnset - flipOnset_step_3;
+                                    has_already_traveled = 1;
+                                end
+                                
                             elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
                                 step4Running = 0;
                             end
@@ -258,9 +326,12 @@ try
                     end % while : Setp 4
                     
                     Target.diskCurrentColor = Target.diskBaseColor;
+                    frame_stop = SR.SampleCount;
                     
                     if EXIT
                         break
+                    else
+                        InRecorder.AddEvent({TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop ReactionTimeIN TravelTimeIN})
                     end
                     
                     
@@ -283,16 +354,23 @@ try
     % "The end"
     BigCircle.Draw
     Cross.Draw
+    ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
     Screen('DrawingFinished',S.PTB.wPtr);
     lastFlipOnset = Screen('Flip',S.PTB.wPtr);
-    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y])
+    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
     
     
     %% End of stimulation
     
     TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime );
-    
     TaskData.Parameters = Parameters;
+    
+    OutRecorder.ClearEmptyEvents;
+    InRecorder. ClearEmptyEvents;
+    TaskData.OutRecorder = OutRecorder;
+    TaskData.InRecorder  = InRecorder;
+    assignin('base','OutRecorder', OutRecorder)
+    assignin('base','InRecorder' , InRecorder )
     
     
 catch err

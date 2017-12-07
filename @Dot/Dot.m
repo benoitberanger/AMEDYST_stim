@@ -20,11 +20,14 @@ classdef Dot < baseObject
         
         % Internal variables
         
-        X                 = zeros(0)   % X coordiantes from (Xorigin,Yorigin), in pixels
-        Y                 = zeros(0)   % Y coordiantes from (Xorigin,Yorigin), in pixels
+        X                 = zeros(0)   % X      coordiantes from (Xorigin,Yorigin), in pixels
+        Y                 = zeros(0)   % Y      coordiantes from (Xorigin,Yorigin), in pixels
         
-        Xptb              = zeros(0)   % X coordiantes in PTB referential of the center, in pixels
-        Yptb              = zeros(0)   % Y coordiantes in PTB referential of the center, in pixels
+        R                 = zeros(0)   % Radius coordiantes from (Xorigin,Yorigin), in pixels
+        Theta             = zeros(0)   % Angle  coordiantes from (Xorigin,Yorigin), in degrees
+        
+        Xptb              = zeros(0)   % X      coordiantes in PTB referential of the center, in pixels
+        Yptb              = zeros(0)   % Y      coordiantes in PTB referential of the center, in pixels
         
         Rect              = zeros(0,4) % Rectangle for PTB draw Screen('FrameOval') function
         
