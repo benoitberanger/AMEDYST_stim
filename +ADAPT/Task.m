@@ -80,6 +80,7 @@ try
                 
                 for trialIndexInBlock = 1 : EP.Data{evt,4}
                     
+                    
                     % Counter = trial index
                     TrialIndex = TrialIndex + 1;
                     
@@ -101,9 +102,10 @@ try
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
                         SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                         
-                        % Record trial onset
+                        % Record trial onset & step onset
                         if counter_step0 == 1
-                            ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5}})
+                            ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
+                            RR.AddEvent({['Jitter___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
                             step0onset = lastFlipOnset;
                         end
                         
@@ -148,6 +150,7 @@ try
                     Screen('DrawingFinished',S.PTB.wPtr);
                     flipOnset_step_1 = Screen('Flip',S.PTB.wPtr);
                     SR.AddSample([flipOnset_step_1-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                    RR.AddEvent({['Draw@Ring__' EP.Data{evt,1}] flipOnset_step_1-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
                     
                     
                     %% ~~~ Step 2 : User moves cursor to target @ big ring  ~~~
@@ -160,7 +163,11 @@ try
                     
                     frame_start = SR.SampleCount;
                     
+                    counter_step1 = 0;
+                    
                     while step2Running
+                        
+                        counter_step1 = counter_step1 + 1;
                         
                         BigCircle.Draw
                         Cross.Draw
@@ -174,6 +181,11 @@ try
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
                         SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                        
+                        % Record step onset
+                        if counter_step1 == 1
+                            RR.AddEvent({['Move@Ring__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                        end
                         
                         % Is cursor center in the previous target (@ center) ?
                         if     IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) &&  draw_PrevTraget % yes
@@ -228,7 +240,7 @@ try
                     if EXIT
                         break
                     else
-                        OutRecorder.AddEvent({TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop ReactionTimeOUT TravelTimeOUT})
+                        OutRecorder.AddEvent({EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop ReactionTimeOUT TravelTimeOUT})
                     end
                     
                     
@@ -250,7 +262,8 @@ try
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
                     flipOnset_step_3 = Screen('Flip',S.PTB.wPtr);
-                    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                    SR.AddSample([flipOnset_step_3-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                    RR.AddEvent({['Draw@Center__' EP.Data{evt,1}] flipOnset_step_3-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
                     
                     
                     %% ~~~ Step 4 : User moves cursor to target @ center ~~~
@@ -263,7 +276,11 @@ try
                     
                     frame_start = SR.SampleCount;
                     
+                    counter_step4 = 0;
+                    
                     while step4Running
+                        
+                        counter_step4 = counter_step4 + 1;
                         
                         BigCircle.Draw
                         Cross.Draw
@@ -277,6 +294,11 @@ try
                         Screen('DrawingFinished',S.PTB.wPtr);
                         lastFlipOnset = Screen('Flip',S.PTB.wPtr);
                         SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                        
+                        % Record step onset
+                        if counter_step4 == 1
+                            RR.AddEvent({['Move@Center__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                        end
                         
                         % Is cursor center in the previous target (@ ring) ?
                         if     IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) &&  draw_PrevTraget % yes
@@ -331,7 +353,7 @@ try
                     if EXIT
                         break
                     else
-                        InRecorder.AddEvent({TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop ReactionTimeIN TravelTimeIN})
+                        InRecorder.AddEvent({EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop ReactionTimeIN TravelTimeIN})
                     end
                     
                     

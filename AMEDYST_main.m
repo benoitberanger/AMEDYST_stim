@@ -429,6 +429,8 @@ set(handles.text_LastFileName         , 'String' , DataFile(length(DataPath)+1:e
 
 if strcmp(Task,'SEQ')
     printResults(S.TaskData.ER)
+elseif strcmp(Task,'ADAPT')
+    
 end
 
 WaitSecs(0.100);

@@ -30,9 +30,9 @@ switch S.OperationMode
     case 'FastDebug'
         
         Paradigm = [
-            0           1
-            randSign*45 1
-            0           1
+            0           2
+            randSign*45 2
+            0           2
             ];
         
     case 'RealisticDebug'
@@ -50,7 +50,7 @@ NrBlocks = size(Paradigm,1);
 NrTrials = sum(Paradigm(:,2));
 
 % Pre-allocate
-ParadigmeAngle = nan(NrTrials,3);
+ParadigmeAngle = nan(NrTrials,4);
 
 % Shuffle the list of angles
 angleList = Shuffle(Parameters.TargetAngles);
@@ -69,9 +69,9 @@ for block = 1 : NrBlocks
         
         pauseJitter = Parameters.MinPauseBetweenTrials + (Parameters.MaxPauseBetweenTrials-Parameters.MinPauseBetweenTrials)*rand; % in seconds (s), random value beween [a;b] interval
         
-        %                               deviation (°)       target angle (°)   variable pause duration (s)
-        ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1)   angleList(end)     pauseJitter                ]; % Use the last angle from the current list
-        angleList(end) = [];                                                                             % Remove the last angle used
+        %                               deviation (°)       target angle (°)   variable pause duration (s)   block_number
+        ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1)   angleList(end)     pauseJitter                   block        ]; % Use the last angle from the current list
+        angleList(end) = []; % Remove the last angle used
         
     end
 end
@@ -83,7 +83,7 @@ Parameters.ParadigmeAngle = ParadigmeAngle;
 
 
 % Create and prepare
-header = { 'event_name' , 'onset(s)' , 'duration(s)' 'NrTrials' 'Deviation(°)'};
+header = { 'event_name' , 'onset(s)' , 'duration(s)' , 'NrTrials' 'Deviation(°)' 'BlockNumber'};
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration
@@ -92,7 +92,7 @@ NextOnset = @(EP) EP.Data{end,2} + EP.Data{end,3};
 
 % --- Start ---------------------------------------------------------------
 
-EP.AddPlanning({ 'StartTime' 0  0 [] []});
+EP.AddPlanning({ 'StartTime' 0  0 [] [] []});
 
 % --- Stim ----------------------------------------------------------------
 
@@ -103,13 +103,13 @@ for p = 1 : size(Paradigm,1)
     else
         blockName = 'Deviation';
     end
-    EP.AddPlanning({ blockName NextOnset(EP) Parameters.TrialMaxDuration*Paradigm(p,2) Paradigm(p,2) Paradigm(p,1) });
+    EP.AddPlanning({ blockName NextOnset(EP) Parameters.TrialMaxDuration*Paradigm(p,2) Paradigm(p,2) Paradigm(p,1) p});
     
 end
 
 % --- Stop ----------------------------------------------------------------
 
-EP.AddPlanning({ 'StopTime' NextOnset(EP) 0 [] []});
+EP.AddPlanning({ 'StopTime' NextOnset(EP) 0 [] [] []});
 
 
 %% Display
