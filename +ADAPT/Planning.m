@@ -50,7 +50,7 @@ NrBlocks = size(Paradigm,1);
 NrTrials = sum(Paradigm(:,2));
 
 % Pre-allocate
-ParadigmeAngle = nan(NrTrials,4);
+ParadigmeAngle = nan(NrTrials,5);
 
 % Shuffle the list of angles
 angleList = Shuffle(Parameters.TargetAngles);
@@ -69,8 +69,8 @@ for block = 1 : NrBlocks
         
         pauseJitter = Parameters.MinPauseBetweenTrials + (Parameters.MaxPauseBetweenTrials-Parameters.MinPauseBetweenTrials)*rand; % in seconds (s), random value beween [a;b] interval
         
-        %                               deviation (°)       target angle (°)   variable pause duration (s)   block_number
-        ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1)   angleList(end)     pauseJitter                   block        ]; % Use the last angle from the current list
+        %                               deviation (°)       target angle (°)   variable pause duration (s)   block_number   value
+        ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1)   angleList(end)     pauseJitter                   block          round(rand*100) ]; % Use the last angle from the current list
         angleList(end) = []; % Remove the last angle used
         
     end

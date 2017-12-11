@@ -36,8 +36,9 @@ try
     TrialIndex = 0;
     TargetBigCirclePosition = (BigCircle.diameter-BigCircle.thickness)/2;
     
-    Green = [0 255 0];
     Red   = [255 0 0];
+    Green = [0 255 0];
+    Blue  = [0 128 255];
     
     % Loop over the EventPlanning
     for evt = 1 : size( EP.Data , 1 )
@@ -62,6 +63,8 @@ try
                 
                 prevX = newX;
                 prevY = newY;
+                
+                Target.valueCurrentColor = Blue;
                 
                 StartTime = Common.StartTimeEvent;
                 
@@ -137,11 +140,12 @@ try
                     BigCircle.Draw
                     Cross.Draw
                     
-                    Target.diskCurrentColor = Target.diskBaseColor;
+                    Target.frameCurrentColor = Target.frameBaseColor;
                     Target.Move( TargetBigCirclePosition, Parameters.ParadigmeAngle(TrialIndex,2) )
+                    Target.value = Parameters.ParadigmeAngle(TrialIndex,5);
                     Target.Draw
                     
-                    PrevTarget.diskCurrentColor = Red;
+                    PrevTarget.frameCurrentColor = Red;
                     PrevTarget.Move( 0, 0 )
                     PrevTarget.Draw
                     
@@ -191,7 +195,7 @@ try
                         if     IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) &&  draw_PrevTraget % yes
                         elseif IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) && ~draw_PrevTraget % back inside
                         elseif draw_PrevTraget % just outside
-                            PrevTarget.diskCurrentColor = PrevTarget.diskBaseColor;
+                            PrevTarget.frameCurrentColor = PrevTarget.frameBaseColor;
                             draw_PrevTraget = 0;
                             ReactionTimeOUT = lastFlipOnset - flipOnset_step_1;
                         else
@@ -200,7 +204,7 @@ try
                         % Is cursor center in target ?
                         if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
                             
-                            Target.diskCurrentColor = Green;
+                            Target.frameCurrentColor = Green;
                             
                             if isempty(startCursorInTarget) % Cursor has just reached the target
                                 
@@ -217,7 +221,7 @@ try
                             
                         else % no, then reset
                             startCursorInTarget = []; % reset
-                            Target.diskCurrentColor = Target.diskBaseColor;
+                            Target.frameCurrentColor = Target.frameBaseColor;
                         end
                         
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -234,7 +238,7 @@ try
                         
                     end % while : Setp 2
                     
-                    Target.diskCurrentColor = Target.diskBaseColor;
+                    Target.frameCurrentColor = Target.frameBaseColor;
                     frame_stop = SR.SampleCount;
                     
                     if EXIT
@@ -249,11 +253,12 @@ try
                     BigCircle.Draw
                     Cross.Draw
                     
-                    Target.diskCurrentColor = Target.diskBaseColor;
+                    Target.frameCurrentColor = Target.frameBaseColor;
                     Target.Move(0,0)
+                    Target.value = Parameters.ParadigmeAngle(TrialIndex,5);
                     Target.Draw
                     
-                    PrevTarget.diskCurrentColor = Red;
+                    PrevTarget.frameCurrentColor = Red;
                     PrevTarget.Move( TargetBigCirclePosition, Parameters.ParadigmeAngle(TrialIndex,2) )
                     % PrevTarget.Draw
                     
@@ -304,7 +309,7 @@ try
                         if     IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) &&  draw_PrevTraget % yes
                         elseif IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) && ~draw_PrevTraget % back inside
                         elseif draw_PrevTraget % just outside
-                            PrevTarget.diskCurrentColor = PrevTarget.diskBaseColor;
+                            PrevTarget.frameCurrentColor = PrevTarget.frameBaseColor;
                             draw_PrevTraget = 0;
                             ReactionTimeIN = lastFlipOnset - flipOnset_step_3;
                         else
@@ -313,7 +318,7 @@ try
                         % Is cursor center in target ?
                         if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
                             
-                            Target.diskCurrentColor = Green;
+                            Target.frameCurrentColor = Green;
                             
                             if isempty(startCursorInTarget) % Cursor has just reached the target
                                 
@@ -330,7 +335,7 @@ try
                             
                         else % no, then reset
                             startCursorInTarget = []; % reset
-                            Target.diskCurrentColor = Target.diskBaseColor;
+                            Target.frameCurrentColor = Target.frameBaseColor;
                         end
                         
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -347,7 +352,7 @@ try
                         
                     end % while : Setp 4
                     
-                    Target.diskCurrentColor = Target.diskBaseColor;
+                    Target.frameCurrentColor = Target.frameBaseColor;
                     frame_stop = SR.SampleCount;
                     
                     if EXIT
