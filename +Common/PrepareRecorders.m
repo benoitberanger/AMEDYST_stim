@@ -28,8 +28,8 @@ switch S.Task
         
         RR = EventRecorder( { 'event_name' , 'onset(s)' , 'duration(s)' , 'BlockNumber', 'Trial index', 'jitter duration (s)', 'Deviation(°)' } , 5000 );
         
-        OutRecorder = EventRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time OUT (s)', 'Travel time OUT (s)'} , 5000 );
-        InRecorder  = EventRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time IN (s)' , 'Travel time IN (s)' } , 5000 );
+        OutRecorder = SampleRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time OUT (ms)', 'Travel time OUT (ms)'} , 5000 );
+        InRecorder  = SampleRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time IN (ms)' , 'Travel time IN (ms)' } , 5000 );
         
 end
 

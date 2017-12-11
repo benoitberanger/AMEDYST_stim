@@ -207,7 +207,7 @@ try
                                 startCursorInTarget = lastFlipOnset;
                                 
                                 if ~has_already_traveled
-                                    TravelTimeOUT = lastFlipOnset - flipOnset_step_1;
+                                    TravelTimeOUT = lastFlipOnset - flipOnset_step_1 - ReactionTimeOUT;
                                     has_already_traveled = 1;
                                 end
                                 
@@ -240,7 +240,7 @@ try
                     if EXIT
                         break
                     else
-                        OutRecorder.AddEvent({EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop ReactionTimeOUT TravelTimeOUT})
+                        OutRecorder.AddSample([EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop round(ReactionTimeOUT*1000) round(TravelTimeOUT*1000)])
                     end
                     
                     
@@ -255,7 +255,7 @@ try
                     
                     PrevTarget.diskCurrentColor = Red;
                     PrevTarget.Move( TargetBigCirclePosition, Parameters.ParadigmeAngle(TrialIndex,2) )
-                    PrevTarget.Draw
+                    % PrevTarget.Draw
                     
                     ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                     Cursor.Draw
@@ -285,9 +285,9 @@ try
                         BigCircle.Draw
                         Cross.Draw
                         Target.Draw
-                        if draw_PrevTraget
-                            PrevTarget.Draw
-                        end
+                        % if draw_PrevTraget
+                        %     PrevTarget.Draw
+                        % end
                         ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                         Cursor.Draw
                         
@@ -320,7 +320,7 @@ try
                                 startCursorInTarget = lastFlipOnset;
                                 
                                 if ~has_already_traveled
-                                    TravelTimeIN = lastFlipOnset - flipOnset_step_3;
+                                    TravelTimeIN = lastFlipOnset - flipOnset_step_3 - ReactionTimeIN;
                                     has_already_traveled = 1;
                                 end
                                 
@@ -353,7 +353,7 @@ try
                     if EXIT
                         break
                     else
-                        InRecorder.AddEvent({EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop ReactionTimeIN TravelTimeIN})
+                        InRecorder.AddSample([EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop round(ReactionTimeIN*1000) round(TravelTimeIN*1000)])
                     end
                     
                     
@@ -387,8 +387,8 @@ try
     TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime );
     TaskData.Parameters = Parameters;
     
-    OutRecorder.ClearEmptyEvents;
-    InRecorder. ClearEmptyEvents;
+    OutRecorder.ClearEmptySamples;
+    InRecorder. ClearEmptySamples;
     TaskData.OutRecorder = OutRecorder;
     TaskData.InRecorder  = InRecorder;
     assignin('base','OutRecorder', OutRecorder)

@@ -14,14 +14,6 @@ ER.MakeBlocks;
 ER.BuildGraph('block');
 TaskData.ER = ER;
 
-switch S.Task
-    case {'Familiarization','Training', 'SpeedTest'}
-        EP.Data = {};
-        EP.Data(:,1:3) = ER.Data(:,1:3);
-        EP.BuildGraph;
-        TaskData.EP = EP;
-end
-
 % Response Recorder
 RR.ClearEmptyEvents;
 RR.ComputeDurations;
@@ -88,16 +80,23 @@ end
 
 %% Diagnotic
 
-switch S.OperationMode
+switch S.Task
     
-    case 'Acquisition'
+    case 'SEQ'
         
-    case 'FastDebug'
-        plotDelay(EP,ER)
-        
-    case 'RealisticDebug'
-        plotDelay(EP,ER)
+        switch S.OperationMode
+            
+            case 'Acquisition'
+                
+            case 'FastDebug'
+                plotDelay(EP,ER)
+                
+            case 'RealisticDebug'
+                plotDelay(EP,ER)
+                
+        end
         
 end
+
 
 end % function
