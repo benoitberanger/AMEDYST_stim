@@ -430,6 +430,49 @@ set(handles.text_LastFileName         , 'String' , DataFile(length(DataPath)+1:e
 if strcmp(Task,'SEQ')
     printResults(S.TaskData.ER)
 elseif strcmp(Task,'ADAPT')
+    %%
+    
+    % Shortcut
+    from = S.TaskData.OutRecorder.Data; 
+    data = S.TaskData.SR.Data;
+    
+    % Polar coordinates
+    figure(10)
+    ax(1) = subplot(2,1,1);
+    hold(ax(1), 'on')
+    ax(2) = subplot(2,1,2);
+    hold(ax(2), 'on')
+    
+    for trial = 1 : size(from,1)
+        frame_start = from(trial,6);
+        frame_stop  = from(trial,7);
+        
+        t = data(frame_start:frame_stop,1)-data(frame_start,1); % time, in sedonds
+        
+        theta = data(frame_start:frame_stop,5); % raw                           :  thetha(t)
+        theta = theta - data(frame_start,5);    % offcet, the curve start at 0° :  thetha(t) - thetha(0)
+        theta = theta/theta(end);               % normalize, from 0 to 1        : (thetha(t) - thetha(0)) / ( theta(end) - thetha(0) )
+        
+        if from(trial,4) ~= 0
+            plot( ax(1), t, theta, 'DisplayName',sprintf('Deviation - %d',from(trial,5)));
+        else
+            plot( ax(2), t, theta, 'DisplayName',sprintf('Direct - %d',from(trial,5)));
+        end
+        
+        
+    end
+    
+    plot( ax(1), [0 2], [1.1 1.1], 'k:');
+    plot( ax(1), [0 2], [0.9 0.9], 'k:');
+    legend(ax(1), 'show')
+    axis(ax(1), 'tight')
+    
+    plot( ax(2), [0 2], [1.1 1.1], 'k:');
+    plot( ax(2), [0 2], [0.9 0.9], 'k:');
+    legend(ax(2), 'show')
+    axis(ax(2), 'tight')
+    linkaxes(ax,'xy')
+    
     
 end
 

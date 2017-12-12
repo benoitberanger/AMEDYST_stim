@@ -16,7 +16,10 @@ if ~isempty(Y)
 end
 
 obj.R     = sqrt(obj.X*obj.X + obj.Y*obj.Y); % pixels
-obj.Theta = atan2(obj.Y,obj.X) * 180/pi    ; % rad
+obj.Theta = atan2(obj.Y,obj.X) * 180/pi    ; % degrees
+% if obj.Theta < 0
+%     obj.Theta = obj.Theta + 360;
+% end
 
 obj.Xptb =  obj.X + obj.Xorigin               ;
 obj.Yptb = -obj.Y - obj.Yorigin + obj.screenY ;

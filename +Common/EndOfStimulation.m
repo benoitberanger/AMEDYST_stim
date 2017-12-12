@@ -43,6 +43,8 @@ TaskData.KL = KL;
 
 % SampleRecorder
 SR.ClearEmptySamples
+TaskData.SR = SR;
+
 
 % Save some values
 TaskData.StartTime = StartTime;

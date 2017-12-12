@@ -13,7 +13,7 @@ Parameters.TrialMaxDuration            = 5; % seconds
 Parameters.TimeSpentOnTargetToValidate = 0.5; % seconds
 Parameters.MinPauseBetweenTrials       = 0.5; % seconds
 Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
-Parameters.TargetAngles                = 45 : 90 : 4*90;
+Parameters.TargetAngles                = [30 60 120 150];
 
 randSign = sign(rand-0.5);
 
