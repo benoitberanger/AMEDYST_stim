@@ -68,9 +68,9 @@ for fig = 1 : 3
                 
         end
         
-        if from(trial,4) ~= 0
+        if from(trial,4) ~= 0 % deviation
             plot( ax(1), time, theta, 'DisplayName',sprintf('Deviation - %d',from(trial,5)));
-        else
+        else % direct
             plot( ax(2), time, theta, 'DisplayName',sprintf('Direct - %d',from(trial,5)));
         end
         

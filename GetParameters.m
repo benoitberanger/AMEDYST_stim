@@ -92,7 +92,7 @@ Parameters.ADAPT.Target.DiskColor      = Parameters.Video.ScreenBackgroundColor;
 Parameters.ADAPT.Target.ValueColor     = [0 0 0];                                % [R G B] ( from 0 to 255 )
 
 % Cursor => @Dot
-Parameters.ADAPT.Cursor.DimensionRatio = 0.05;        % diameter = DimensionRatio*ScreenHeight
+Parameters.ADAPT.Cursor.DimensionRatio = 0.04;        % diameter = DimensionRatio*ScreenHeight
 Parameters.ADAPT.Cursor.DiskColor      = [255 255 0]; % [R G B] ( from 0 to 255 )
 
 % Small cross at the center => @FixationCross
