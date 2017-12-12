@@ -192,8 +192,8 @@ try
                         end
                         
                         % Is cursor center in the previous target (@ center) ?
-                        if     IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) &&  draw_PrevTraget % yes
-                        elseif IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) && ~draw_PrevTraget % back inside
+                        if     ADAPT.IsOutside(Cursor,PrevTarget) &&  draw_PrevTraget % yes
+                        elseif ADAPT.IsOutside(Cursor,PrevTarget) && ~draw_PrevTraget % back inside
                         elseif draw_PrevTraget % just outside
                             PrevTarget.frameCurrentColor = PrevTarget.frameBaseColor;
                             draw_PrevTraget = 0;
@@ -202,7 +202,7 @@ try
                         end
                         
                         % Is cursor center in target ?
-                        if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
+                        if ADAPT.IsInside(Cursor,Target) % yes
                             
                             Target.frameCurrentColor = Green;
                             
@@ -306,8 +306,8 @@ try
                         end
                         
                         % Is cursor center in the previous target (@ ring) ?
-                        if     IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) &&  draw_PrevTraget % yes
-                        elseif IsInRect(Cursor.Xptb,Cursor.Yptb,PrevTarget.Rect) && ~draw_PrevTraget % back inside
+                        if     ADAPT.IsOutside(Cursor,PrevTarget) &&  draw_PrevTraget % yes
+                        elseif ADAPT.IsOutside(Cursor,PrevTarget) && ~draw_PrevTraget % back inside
                         elseif draw_PrevTraget % just outside
                             PrevTarget.frameCurrentColor = PrevTarget.frameBaseColor;
                             draw_PrevTraget = 0;
@@ -316,7 +316,7 @@ try
                         end
                         
                         % Is cursor center in target ?
-                        if IsInRect(Cursor.Xptb,Cursor.Yptb,Target.Rect) % yes
+                        if ADAPT.IsInside(Cursor,Target) % yes
                             
                             Target.frameCurrentColor = Green;
                             
