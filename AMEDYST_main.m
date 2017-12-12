@@ -16,7 +16,7 @@ end
 handles = guidata(hObject); % retrieve GUI data
 
 
-%% Clean the environment
+%% MAIN : Clean the environment
 
 clc
 sca
@@ -24,7 +24,7 @@ rng('default')
 rng('shuffle')
 
 
-%% Initialize the main structure
+%% MAIN : Initialize the main structure
 
 global S
 S               = struct; % S is the main structure, containing everything usefull, and used everywhere
@@ -32,7 +32,7 @@ S.TimeStamp     = datestr(now, 'yyyy-mm-dd HH:MM'); % readable
 S.TimeStampFile = datestr(now, 30                ); % to sort automatically by time of creation
 
 
-%% Task selection
+%% GUI : Task selection
 
 switch get(hObject,'Tag')
     
@@ -52,7 +52,7 @@ end
 S.Task = Task;
 
 
-%% Environement selection
+%% GUI : Environement selection
 
 switch get(get(handles.uipanel_Environement,'SelectedObject'),'Tag')
     case 'radiobutton_MRI'
@@ -66,7 +66,7 @@ end
 S.Environement = Environement;
 
 
-%% Save mode selection
+%% GUI : Save mode selection
 
 switch get(get(handles.uipanel_SaveMode,'SelectedObject'),'Tag')
     case 'radiobutton_SaveData'
@@ -80,7 +80,7 @@ end
 S.SaveMode = SaveMode;
 
 
-%% Mode selection
+%% GUI : Mode selection
 
 switch get(get(handles.uipanel_OperationMode,'SelectedObject'),'Tag')
     case 'radiobutton_Acquisition'
@@ -96,7 +96,7 @@ end
 S.OperationMode = OperationMode;
 
 
-%% ComplexSequence
+%% GUI : ComplexSequence
 
 ComplexSequence = get(handles.edit_ComplexSequence,'String');
 if isempty(ComplexSequence)
@@ -105,7 +105,7 @@ end
 S.ComplexSequence = ComplexSequence;
 
 
-%% Subject ID & Run number
+%% GUI + MAIN : Subject ID & Run number
 
 SubjectID = get(handles.edit_SubjectID,'String');
 
@@ -163,7 +163,7 @@ S.DataFile      = DataFile;
 S.DataFileName  = DataFileName;
 
 
-%% Controls for SubjectID depending on the Mode selected
+%% MAIN : Controls for SubjectID depending on the Mode selected
 
 switch OperationMode
     
@@ -182,7 +182,7 @@ switch OperationMode
 end
 
 
-%% Parallel port ?
+%% GUI : Parallel port ?
 
 switch get( handles.checkbox_ParPort , 'Value' )
     
@@ -197,7 +197,7 @@ handles.ParPort    = ParPort;
 
 
 
-%% Left or right handed ?
+%% GUI : Left or right handed ?
 
 switch get(get(handles.uipanel_ParallelPortLeftRight,'SelectedObject'),'Tag')
     case 'radiobutton_LeftButtons'
@@ -211,7 +211,7 @@ end
 S.Side = Side;
 
 
-%% SEQ : visual feedback ?
+%% GUI : SEQ : visual feedback ?
 
 switch get(get(handles.uipanel_Feedback,'SelectedObject'),'Tag')
     case 'radiobutton_FeedbackOn'
@@ -225,7 +225,7 @@ end
 S.Feedback = Feedback;
 
 
-%% ADAPT : input method ?
+%% GUI : ADAPT : input method ?
 
 if isempty(get(handles.uipanel_CursorInput,'SelectedObject'))
     error('Select a cursor input method')
@@ -244,7 +244,7 @@ end
 S.InputMethod = InputMethod;
 
 
-%% Check if Eyelink toolbox is available
+%% GUI : Check if Eyelink toolbox is available
 
 switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
     
@@ -297,7 +297,7 @@ end
 S.EyelinkMode = EyelinkMode;
 
 
-%% Security : NEVER overwrite a file
+%% MAIN : Security : NEVER overwrite a file
 % If erasing a file is needed, we need to do it manually
 
 if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
@@ -309,7 +309,7 @@ if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
 end
 
 
-%% Get stimulation parameters
+%% MAIN : Get stimulation parameters
 
 S.Parameters = GetParameters;
 
@@ -319,7 +319,7 @@ SelectedDisplay = get(handles.listbox_Screens,'Value');
 S.ScreenID = str2double( AvalableDisplays(SelectedDisplay) );
 
 
-%% Windowed screen ?
+%% GUI : Windowed screen ?
 
 switch get(handles.checkbox_WindowedScreen,'Value')
     
@@ -335,12 +335,12 @@ end
 S.WindowedMode = WindowedMode;
 
 
-%% Open PTB window & sound
+%% MAIN : Open PTB window & sound
 
 S.PTB = StartPTB;
 
 
-%% Task run
+%% MAIN : Task run
 
 EchoStart(Task)
 
@@ -365,23 +365,23 @@ EchoStop(Task)
 S.TaskData = TaskData;
 
 
-%% Save files on the fly : just a security in case of crash of the end the script
+%% MAIN : Save files on the fly : just a security in case of crash of the end the script
 
 save([fileparts(pwd) filesep 'data' filesep 'LastS'],'S');
 
 
-%% Close PTB
+%% MAIN : Close PTB
 
 sca;
 Priority( 0 );
 
 
-%% SPM data organization
+%% MAIN : SPM data organization
 
 [ names , onsets , durations ] = SPMnod;
 
 
-%% Saving data strucure
+%% MAIN : Saving data strucure
 
 if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
     
@@ -395,7 +395,7 @@ if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
 end
 
 
-%% Send S and SPM nod to workspace
+%% MAIN : Send S and SPM nod to workspace
 
 assignin('base', 'S'        , S        );
 assignin('base', 'names'    , names    );
@@ -403,7 +403,7 @@ assignin('base', 'onsets'   , onsets   );
 assignin('base', 'durations', durations);
 
 
-%% End recording of Eyelink
+%% MAIN : End recording of Eyelink
 
 % Eyelink mode 'On' ?
 if strcmp(S.EyelinkMode,'On')
@@ -421,20 +421,57 @@ if strcmp(S.EyelinkMode,'On')
 end
 
 
-%% Ready for another run
+%% MAIN + GUI : Ready for another run
 
 set(handles.text_LastFileNameAnnouncer, 'Visible','on'                             )
 set(handles.text_LastFileName         , 'Visible','on'                             )
 set(handles.text_LastFileName         , 'String' , DataFile(length(DataPath)+1:end))
 
 if strcmp(Task,'SEQ')
-    printResults(S.TaskData.ER)
-elseif strcmp(Task,'ADAPT')
-    %%
     
-    % Shortcut
-    from = S.TaskData.OutRecorder.Data; 
+    printResults(S.TaskData.ER)
+    
+elseif strcmp(Task,'ADAPT')
+    %% ADAPT : Shortcut
+    
+    from = S.TaskData.OutRecorder.Data;
     data = S.TaskData.SR.Data;
+    
+    
+    %% ADAPT : Compute mean & std for ReactionTime and TravelTime
+    
+    direct.idx     = find(from(:,4) == 0);
+    
+    direct.RT_vect = from(direct.idx,8);
+    direct.RT_mean = round(mean(direct.RT_vect));
+    direct.RT_std  = round(std(direct.RT_vect));
+    
+    direct.TT_vect = from(direct.idx,9);
+    direct.TT_mean = round(mean(direct.TT_vect));
+    direct.TT_std  = round(std(direct.TT_vect));
+    
+    
+    deviation.idx     = find(from(:,4) ~= 0);
+    
+    deviation.RT_vect = from(deviation.idx,8);
+    deviation.RT_mean = round(mean(deviation.RT_vect));
+    deviation.RT_std  = round(std(deviation.RT_vect));
+    
+    deviation.TT_vect = from(deviation.idx,9);
+    deviation.TT_mean = round(mean(deviation.TT_vect));
+    deviation.TT_std  = round(std(deviation.TT_vect));
+    
+    
+    fprintf('\n')
+    fprintf('Direct : \n')
+    disp(direct)
+    
+    fprintf('\n')
+    fprintf('Deviation : \n')
+    disp(deviation)
+    
+    
+    %% ADAPT : Plot Theta(t) 'normalized' from 1, all trial
     
     % Polar coordinates
     figure(10)
@@ -443,11 +480,15 @@ elseif strcmp(Task,'ADAPT')
     ax(2) = subplot(2,1,2);
     hold(ax(2), 'on')
     
+    max_t = 0;
+    
     for trial = 1 : size(from,1)
         frame_start = from(trial,6);
         frame_stop  = from(trial,7);
         
         t = data(frame_start:frame_stop,1)-data(frame_start,1); % time, in sedonds
+        
+        max_t = max(max(t),max_t);
         
         theta = data(frame_start:frame_stop,5); % raw                           :  thetha(t)
         theta = theta - data(frame_start,5);    % offcet, the curve start at 0° :  thetha(t) - thetha(0)
@@ -462,13 +503,122 @@ elseif strcmp(Task,'ADAPT')
         
     end
     
-    plot( ax(1), [0 2], [1.1 1.1], 'k:');
-    plot( ax(1), [0 2], [0.9 0.9], 'k:');
+    plot( ax(1), [0 max_t], [1.1 1.1], 'k:');
+    plot( ax(1), [0 max_t], [0.9 0.9], 'k:');
     legend(ax(1), 'show')
     axis(ax(1), 'tight')
     
-    plot( ax(2), [0 2], [1.1 1.1], 'k:');
-    plot( ax(2), [0 2], [0.9 0.9], 'k:');
+    plot( ax(2), [0 max_t], [1.1 1.1], 'k:');
+    plot( ax(2), [0 max_t], [0.9 0.9], 'k:');
+    legend(ax(2), 'show')
+    axis(ax(2), 'tight')
+    linkaxes(ax,'xy')
+    
+    
+    %% ADAPT : Plot Theta(t) 'normalized' from 1, Cut @ Theta(t) ~= Theta(0)
+    
+    % Polar coordinates
+    figure(11)
+    ax(1) = subplot(2,1,1);
+    hold(ax(1), 'on')
+    ax(2) = subplot(2,1,2);
+    hold(ax(2), 'on')
+    
+    max_t = 0;
+    
+    for trial = 1 : size(from,1)
+        frame_start = from(trial,6);
+        frame_stop  = from(trial,7);
+        
+        % Extract Theta & normalize
+        theta = data(frame_start:frame_stop,5); % raw                           :  thetha(t)
+        theta = theta - data(frame_start,5);    % offcet, the curve start at 0° :  thetha(t) - thetha(0)
+        theta = theta/theta(end);               % normalize, from 0 to 1        : (thetha(t) - thetha(0)) / ( theta(end) - thetha(0) )
+        
+        % Cut curves, start when Theta(t) ~= Theta(0)
+        % WARNING : if the trajectory is PERFECT such as Theta(t) = constant = Theta-target, then this plot will not work
+        vect_idx = theta~=0;
+        idx_t0 = find(theta~=0);
+        
+        % Extract, cut & normalize
+        t = data(frame_start:frame_stop,1)-data(frame_start,1); % time, in sedonds
+        t = t(vect_idx)-t(idx_t0(1));
+        max_t = max(max(t),max_t);
+        
+        % Cut Theta
+        theta = theta(vect_idx);
+        
+        if from(trial,4) ~= 0
+            plot( ax(1), t, theta, 'DisplayName',sprintf('Deviation - %d',from(trial,5)));
+        else
+            plot( ax(2), t, theta, 'DisplayName',sprintf('Direct - %d',from(trial,5)));
+        end
+        
+        
+    end
+    
+    plot( ax(1), [0 max_t], [1.1 1.1], 'k:');
+    plot( ax(1), [0 max_t], [0.9 0.9], 'k:');
+    legend(ax(1), 'show')
+    axis(ax(1), 'tight')
+    
+    plot( ax(2), [0 max_t], [1.1 1.1], 'k:');
+    plot( ax(2), [0 max_t], [0.9 0.9], 'k:');
+    legend(ax(2), 'show')
+    axis(ax(2), 'tight')
+    linkaxes(ax,'xy')
+    
+    
+    %% ADAPT : Plot Theta(t) 'normalized' from 1, only TravelTime, cut after ReactionTime
+    
+    % Polar coordinates
+    figure(12)
+    ax(1) = subplot(2,1,1);
+    hold(ax(1), 'on')
+    ax(2) = subplot(2,1,2);
+    hold(ax(2), 'on')
+    
+    max_t = 0;
+    
+    for trial = 1 : size(from,1)
+        frame_start = from(trial,6);
+        frame_stop  = from(trial,7);
+        
+        % Extract Theta & normalize
+        theta = data(frame_start:frame_stop,5); % raw                           :  thetha(t)
+        theta = theta - data(frame_start,5);    % offcet, the curve start at 0° :  thetha(t) - thetha(0)
+        theta = theta/theta(end);               % normalize, from 0 to 1        : (thetha(t) - thetha(0)) / ( theta(end) - thetha(0) )
+        
+        % Extract t
+        t = data(frame_start:frame_stop,1)-data(frame_start,1); % time, in sedonds
+        
+        % Cut curves, start after RT
+        vect_idx = t>=from(trial,8)/1000;
+        idx_t0 = find(vect_idx);
+        
+        % Cut t & normalize
+        t = t(vect_idx)-t(idx_t0(1));
+        max_t = max(max(t),max_t);
+        
+        % Cut Theta
+        theta = theta(vect_idx);
+        
+        if from(trial,4) ~= 0
+            plot( ax(1), t, theta, 'DisplayName',sprintf('Deviation - %d',from(trial,5)));
+        else
+            plot( ax(2), t, theta, 'DisplayName',sprintf('Direct - %d',from(trial,5)));
+        end
+        
+        
+    end
+    
+    plot( ax(1), [0 max_t], [1.1 1.1], 'k:');
+    plot( ax(1), [0 max_t], [0.9 0.9], 'k:');
+    legend(ax(1), 'show')
+    axis(ax(1), 'tight')
+    
+    plot( ax(2), [0 max_t], [1.1 1.1], 'k:');
+    plot( ax(2), [0 max_t], [0.9 0.9], 'k:');
     legend(ax(2), 'show')
     axis(ax(2), 'tight')
     linkaxes(ax,'xy')
