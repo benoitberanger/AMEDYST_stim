@@ -4,9 +4,9 @@ global S
 
 %% Shortcut
 
-from    = S.TaskData.OutRecorder.Data;
-data    = S.TaskData.SR         .Data;
-targetY = S.TaskData.TargetBigCirclePosition;
+from     = S.TaskData.OutRecorder.Data;
+data     = S.TaskData.SR         .Data;
+targetPx = S.TaskData.TargetBigCirclePosition;
 
 
 %% Plot
@@ -20,6 +20,9 @@ hold(ax(1), 'on')
 ax(2) = subplot(2,1,2);
 hold(ax(2), 'on')
 
+auc_deviation = [];
+auc_direct    = [];
+
 % Loop : plot curve for each trial
 for trial = 1 : size(from,1)
     frame_start = from(trial,6);
@@ -29,19 +32,28 @@ for trial = 1 : size(from,1)
     angle = from(trial,5)*pi/180; % degree to rad
     rotation_matrix = [cos(angle) -sin(angle); sin(angle) cos(angle)];
     xy = xy*rotation_matrix; % change referencial
-    xy = xy/targetY; % ,normalize
+    %     xy = xy/targetY; % normalize
     
     if from(trial,4) ~= 0 % deviation
         plot( ax(1), xy(:,1), xy(:,2), 'DisplayName',sprintf('Deviation - %d',from(trial,5)));
+        auc_deviation = [auc_deviation abs(trapz(xy(:,1),xy(:,2)))]; %#ok<AGROW>
     else % direct
         plot( ax(2), xy(:,1), xy(:,2), 'DisplayName',sprintf('Direct - %d',from(trial,5)));
+        auc_direct    = [auc_direct abs(trapz(xy(:,1),xy(:,2)))]; %#ok<AGROW>
     end
     
 end
 
+% fprintf('AUC Deviation : \n')
+% disp(auc_deviation)
+fprintf('mean AUC Deviation : %g \n', mean(auc_deviation))
+% fprintf('AUC Direct : \n')
+% disp(auc_direct)
+fprintf('mean AUC Direct    : %g \n', mean(auc_direct))
+
 % ideal trajectorty
-plot( ax(1), [0 1], [0 0], 'k', 'LineWidth',2);
-plot( ax(2), [0 1], [0 0], 'k', 'LineWidth',2);
+plot( ax(1), [0 targetPx], [0 0], 'k', 'LineWidth',2);
+plot( ax(2), [0 targetPx], [0 0], 'k', 'LineWidth',2);
 
 title(ax(1),'Deviation')
 title(ax(2),'Direct')
