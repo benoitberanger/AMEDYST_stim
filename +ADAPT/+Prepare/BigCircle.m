@@ -1,4 +1,4 @@
-function [ BigCircle ] = PrepareBigCircle
+function [ bigcircle ] = BigCircle
 global S
 
 diameter   = S.Parameters.ADAPT.Circle.DimensionRatio*S.PTB.wRect(4);
@@ -11,7 +11,7 @@ Yorigin    = S.PTB.CenterV;
 screenX    = S.PTB.wRect(3);
 screenY    = S.PTB.wRect(4);
 
-BigCircle = Circle(...
+bigcircle = Circle(...
     diameter   ,...     % diameter  in pixels
     thickness  ,...     % thickness in pixels
     frameColor ,...     % frame color [R G B] 0-255
@@ -22,10 +22,10 @@ BigCircle = Circle(...
     screenX    ,...     % H pixels of the screen
     screenY    );       % V pixels of the screen
 
-BigCircle.filled = 0; % only draw the frame, dont fill the disk inside
+bigcircle.filled = 0; % only draw the frame, dont fill the disk inside
 
-BigCircle.LinkToWindowPtr( S.PTB.wPtr )
+bigcircle.LinkToWindowPtr( S.PTB.wPtr )
 
-BigCircle.AssertReady % just to check
+bigcircle.AssertReady % just to check
 
 end % function

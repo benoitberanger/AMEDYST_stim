@@ -1,4 +1,4 @@
-function [ Target, PrevTarget ] = PrepareTarget
+function [ target, prevTarget ] = Target
 global S
 
 diameter   = S.Parameters.ADAPT.Target.DimensionRatio*S.PTB.wRect(4);
@@ -11,7 +11,7 @@ Yorigin    = S.PTB.CenterV;
 screenX    = S.PTB.wRect(3);
 screenY    = S.PTB.wRect(4);
 
-Target = Circle(...
+target = Circle(...
     diameter   ,...     % diameter  in pixels
     thickness  ,...     % thickness in pixels
     frameColor ,...     % frame color [R G B] 0-255
@@ -22,13 +22,13 @@ Target = Circle(...
     screenX    ,...     % H pixels of the screen
     screenY    );       % V pixels of the screen
 
-Target.LinkToWindowPtr( S.PTB.wPtr )
+target.LinkToWindowPtr( S.PTB.wPtr )
 
-Target.AssertReady % just to check
+target.AssertReady % just to check
 
-PrevTarget = Target.CopyObject;
+prevTarget = target.CopyObject;
 
 % Switch the flag 'on' after the copy of the object
-Target.valued = 1;
+target.valued = 1;
 
 end % function

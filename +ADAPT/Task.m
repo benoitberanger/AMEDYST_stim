@@ -18,10 +18,11 @@ try
     
     %% Prepare objects
     
-    Cross                  = ADAPT.PrepareCross    ;
-    BigCircle              = ADAPT.PrepareBigCircle;
-    [ Target, PrevTarget ] = ADAPT.PrepareTarget   ;
-    Cursor                 = ADAPT.PrepareCursor   ;
+    Cross                  = ADAPT.Prepare.Cross    ;
+    BigCircle              = ADAPT.Prepare.BigCircle;
+    [ Target, PrevTarget ] = ADAPT.Prepare.Target   ;
+    Cursor                 = ADAPT.Prepare.Cursor   ;
+    Reward                 = ADAPT.Prepare.Reward   ;
     
     
     %% Eyelink
@@ -359,6 +360,98 @@ try
                         break
                     else
                         InRecorder.AddSample([EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop round(ReactionTimeIN*1000) round(TravelTimeIN*1000)])
+                    end
+                    
+                    
+                    %% ~~~ Step 5 : Pause before dislpay of the reward ~~~
+                    
+                    step5Running = 1;
+                    counter_step5 = 0;
+                    
+                    Reward.content = (sprintf('+ %d',round(Parameters.ParadigmeAngle(TrialIndex,5))));
+                    
+                    while step5Running
+                        
+                        counter_step5 = counter_step5 + 1;
+                        
+                        BigCircle.Draw
+                        Cross.Draw
+                        ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
+                        
+                        Screen('DrawingFinished',S.PTB.wPtr);
+                        lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                        
+                        % Record trial onset & step onset
+                        if counter_step5 == 1
+                            ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
+                            RR.AddEvent({['preReward___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                            step5onset = lastFlipOnset;
+                        end
+                        
+                        if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
+                            step5Running = 0;
+                        end
+                        
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        % Fetch keys
+                        [keyIsDown, ~, keyCode] = KbCheck;
+                        if keyIsDown
+                            % ~~~ ESCAPE key ? ~~~
+                            [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                            if EXIT
+                                break
+                            end
+                        end
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        
+                    end % while : step 5
+                    
+                    
+                    %% ~~~ Step 6 : Show reward ~~~
+                    
+                    step6Running = 1;
+                    counter_step6 = 0;
+                    
+                    while step6Running
+                        
+                        counter_step6 = counter_step6 + 1;
+                        
+                        BigCircle.Draw
+                        Reward.Draw
+                        ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
+                        
+                        Screen('DrawingFinished',S.PTB.wPtr);
+                        lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                        SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                        
+                        % Record trial onset & step onset
+                        if counter_step6 == 1
+                            ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
+                            RR.AddEvent({['Reward___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                            step6onset = lastFlipOnset;
+                        end
+                        
+                        if lastFlipOnset >= step6onset +Parameters.RewardDisplayTime
+                            step6Running = 0;
+                        end
+                        
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        % Fetch keys
+                        [keyIsDown, ~, keyCode] = KbCheck;
+                        if keyIsDown
+                            % ~~~ ESCAPE key ? ~~~
+                            [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                            if EXIT
+                                break
+                            end
+                        end
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        
+                    end % while : step 6
+                    
+                    if EXIT
+                        break
                     end
                     
                     

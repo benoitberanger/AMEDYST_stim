@@ -1,4 +1,4 @@
-function [ Cursor ] = PrepareCursor
+function [ cursor ] = Cursor
 global S
 
 diameter   = S.Parameters.ADAPT.Cursor.DimensionRatio*S.PTB.wRect(4);
@@ -8,7 +8,7 @@ Yorigin    = S.PTB.CenterV;
 screenX    = S.PTB.wRect(3);
 screenY    = S.PTB.wRect(4);
 
-Cursor = Dot(...
+cursor = Dot(...
     diameter   ,...     % diameter  in pixels
     diskColor ,...      % disk  color [R G B] 0-255
     Xorigin    ,...     % X origin  in pixels
@@ -16,8 +16,8 @@ Cursor = Dot(...
     screenX    ,...     % H pixels of the screen
     screenY    );       % V pixels of the screen
 
-Cursor.LinkToWindowPtr( S.PTB.wPtr )
+cursor.LinkToWindowPtr( S.PTB.wPtr )
 
-Cursor.AssertReady % just to check
+cursor.AssertReady % just to check
 
 end % function

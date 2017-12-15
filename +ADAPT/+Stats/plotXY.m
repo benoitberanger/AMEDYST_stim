@@ -46,10 +46,12 @@ end
 
 % fprintf('AUC Deviation : \n')
 % disp(auc_deviation)
-fprintf('mean AUC Deviation : %g \n', mean(auc_deviation))
+fprintf('mean AUC Deviation : %d \n', round(mean(auc_deviation)))
+fprintf('std  AUC Deviation : %d \n', round(std(auc_deviation)))
 % fprintf('AUC Direct : \n')
 % disp(auc_direct)
-fprintf('mean AUC Direct    : %g \n', mean(auc_direct))
+fprintf('mean AUC Direct    : %d \n', round(mean(auc_direct)))
+fprintf('std  AUC Direct    : %d \n', round(std(auc_direct)))
 
 % ideal trajectorty
 plot( ax(1), [0 targetPx], [0 0], 'k', 'LineWidth',2);

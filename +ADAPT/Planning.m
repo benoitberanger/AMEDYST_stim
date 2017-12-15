@@ -9,11 +9,15 @@ end
 
 %% Paradigme
 
-Parameters.TrialMaxDuration            = 5; % seconds
+Parameters.TrialMaxDuration            = 5.0; % seconds
 Parameters.TimeSpentOnTargetToValidate = 0.5; % seconds
 Parameters.MinPauseBetweenTrials       = 0.5; % seconds
 Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
+Parameters.TimeWaitReward              = 0.5; % seconds
+Parameters.RewardDisplayTime           = 1.0; % seconds
+
 Parameters.TargetAngles                = [30 60 120 150];
+
 
 randSign = sign(rand-0.5);
 

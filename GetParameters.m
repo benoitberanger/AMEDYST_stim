@@ -47,9 +47,9 @@ Parameters.Video.ScreenBackgroundColor = [50 50 50]; % [R G B] ( from 0 to 255 )
 %%%%%%%%%%%%
 %   Text   %
 %%%%%%%%%%%%
-Parameters.Text.Size  = 60;
-Parameters.Text.Font  = 'Courier New';
-Parameters.Text.Color = [128 128 128]; % [R G B] ( from 0 to 255 )
+Parameters.Text.SizeRatio   = 0.10; % Size = ScreenWide *ratio
+Parameters.Text.Font        = 'Arial';
+Parameters.Text.Color       = [128 128 128]; % [R G B] ( from 0 to 255 )
 
 %%%%%%%%%%%%
 %   SEQ    %
