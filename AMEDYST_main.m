@@ -441,8 +441,10 @@ elseif strcmp(Task,'ADAPT')
         case 'Acquisition'
         case 'FastDebug'
             ADAPT.Stats.plotTheta;
+            ADAPT.Stats.plotXY;
         case 'RealisticDebug'
             ADAPT.Stats.plotTheta;
+            ADAPT.Stats.plotXY;
     end
     
 end

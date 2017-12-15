@@ -1,6 +1,7 @@
 function plotTheta
 global S
 
+
 %% Shortcut
 
 from = S.TaskData.OutRecorder.Data;
@@ -94,6 +95,12 @@ for fig = 1 : 3
     
     linkaxes(ax,'xy')
     
+    xlabel(ax(1),'time (s)')
+    xlabel(ax(2),'time (s)')
+    ylabel(ax(1),'normalized unit')
+    ylabel(ax(2),'normalized unit')
+    
 end
+
 
 end % function

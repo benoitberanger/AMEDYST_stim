@@ -255,7 +255,7 @@ try
                     
                     Target.frameCurrentColor = Target.frameBaseColor;
                     Target.Move(0,0)
-                    Target.value = Parameters.ParadigmeAngle(TrialIndex,5);
+                    Target.value = 0;
                     Target.Draw
                     
                     PrevTarget.frameCurrentColor = Red;
@@ -398,6 +398,8 @@ try
     TaskData.InRecorder  = InRecorder;
     assignin('base','OutRecorder', OutRecorder)
     assignin('base','InRecorder' , InRecorder )
+    
+    TaskData.TargetBigCirclePosition = TargetBigCirclePosition;
     
     
 catch err
