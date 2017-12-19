@@ -199,7 +199,7 @@ handles.ParPort    = ParPort;
 
 %% GUI : Left or right handed ?
 
-switch get(get(handles.uipanel_ParallelPortLeftRight,'SelectedObject'),'Tag')
+switch get(get(handles.uipanel_LeftRight,'SelectedObject'),'Tag')
     case 'radiobutton_LeftButtons'
         Side = 'Left';
     case 'radiobutton_RightButtons'

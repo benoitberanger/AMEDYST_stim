@@ -45,7 +45,7 @@ EchoStart(mfilename)
 Video = S.Parameters.Video;
 
 % Use GStreamer : for videos
-Screen('Preference', 'OverrideMultimediaEngine', 1);
+% Screen('Preference', 'OverrideMultimediaEngine', 1);
 
 % PTB opening screen will be empty = black screen
 Screen('Preference', 'VisualDebugLevel', 1);
