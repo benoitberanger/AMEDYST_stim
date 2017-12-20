@@ -436,6 +436,7 @@ elseif strcmp(Task,'ADAPT')
     % Compute stats & print them
     [S.Stats.direct, S.Stats.deviation] = ADAPT.Stats.mean_std_RT_TT;
     S.Stats.THETA = ADAPT.Stats.Theta;
+    S.Stats.XY    = ADAPT.Stats.XY   ;
     
     % Plot Theta(t)
     switch OperationMode

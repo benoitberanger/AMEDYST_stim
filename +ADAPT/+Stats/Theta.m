@@ -21,9 +21,6 @@ for method = 1 : 3
         frame_start = from(trial,6);
         frame_stop  = from(trial,7);
         
-        THETA(method).TRIAL(trial).frame_start = frame_start;
-        THETA(method).TRIAL(trial).frame_stop  = frame_stop;
-        
         theta = data(frame_start:frame_stop,5); % raw                           :  thetha(t)
         theta = theta - data(frame_start,5);    % offcet, the curve start at 0° :  thetha(t) - thetha(0)
         theta = theta/theta(end);               % normalize, from 0 to 1        : (thetha(t) - thetha(0)) / ( theta(end) - thetha(0) )
@@ -67,11 +64,13 @@ for method = 1 : 3
                 
         end
         
-        THETA(method).TRIAL(trial).max_time  = max_time;
-        THETA(method).TRIAL(trial).time      = time;
-        THETA(method).TRIAL(trial).theta     = theta;
-        THETA(method).TRIAL(trial).target    = from(trial,5);
-        THETA(method).TRIAL(trial).deviation = from(trial,4);
+        THETA(method).TRIAL(trial).frame_start = frame_start;
+        THETA(method).TRIAL(trial).frame_stop  = frame_stop;
+        THETA(method).TRIAL(trial).max_time    = max_time;
+        THETA(method).TRIAL(trial).time        = time;
+        THETA(method).TRIAL(trial).theta       = theta;
+        THETA(method).TRIAL(trial).target      = from(trial,5);
+        THETA(method).TRIAL(trial).deviation   = from(trial,4);
         
     end
     
