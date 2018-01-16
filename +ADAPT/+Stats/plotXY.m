@@ -49,8 +49,8 @@ axis(ax(2), 'tight')
 linkaxes(ax,'xy')
 
 xlabel(ax(1),'X (pixels)')
-xlabel(ax(2),'Y (pixels)')
-ylabel(ax(1),'X (pixels)')
+xlabel(ax(2),'X (pixels)')
+ylabel(ax(1),'Y (pixels)')
 ylabel(ax(2),'Y (pixels)')
 
 

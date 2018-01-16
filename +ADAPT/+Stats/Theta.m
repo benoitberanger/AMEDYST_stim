@@ -18,8 +18,8 @@ for method = 1 : 3
     
     % Loop : plot curve for each trial
     for trial = 1 : size(from,1)
-        frame_start = from(trial,6);
-        frame_stop  = from(trial,7);
+        frame_start = from(trial,7);
+        frame_stop  = from(trial,8);
         
         theta = data(frame_start:frame_stop,5); % raw                           :  thetha(t)
         theta = theta - data(frame_start,5);    % offcet, the curve start at 0° :  thetha(t) - thetha(0)
@@ -52,7 +52,7 @@ for method = 1 : 3
             case 3 % Plot Theta(t) 'normalized' from 1, only TravelTime, cut after ReactionTime
                 
                 % Cut curves, start after RT
-                idx_theta_toKeep = time*1000>=from(trial,8); % warning : here RT is in millisecond (ms), but time is in seconds (s)
+                idx_theta_toKeep = time*1000>=from(trial,9); % warning : here RT is in millisecond (ms), but time is in seconds (s)
                 idx_t_toCut      = find(idx_theta_toKeep);
                 
                 % Cut t & normalize
@@ -69,7 +69,7 @@ for method = 1 : 3
         THETA(method).TRIAL(trial).max_time    = max_time;
         THETA(method).TRIAL(trial).time        = time;
         THETA(method).TRIAL(trial).theta       = theta;
-        THETA(method).TRIAL(trial).target      = from(trial,5);
+        THETA(method).TRIAL(trial).target      = from(trial,6);
         THETA(method).TRIAL(trial).deviation   = from(trial,4);
         
     end

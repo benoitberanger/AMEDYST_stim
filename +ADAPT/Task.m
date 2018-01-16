@@ -109,7 +109,7 @@ try
                         % Record trial onset & step onset
                         if counter_step0 == 1
                             ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
-                            RR.AddEvent({['Jitter___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                            RR.AddEvent({['Jitter___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                             step0onset = lastFlipOnset;
                         end
                         
@@ -155,7 +155,7 @@ try
                     Screen('DrawingFinished',S.PTB.wPtr);
                     flipOnset_step_1 = Screen('Flip',S.PTB.wPtr);
                     SR.AddSample([flipOnset_step_1-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
-                    RR.AddEvent({['Draw@Ring__' EP.Data{evt,1}] flipOnset_step_1-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                    RR.AddEvent({['Draw@Ring__' EP.Data{evt,1}] flipOnset_step_1-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                     
                     
                     %% ~~~ Step 2 : User moves cursor to target @ big ring  ~~~
@@ -189,7 +189,7 @@ try
                         
                         % Record step onset
                         if counter_step1 == 1
-                            RR.AddEvent({['Move@Ring__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                            RR.AddEvent({['Move@Ring__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                         end
                         
                         % Is cursor center in the previous target (@ center) ?
@@ -245,7 +245,7 @@ try
                     if EXIT
                         break
                     else
-                        OutRecorder.AddSample([EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop round(ReactionTimeOUT*1000) round(TravelTimeOUT*1000)])
+                        OutRecorder.AddSample([EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop round(ReactionTimeOUT*1000) round(TravelTimeOUT*1000)])
                     end
                     
                     
@@ -269,7 +269,7 @@ try
                     Screen('DrawingFinished',S.PTB.wPtr);
                     flipOnset_step_3 = Screen('Flip',S.PTB.wPtr);
                     SR.AddSample([flipOnset_step_3-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
-                    RR.AddEvent({['Draw@Center__' EP.Data{evt,1}] flipOnset_step_3-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                    RR.AddEvent({['Draw@Center__' EP.Data{evt,1}] flipOnset_step_3-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                     
                     
                     %% ~~~ Step 4 : User moves cursor to target @ center ~~~
@@ -303,7 +303,7 @@ try
                         
                         % Record step onset
                         if counter_step4 == 1
-                            RR.AddEvent({['Move@Center__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                            RR.AddEvent({['Move@Center__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                         end
                         
                         % Is cursor center in the previous target (@ ring) ?
@@ -359,7 +359,7 @@ try
                     if EXIT
                         break
                     else
-                        InRecorder.AddSample([EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop round(ReactionTimeIN*1000) round(TravelTimeIN*1000)])
+                        InRecorder.AddSample([EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value Parameters.ParadigmeAngle(TrialIndex,2) frame_start frame_stop round(ReactionTimeIN*1000) round(TravelTimeIN*1000)])
                     end
                     
                     
@@ -385,7 +385,7 @@ try
                         % Record trial onset & step onset
                         if counter_step5 == 1
                             ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
-                            RR.AddEvent({['preReward___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                            RR.AddEvent({['preReward___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                             step5onset = lastFlipOnset;
                         end
                         
@@ -428,7 +428,7 @@ try
                         % Record trial onset & step onset
                         if counter_step6 == 1
                             ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
-                            RR.AddEvent({['Reward___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5}})
+                            RR.AddEvent({['Reward___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                             step6onset = lastFlipOnset;
                         end
                         

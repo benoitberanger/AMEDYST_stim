@@ -26,10 +26,10 @@ switch S.Task
         
     case 'ADAPT'
         
-        RR = EventRecorder( { 'event_name' , 'onset(s)' , 'duration(s)' , 'BlockNumber', 'Trial index', 'jitter duration (s)', 'Deviation(°)' } , 5000 );
+        RR = EventRecorder( { 'event_name' , 'onset(s)' , 'duration(s)' , 'BlockNumber', 'Trial index', 'jitter duration (s)', 'Deviation(°)', 'Value[0-100]' } , 5000 );
         
-        OutRecorder = SampleRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time OUT (ms)', 'Travel time OUT (ms)'} , 5000 );
-        InRecorder  = SampleRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time IN (ms)' , 'Travel time IN (ms)' } , 5000 );
+        OutRecorder = SampleRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Value[0-100]', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time OUT (ms)', 'Travel time OUT (ms)'} , 5000 );
+        InRecorder  = SampleRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Value[0-100]', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time IN (ms)' , 'Travel time IN (ms)' } , 5000 );
         
 end
 

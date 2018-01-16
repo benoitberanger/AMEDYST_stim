@@ -20,11 +20,11 @@ auc_direct    = [];
 
 % Loop : plot curve for each trial
 for trial = 1 : size(from,1)
-    frame_start = from(trial,6);
-    frame_stop  = from(trial,7);
+    frame_start = from(trial,7);
+    frame_stop  = from(trial,8);
     
     xy = data(frame_start:frame_stop,2:3);
-    angle = from(trial,5)*pi/180; % degree to rad
+    angle = from(trial,6)*pi/180; % degree to rad
     rotation_matrix = [cos(angle) -sin(angle); sin(angle) cos(angle)];
     xy = xy*rotation_matrix; % change referencial
     %     xy = xy/targetY; % normalize
@@ -38,7 +38,7 @@ for trial = 1 : size(from,1)
     XY(method).TRIAL(trial).frame_start = frame_start;
     XY(method).TRIAL(trial).frame_stop  = frame_stop;
     XY(method).TRIAL(trial).xy          = xy;
-    XY(method).TRIAL(trial).target      = from(trial,5);
+    XY(method).TRIAL(trial).target      = from(trial,6);
     XY(method).TRIAL(trial).deviation   = from(trial,4);
     XY(method).TRIAL(trial).targetPx    = targetPx;
     XY(method).TRIAL(trial).auc         = abs(trapz(xy(:,1),xy(:,2)));
