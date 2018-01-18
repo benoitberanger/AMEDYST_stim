@@ -16,8 +16,8 @@ Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
 Parameters.TimeWaitReward              = 0.5; % seconds
 Parameters.RewardDisplayTime           = 1.0; % seconds
 
-Parameters.TargetAngles                = [0 45 90 135 180];
-Parameters.Values                      = Shuffle(linspace(0,100,length(Parameters.TargetAngles)));
+Parameters.TargetAngles                =         [0 45 90 135 180] ;
+Parameters.Values                      = Shuffle([0 25 50 75  100]); % Association of 1 TargetAngle with 1 Value (randomized for each run)
 
 randSign = sign(rand-0.5);
 
@@ -73,7 +73,7 @@ for block = 1 : NrBlocks
         
         pauseJitter = Parameters.MinPauseBetweenTrials + (Parameters.MaxPauseBetweenTrials-Parameters.MinPauseBetweenTrials)*rand; % in seconds (s), random value beween [a;b] interval
         
-        value = Parameters.Values(angleList(end)==Parameters.TargetAngles);
+        value = Parameters.Values(angleList(end)==Parameters.TargetAngles); % Fetch the Value associated with this TargetAngle
         
         %                               deviation (°)       target angle (°)   variable pause duration (s)   block_number   value
         ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1)   angleList(end)     pauseJitter                   block          value ]; % Use the last angle from the current list

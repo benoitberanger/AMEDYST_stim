@@ -38,8 +38,9 @@ for trial = 1 : size(from,1)
     XY(method).TRIAL(trial).frame_start = frame_start;
     XY(method).TRIAL(trial).frame_stop  = frame_stop;
     XY(method).TRIAL(trial).xy          = xy;
-    XY(method).TRIAL(trial).target      = from(trial,6);
     XY(method).TRIAL(trial).deviation   = from(trial,4);
+    XY(method).TRIAL(trial).value       = from(trial,5);
+    XY(method).TRIAL(trial).target      = from(trial,6);
     XY(method).TRIAL(trial).targetPx    = targetPx;
     XY(method).TRIAL(trial).auc         = abs(trapz(xy(:,1),xy(:,2)));
     XY(method).AUC.Deviation.vect       = auc_deviation;
@@ -54,11 +55,11 @@ end
 % fprintf('AUC Deviation : \n')
 % disp(auc_deviation)
 fprintf('mean AUC Deviation : %d \n', XY(method).AUC.Deviation.mean)
-fprintf('std  AUC Deviation : %d \n', XY(method).AUC.Deviation.std)
+fprintf('std  AUC Deviation : %d \n', XY(method).AUC.Deviation.std )
 % fprintf('AUC Direct : \n')
 % disp(auc_direct)
-fprintf('mean AUC Direct    : %d \n', XY(method).AUC.Direct.mean)
-fprintf('std  AUC Direct    : %d \n', XY(method).AUC.Direct.std)
+fprintf('mean AUC Direct    : %d \n', XY(method).AUC.Direct.   mean)
+fprintf('std  AUC Direct    : %d \n', XY(method).AUC.Direct.   std )
 
 
 end % function

@@ -10,7 +10,7 @@ data = S.TaskData.SR         .Data;
 
 %% Plot
 
-THETA(1:3) = struct;
+THETA = struct;
 
 for method = 1 : 3
     
@@ -69,8 +69,9 @@ for method = 1 : 3
         THETA(method).TRIAL(trial).max_time    = max_time;
         THETA(method).TRIAL(trial).time        = time;
         THETA(method).TRIAL(trial).theta       = theta;
-        THETA(method).TRIAL(trial).target      = from(trial,6);
         THETA(method).TRIAL(trial).deviation   = from(trial,4);
+        THETA(method).TRIAL(trial).value       = from(trial,5);
+        THETA(method).TRIAL(trial).target      = from(trial,6);
         
     end
     

@@ -6,6 +6,9 @@ global S
 
 THETA = S.Stats.THETA;
 
+sortedValues = sort(S.TaskData.Parameters.Values);
+Colors = jet(length(sortedValues));
+
 
 %% Plot
 
@@ -33,14 +36,17 @@ for method = 1 : 3
         max_time  = THETA(method).TRIAL(trial).max_time;
         time      = THETA(method).TRIAL(trial).time;
         theta     = THETA(method).TRIAL(trial).theta;
-        target    = THETA(method).TRIAL(trial).target;
+        % target    = THETA(method).TRIAL(trial).target;
         deviation = THETA(method).TRIAL(trial).deviation;
+        value     = THETA(method).TRIAL(trial).value;
+        color     = Colors(value==sortedValues,:);
         
         if deviation ~= 0 % deviation
-            plot( ax(1), time, theta, 'DisplayName',sprintf('Deviation - %d',target));
+            axx = ax(1);
         else % direct
-            plot( ax(2), time, theta, 'DisplayName',sprintf('Direct - %d',target));
+            axx = ax(2);
         end
+        plot( axx, time, theta, 'DisplayName', sprintf('Value - %d',value), 'Color', color)
         
     end
     
@@ -48,11 +54,11 @@ for method = 1 : 3
     
     limit = 5; % percentage (%)
     
-    plot( ax(1), [0 max_time], [1 1]*(1+limit/100), 'k:');
-    plot( ax(1), [0 max_time], [1 1]*(1-limit/100), 'k:');
+    plot( ax(1), [0 max_time], [1 1]*(1+limit/100), 'k:', 'DisplayName', '+5%');
+    plot( ax(1), [0 max_time], [1 1]*(1-limit/100), 'k:', 'DisplayName', '-5%');
     
-    plot( ax(2), [0 max_time], [1 1]*(1+limit/100), 'k:');
-    plot( ax(2), [0 max_time], [1 1]*(1-limit/100), 'k:');
+    plot( ax(2), [0 max_time], [1 1]*(1+limit/100), 'k:', 'DisplayName', '+5%');
+    plot( ax(2), [0 max_time], [1 1]*(1-limit/100), 'k:', 'DisplayName', '-5%');
     
     title(ax(1),'Deviation')
     title(ax(2),'Direct')

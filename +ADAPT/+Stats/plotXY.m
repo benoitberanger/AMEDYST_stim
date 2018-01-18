@@ -6,6 +6,9 @@ global S
 
 XY = S.Stats.XY;
 
+sortedValues = sort(S.TaskData.Parameters.Values);
+Colors = jet(length(sortedValues));
+
 
 %% Plot
 
@@ -24,21 +27,25 @@ hold(ax(2), 'on')
 for trial = 1 : length(XY(method).TRIAL)
     
     xy        = XY(method).TRIAL(trial).xy;
-    target    = XY(method).TRIAL(trial).target;
+    % target    = XY(method).TRIAL(trial).target;
     deviation = XY(method).TRIAL(trial).deviation;
     targetPx  = XY(method).TRIAL(trial).targetPx;
+    value     = XY(method).TRIAL(trial).value;
+    color     = Colors(value==sortedValues,:);
     
     if deviation ~= 0 % deviation
-        plot( ax(1), xy(:,1), xy(:,2), 'DisplayName',sprintf('Deviation - %d',target));
+        axx = ax(1);
     else % direct
-        plot( ax(2), xy(:,1), xy(:,2), 'DisplayName',sprintf('Direct - %d',target));
+        axx = ax(2);
     end
+    plot( axx, xy(:,1), xy(:,2), 'DisplayName', sprintf('Value - %d',value), 'Color', color);
+    
     
 end
 
 % ideal trajectorty
-plot( ax(1), [0 targetPx], [0 0], 'k', 'LineWidth',2);
-plot( ax(2), [0 targetPx], [0 0], 'k', 'LineWidth',2);
+plot( ax(1), [0 targetPx], [0 0], 'k', 'LineWidth', 2, 'DisplayName', 'optimal');
+plot( ax(2), [0 targetPx], [0 0], 'k', 'LineWidth', 2, 'DisplayName', 'optimal');
 
 title(ax(1),'Deviation')
 title(ax(2),'Direct')
