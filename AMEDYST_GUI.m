@@ -50,13 +50,19 @@ else % Create the figure
     handles = guihandles(figHandle);
     
     
+    %% Default values for Low reward & High reward
+    
+    handles.defaultLowRreward  = 06;
+    handles.defaultHighRreward = 30;
+    
+    
     %% Panel proportions
     
     panelProp.xposP = 0.05; % xposition of panel normalized : from 0 to 1
     panelProp.wP    = 1 - panelProp.xposP * 2;
     
     panelProp.vect  = ...
-        [1 1.5 1 2 1 1 1 1 2 ]; % relative proportions of each panel, from bottom to top
+        [1 4 2 1 1 1 2 ]; % relative proportions of each panel, from bottom to top
     
     panelProp.vectLength    = length(panelProp.vect);
     panelProp.vectTotal     = sum(panelProp.vect);
@@ -176,43 +182,43 @@ else % Create the figure
         'Visible','Off');
     
     
-    %% Panel : Complex sequence
+    %     %% Panel : Complex sequence
+    %
+    %     p_seq.x = panelProp.xposP;
+    %     p_seq.w = panelProp.wP;
+    %
+    %     panelProp.countP = panelProp.countP - 1;
+    %     p_seq.y = panelProp.yposP(panelProp.countP);
+    %     p_seq.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    %
+    %     handles.uipanel_Sequence = uibuttongroup(handles.(mfilename),...
+    %         'Title','Complex sequence',...
+    %         'Units', 'Normalized',...
+    %         'Position',[p_seq.x p_seq.y p_seq.w p_seq.h],...
+    %         'BackgroundColor',figureBGcolor);
+    %
+    %     p_seq.nbO    = 1; % Number of objects
+    %     p_seq.Ow     = 1/(p_seq.nbO + 1); % Object width
+    %     p_seq.countO = 0; % Object counter
+    %     p_seq.xposO  = @(countO) p_seq.Ow/(p_seq.nbO+1)*countO + (countO-1)*p_seq.Ow;
     
-    p_seq.x = panelProp.xposP;
-    p_seq.w = panelProp.wP;
     
-    panelProp.countP = panelProp.countP - 1;
-    p_seq.y = panelProp.yposP(panelProp.countP);
-    p_seq.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
-    
-    handles.uipanel_Sequence = uibuttongroup(handles.(mfilename),...
-        'Title','Complex sequence',...
-        'Units', 'Normalized',...
-        'Position',[p_seq.x p_seq.y p_seq.w p_seq.h],...
-        'BackgroundColor',figureBGcolor);
-    
-    p_seq.nbO    = 1; % Number of objects
-    p_seq.Ow     = 1/(p_seq.nbO + 1); % Object width
-    p_seq.countO = 0; % Object counter
-    p_seq.xposO  = @(countO) p_seq.Ow/(p_seq.nbO+1)*countO + (countO-1)*p_seq.Ow;
-    
-    
-    % ---------------------------------------------------------------------
-    % Edit : Complex sequence
-    
-    p_seq.countO = p_seq.countO + 1;
-    e_seq.x   = p_seq.xposO(p_seq.countO);
-    e_seq.y   = 0.1;
-    e_seq.w   = p_seq.Ow;
-    e_seq.h   = 0.8;
-    e_seq.tag = 'edit_ComplexSequence';
-    handles.(e_seq.tag) = uicontrol(handles.uipanel_Sequence,...
-        'Style','edit',...
-        'Units', 'Normalized',...
-        'Position',[e_seq.x e_seq.y e_seq.w e_seq.h],...
-        'BackgroundColor',editBGcolor,...
-        'String','',...
-        'Callback',@edit_Seqeunce_Callback);
+    %     % ---------------------------------------------------------------------
+    %     % Edit : Complex sequence
+    %
+    %     p_seq.countO = p_seq.countO + 1;
+    %     e_seq.x   = p_seq.xposO(p_seq.countO);
+    %     e_seq.y   = 0.1;
+    %     e_seq.w   = p_seq.Ow;
+    %     e_seq.h   = 0.8;
+    %     e_seq.tag = 'edit_ComplexSequence';
+    %     handles.(e_seq.tag) = uicontrol(handles.uipanel_Sequence,...
+    %         'Style','edit',...
+    %         'Units', 'Normalized',...
+    %         'Position',[e_seq.x e_seq.y e_seq.w e_seq.h],...
+    %         'BackgroundColor',editBGcolor,...
+    %         'String','',...
+    %         'Callback',@edit_Seqeunce_Callback);
     
     
     %% Panel : Save mode
@@ -619,17 +625,80 @@ else % Create the figure
         'Callback','Eyelink.ForceShutDown');
     
     
+    %% Panel : Task : SEQ
+    
+    p_tk_x_spacing = 0.02;
+    
+    p_tk_seq.x = panelProp.xposP;
+    p_tk_seq.w = panelProp.wP*(1-p_tk_x_spacing)/2;
+    
+    panelProp.countP = panelProp.countP - 1;
+    p_tk_seq.y = panelProp.yposP(panelProp.countP);
+    p_tk_seq.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    
+    handles.uipanel_Task_SEQ = uibuttongroup(handles.(mfilename),...
+        'Title','SEQ',...
+        'Units', 'Normalized',...
+        'Position',[p_tk_seq.x p_tk_seq.y p_tk_seq.w p_tk_seq.h],...
+        'BackgroundColor',figureBGcolor);
+    
+    p_tk_seq.nbO    = 3; % Number of objects
+    p_tk_seq.Ow     = 1/(p_tk_seq.nbO + 1); % Object width
+    p_tk_seq.countO = 0; % Object counter
+    p_tk_seq.xposO  = @(countO) p_tk_seq.Ow/(p_tk_seq.nbO+1)*countO + (countO-1)*p_tk_seq.Ow;
+    
+    p_tk_seq.y_marge = 0.05;
+    
+    
+    % ---------------------------------------------------------------------
+    % Edit : Complex sequence
+    
+    p_tk_seq.countO = p_tk_seq.countO + 1;
+    e_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
+    e_seq.y   = p_tk_seq.y_marge;
+    e_seq.w   = p_tk_seq.Ow*2;
+    e_seq.h   = 0.50;
+    e_seq.tag = 'edit_ComplexSequence';
+    handles.(e_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
+        'Style','edit',...
+        'Units', 'Normalized',...
+        'Position',[e_seq.x e_seq.y e_seq.w e_seq.h],...
+        'BackgroundColor',editBGcolor,...
+        'String','',...
+        'Callback',@edit_Seqeunce_Callback,...
+        'Tooltip','Sequence, such as 54325432');
+    
+    
+    % ---------------------------------------------------------------------
+    % Pushbutton : SEQ
+    
+    p_tk_seq.countO  = p_tk_seq.countO + 2;
+    b_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
+    b_seq.y   = p_tk_seq.y_marge;
+    b_seq.w   = p_tk_seq.Ow;
+    b_seq.h   = 0.50;
+    b_seq.tag = 'pushbutton_SEQ';
+    handles.(b_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_seq.x b_seq.y b_seq.w b_seq.h],...
+        'String','SEQ',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_seq.tag,...
+        'Callback',@AMEDYST_main);
+    
+    
     %% Panel : Display feedback
     
     p_feedback.x = panelProp.xposP;
-    p_feedback.w = panelProp.wP/2*0.95;
+    p_feedback.w = panelProp.wP;
     
-    panelProp.countP = panelProp.countP - 1;
-    p_feedback.y = panelProp.yposP(panelProp.countP);
-    p_feedback.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    p_feedback.y = b_seq.y + b_seq.h + p_tk_seq.y_marge;
+    p_feedback.h = 1 - p_feedback.y - p_tk_seq.y_marge;
     
-    handles.uipanel_Feedback = uibuttongroup(handles.(mfilename),...
+    handles.uipanel_Feedback = uibuttongroup(handles.uipanel_Task_SEQ,...
         'Title','Display visual feeedback',...
+        'TitlePosition','righttop',...
         'Units', 'Normalized',...
         'Position',[p_feedback.x p_feedback.y p_feedback.w p_feedback.h],...
         'BackgroundColor',figureBGcolor);
@@ -678,16 +747,96 @@ else % Create the figure
         'BackgroundColor',figureBGcolor);
     
     
+    %% Panel : Task : ADAPT
+    
+    p_tk_adapt.x = p_tk_seq.x + p_tk_seq.w + p_tk_x_spacing;
+    p_tk_adapt.w = p_tk_seq.w;
+    
+    p_tk_adapt.y = panelProp.yposP(panelProp.countP);
+    p_tk_adapt.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    
+    handles.uipanel_Task_ADAPT = uibuttongroup(handles.(mfilename),...
+        'Title','ADAPT',...
+        'Units', 'Normalized',...
+        'Position',[p_tk_adapt.x p_tk_adapt.y p_tk_adapt.w p_tk_adapt.h],...
+        'BackgroundColor',figureBGcolor);
+    
+    p_tk_adapt.nbO    = 2; % Number of objects
+    p_tk_adapt.Ow     = 1/(p_tk_adapt.nbO + 1); % Object width
+    p_tk_adapt.countO = 0; % Object counter
+    p_tk_adapt.xposO  = @(countO) p_tk_adapt.Ow/(p_tk_adapt.nbO+1)*countO + (countO-1)*p_tk_adapt.Ow;
+    
+    p_tk_adapt.y_marge = 0.05;
+    
+    
+    % ---------------------------------------------------------------------
+    % Edit : High Reward
+    
+    p_tk_adapt.countO = p_tk_adapt.countO + 1;
+    e_high_reward.x = p_tk_adapt.xposO(p_tk_adapt.countO);
+    e_high_reward.y = p_tk_adapt.y_marge;
+    e_high_reward.w = p_tk_adapt.Ow;
+    e_high_reward.h = 0.20;
+    handles.edit_SubjectID = uicontrol(handles.uipanel_Task_ADAPT,...
+        'Style','edit',...
+        'Units', 'Normalized',...
+        'Position',[e_high_reward.x e_high_reward.y e_high_reward.w e_high_reward.h],...
+        'BackgroundColor',editBGcolor,...
+        'String',num2str(handles.defaultHighRreward),...
+        'Callback',@edit_HighReward_Callback,...
+        'Tooltip','High reward');
+    
+    
+    % ---------------------------------------------------------------------
+    % Edit : Low Reward
+    
+    e_low_reward.x = p_tk_adapt.xposO(p_tk_adapt.countO);
+    e_low_reward.y = e_high_reward.h + e_high_reward.y + p_tk_adapt.y_marge;
+    e_low_reward.w = p_tk_adapt.Ow;
+    e_low_reward.h = e_high_reward.h;
+    handles.edit_SubjectID = uicontrol(handles.uipanel_Task_ADAPT,...
+        'Style','edit',...
+        'Units', 'Normalized',...
+        'Position',[e_low_reward.x e_low_reward.y e_low_reward.w e_low_reward.h],...
+        'BackgroundColor',editBGcolor,...
+        'String',num2str(handles.defaultLowRreward),...
+        'Callback',@edit_LowReward_Callback,...
+        'Tooltip','Low reward');
+    
+    
+    % ---------------------------------------------------------------------
+    % Pushbutton : ADAPT
+    
+    p_tk_adapt.countO  = p_tk_adapt.countO + 1;
+    b_adapt.x   = p_tk_adapt.xposO(p_tk_adapt.countO);
+    b_adapt.y   = p_tk_adapt.y_marge;
+    b_adapt.w   = p_tk_adapt.Ow;
+    b_adapt.h   = 0.50;
+    b_adapt.tag = 'pushbutton_ADAPT';
+    handles.(b_adapt.tag) = uicontrol(handles.uipanel_Task_ADAPT,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_adapt.x b_adapt.y b_adapt.w b_adapt.h],...
+        'String','ADAPT',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_adapt.tag,...
+        'Callback',@AMEDYST_main);
+    
+    
+    
+    
+    
     %% Panel : Cursor input method
     
-    p_cursorinput.x = panelProp.xposP + panelProp.wP/2*1.05;
-    p_cursorinput.w = panelProp.wP/2*0.95;
+    p_cursorinput.x = panelProp.xposP;
+    p_cursorinput.w = panelProp.wP;
     
-    p_cursorinput.y = panelProp.yposP(panelProp.countP);
-    p_cursorinput.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    p_cursorinput.y = b_adapt.y + b_adapt.h + p_tk_adapt.y_marge;
+    p_cursorinput.h = 1 - p_cursorinput.y - p_tk_adapt.y_marge;
     
-    handles.uipanel_CursorInput = uibuttongroup(handles.(mfilename),...
+    handles.uipanel_CursorInput = uibuttongroup(handles.uipanel_Task_ADAPT,...
         'Title','Cursor input method',...
+        'TitlePosition','righttop',...
         'Units', 'Normalized',...
         'Position',[p_cursorinput.x p_cursorinput.y p_cursorinput.w p_cursorinput.h],...
         'BackgroundColor',figureBGcolor,...
@@ -741,68 +890,6 @@ else % Create the figure
     
     % Uncheck the button : this is my way to force the user to select a method
     set(handles.uipanel_CursorInput,'SelectedObject','')
-    
-    
-    %% Panel : Task
-    
-    p_tk.x = panelProp.xposP;
-    p_tk.w = panelProp.wP;
-    
-    panelProp.countP = panelProp.countP - 1;
-    p_tk.y = panelProp.yposP(panelProp.countP);
-    p_tk.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
-    
-    handles.uipanel_Task = uibuttongroup(handles.(mfilename),...
-        'Title','Task',...
-        'Units', 'Normalized',...
-        'Position',[p_tk.x p_tk.y p_tk.w p_tk.h],...
-        'BackgroundColor',figureBGcolor);
-    
-    p_tk.nbO    = 2; % Number of objects
-    p_tk.Ow     = 1/(p_tk.nbO + 1); % Object width
-    p_tk.countO = 0; % Object counter
-    p_tk.xposO  = @(countO) p_tk.Ow/(p_tk.nbO+1)*countO + (countO-1)*p_tk.Ow;
-    
-    buttun_y = 0.10;
-    buttun_h = 0.80;
-    
-    
-    % ---------------------------------------------------------------------
-    % Pushbutton : SEQ
-    
-    p_tk.countO  = p_tk.countO + 1;
-    b_seq.x   = p_tk.xposO(p_tk.countO);
-    b_seq.y   = buttun_y;
-    b_seq.w   = p_tk.Ow;
-    b_seq.h   = buttun_h;
-    b_seq.tag = 'pushbutton_SEQ';
-    handles.(b_seq.tag) = uicontrol(handles.uipanel_Task,...
-        'Style','pushbutton',...
-        'Units', 'Normalized',...
-        'Position',[b_seq.x b_seq.y b_seq.w b_seq.h],...
-        'String','SEQ',...
-        'BackgroundColor',buttonBGcolor,...
-        'Tag',b_seq.tag,...
-        'Callback',@AMEDYST_main);
-    
-    
-    % ---------------------------------------------------------------------
-    % Pushbutton : ADAPT
-    
-    p_tk.countO  = p_tk.countO + 1;
-    b_adapt.x   = p_tk.xposO(p_tk.countO);
-    b_adapt.y   = buttun_y;
-    b_adapt.w   = p_tk.Ow;
-    b_adapt.h   = buttun_h;
-    b_adapt.tag = 'pushbutton_ADAPT';
-    handles.(b_adapt.tag) = uicontrol(handles.uipanel_Task,...
-        'Style','pushbutton',...
-        'Units', 'Normalized',...
-        'Position',[b_adapt.x b_adapt.y b_adapt.w b_adapt.h],...
-        'String','ADAPT',...
-        'BackgroundColor',buttonBGcolor,...
-        'Tag',b_adapt.tag,...
-        'Callback',@AMEDYST_main);
     
     
     %% Panel : Operation mode
@@ -1020,6 +1107,38 @@ try
 catch err
     set(hObject,'SelectedObject',handles.radiobutton_Mouse);
     rethrow(err)
+end
+
+end % function
+
+
+% -------------------------------------------------------------------------
+function edit_HighReward_Callback(hObject, ~)
+handles = guidata(hObject);
+
+HighReward = str2double(get(hObject,'String'));
+
+if isnumeric(HighReward) && isscalar(HighReward) && ~isnan(HighReward)
+    fprintf('High reward ok : %g € \n', HighReward)
+else
+    set(hObject,'String',num2str(handles.defaultHighRreward))
+    error('High reward must be scalar value')
+end
+
+end % function
+
+
+% -------------------------------------------------------------------------
+function edit_LowReward_Callback(hObject, ~)
+handles = guidata(hObject);
+
+LowReward = str2double(get(hObject,'String'));
+
+if isnumeric(LowReward) && isscalar(LowReward) && ~isnan(LowReward)
+    fprintf('Low reward ok : %g € \n', LowReward)
+else
+    set(hObject,'String',num2str(handles.defaultLowRreward))
+    error('Low reward must be scalar value')
 end
 
 end % function
