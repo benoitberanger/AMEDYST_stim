@@ -2,8 +2,10 @@ function [ EP, Parameters ] = Planning
 global S
 
 if nargout < 1 % only to plot the paradigme when we execute the function outside of the main script
-    S.Environement    = 'MRI';
-    S.OperationMode   = 'Acquisition';
+    S.Environement  = 'MRI';
+    S.OperationMode = 'Acquisition';
+    S.LowReward     = 06;
+    S.HighReward    = 30;
 end
 
 
@@ -52,6 +54,14 @@ end
 % Some values...
 NrBlocks = size(Paradigm,1);
 NrTrials = sum(Paradigm(:,2));
+
+% -------------------------------------------------------------------------
+% Check randomizsation of gains
+
+
+
+% -------------------------------------------------------------------------
+
 
 % Pre-allocate
 ParadigmeAngle = nan(NrTrials,5);

@@ -7,7 +7,7 @@ global S
 switch S.Task
     case 'SEQ'
         ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'sequence_results'                                  } , size(EP.Data,1) );
-    case 'ADAPT'
+    case {'ADAPT_LowReward','ADAPT_HighReward'}
         ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'NrTrials'         , 'Deviation(°)' , 'BlockNumber' } , size(EP.Data,1) );
     case 'EyelinkCalibration'
 end
@@ -24,7 +24,7 @@ switch S.Task
         
         RR = EventRecorder( { 'event_name' , 'onset(s)' , 'duration(s)' , 'content' } , 5000 ); % high arbitrary value : preallocation of memory
         
-    case 'ADAPT'
+    case {'ADAPT_LowReward','ADAPT_HighReward'}
         
         RR = EventRecorder( { 'event_name' , 'onset(s)' , 'duration(s)' , 'BlockNumber', 'Trial index', 'jitter duration (s)', 'Deviation(°)', 'Value[0-100]' } , 5000 );
         

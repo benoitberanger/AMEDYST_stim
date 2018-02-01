@@ -39,8 +39,11 @@ switch get(hObject,'Tag')
     case 'pushbutton_SEQ'
         Task = 'SEQ';
         
-    case 'pushbutton_ADAPT'
-        Task = 'ADAPT';
+    case 'pushbutton_ADAPT_HighReward'
+        Task = 'ADAPT_HighReward';
+        
+    case 'pushbutton_ADAPT_LowReward'
+        Task = 'ADAPT_LowReward';
         
     case 'pushbutton_EyelinkCalibration'
         Task = 'EyelinkCalibration';
@@ -103,6 +106,21 @@ if isempty(ComplexSequence)
     error('ComplexSequence is empty')
 end
 S.ComplexSequence = ComplexSequence;
+
+
+%% GUI : Low / High reward
+
+LowReward = str2double(get(handles.edit_LowReward,'String'));
+if isempty(LowReward)
+    error('LowReward is empty')
+end
+S.LowReward = LowReward;
+
+HighReward = str2double(get(handles.edit_HighReward,'String'));
+if isempty(HighReward)
+    error('HighReward is empty')
+end
+S.HighReward = HighReward;
 
 
 %% GUI + MAIN : Subject ID & Run number
@@ -276,7 +294,7 @@ switch get(get(handles.uipanel_EyelinkMode,'SelectedObject'),'Tag')
                 task = 'E'; % don't care...
             case 'SEQ'
                 task = 'S';
-            case 'ADAPT'
+            case {'ADAPT_LowReward','ADAPT_HighReward'}
                 task = 'A';
             otherwise
                 error('AMEDYST:Task','Task ?')
@@ -349,7 +367,7 @@ switch Task
     case 'SEQ'
         TaskData = SEQ.Task;
         
-    case 'ADAPT'
+    case {'ADAPT_LowReward','ADAPT_HighReward'}
         TaskData = ADAPT.Task;
         
     case 'EyelinkCalibration'
@@ -431,7 +449,7 @@ if strcmp(Task,'SEQ')
     
     printResults(S.TaskData.ER)
     
-elseif strcmp(Task,'ADAPT')
+elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
     
     % Compute stats & print them
     [S.Stats.direct, S.Stats.deviation] = ADAPT.Stats.mean_std_RT_TT;

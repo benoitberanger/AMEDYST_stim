@@ -18,7 +18,7 @@ try
                 'Complexe'
                 };
             
-        case 'ADAPT'
+        case {'ADAPT_LowReward','ADAPT_HighReward'}
             names = {
                 'Direct'
                 'Deviation'
