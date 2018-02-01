@@ -16,8 +16,8 @@ Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
 Parameters.TimeWaitReward              = 0.5; % seconds
 Parameters.RewardDisplayTime           = 1.0; % seconds
 
-Parameters.TargetAngles                =         [0 45 90 135 180] ;
-Parameters.Values                      = Shuffle([0 25 50 75  100]); % Association of 1 TargetAngle with 1 Value (randomized for each run)
+Parameters.TargetAngles                =         [20 60 120 160] ;
+Parameters.Values                      = Shuffle([0  33  66 100]); % Association of 1 TargetAngle with 1 Value (randomized for each run)
 
 randSign = sign(rand-0.5);
 
@@ -42,9 +42,9 @@ switch S.OperationMode
     case 'RealisticDebug'
         
         Paradigm = [
-            0           5
-            randSign*45 5
-            0           5
+            0           10
+            randSign*45 10
+            0           10
             ];
         
 end
