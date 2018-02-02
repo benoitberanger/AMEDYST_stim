@@ -65,7 +65,7 @@ sortedValues = sort(S.TaskData.Parameters.Values);
 for currentValue = sortedValues
     
     vect = intersect(direct.idx, find(from(:,5)==currentValue) );
-    name = sprintf('value%.3d',currentValue);
+    name = sprintf('value%.3d',round(currentValue));
     direct.(name).RT_vect = from(vect,9);
     direct.(name).RT_mean = round(mean(direct.(name).RT_vect));
     direct.(name).RT_std  = round( std(direct.(name).RT_vect));
@@ -74,7 +74,7 @@ for currentValue = sortedValues
     direct.(name).TT_std  = round( std(direct.(name).TT_vect));
     
     vect = intersect(deviation.idx, find(from(:,5)==currentValue) );
-    name = sprintf('value%.3d',currentValue);
+    name = sprintf('value%.3d',round(currentValue));
     deviation.(name).RT_vect = from(vect,9);
     deviation.(name).RT_mean = round(mean(deviation.(name).RT_vect));
     deviation.(name).RT_std  = round( std(deviation.(name).RT_vect));

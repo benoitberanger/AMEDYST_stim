@@ -6,8 +6,17 @@ if nargout < 1 % only to plot the paradigme when we execute the function outside
     S.OperationMode = 'Acquisition';
     S.LowReward     = 06;
     S.HighReward    = 30;
+    S.Task          = 'ADAPT_HighReward';
 end
 
+switch S.Task
+    case 'ADAPT_HighReward'
+        TotalMaxReward = S.HighReward;
+    case 'ADAPT_LowReward'
+        TotalMaxReward = S.LowReward;
+    otherwise
+        error('task ?')
+end
 
 %% Paradigme
 
@@ -18,8 +27,8 @@ Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
 Parameters.TimeWaitReward              = 0.5; % seconds
 Parameters.RewardDisplayTime           = 1.0; % seconds
 
-Parameters.TargetAngles                =         [20 60 120 160] ;
-Parameters.Values                      = Shuffle([0  33  66 100]); % Association of 1 TargetAngle with 1 Value (randomized for each run)
+Parameters.TargetAngles                =         [20 60 120 160]       ;
+Parameters.Values                      = Shuffle([0  1  2   3  ]/3 * 100); % Association of 1 TargetAngle with 1 Value (randomized for each run)
 
 randSign = sign(rand-0.5);
 
@@ -56,15 +65,16 @@ NrBlocks = size(Paradigm,1);
 NrTrials = sum(Paradigm(:,2));
 
 % -------------------------------------------------------------------------
-% Check randomizsation of gains
+% Compute gain if rewarded
 
-
+NrRewardPerValue = Parameters.Values/100 * NrTrials/length(Parameters.Values);
+UnitGain         = TotalMaxReward / sum(NrRewardPerValue);
 
 % -------------------------------------------------------------------------
 
 
 % Pre-allocate
-ParadigmeAngle = nan(NrTrials,5);
+ParadigmeAngle = nan(NrTrials,6);
 
 % Shuffle the list of angles
 angleList = Shuffle(Parameters.TargetAngles);
@@ -85,14 +95,17 @@ for block = 1 : NrBlocks
         
         value = Parameters.Values(angleList(end)==Parameters.TargetAngles); % Fetch the Value associated with this TargetAngle
         
-        %                               deviation (°)       target angle (°)   variable pause duration (s)   block_number   value
-        ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1)   angleList(end)     pauseJitter                   block          value ]; % Use the last angle from the current list
+        %                               deviation (°)       target angle (°)   variable pause duration (s)   block_number   value   reward(0/1)
+        ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1)   angleList(end)     pauseJitter                   block          value   rand*100<value ]; % Use the last angle from the current list
         angleList(end) = []; % Remove the last angle used
         
     end
 end
 
 Parameters.ParadigmeAngle = ParadigmeAngle;
+
+TotalReward = sum(ParadigmeAngle(:,end)) * UnitGain;
+fprintf('Total reward for this run : %g € \n', TotalReward);
 
 
 %% Define a planning <--- paradigme
