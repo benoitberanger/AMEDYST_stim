@@ -10,6 +10,7 @@ classdef Image < baseObject
         filename  % image file path
         scale = 1 % scale of the image => 1 means original image
         center    % [X-center-PTB, Y-center-PTB]
+        baseColor % color of the the image rect, when you don't want to draw the image but just it's frame
         
         % Internal variables
         
@@ -21,7 +22,7 @@ classdef Image < baseObject
         
         texturePtr % PTB texure pointer
         
-        
+        currentColor % color of the the image rect, when you don't want to draw the image but just it's frame
         
     end % properties
     
@@ -33,8 +34,8 @@ classdef Image < baseObject
         % -----------------------------------------------------------------
         %                           Constructor
         % -----------------------------------------------------------------
-        function self = Image( filename, center, scale )
-            % obj = Image( filename, center, scale )
+        function self = Image( filename, center, scale, color )
+            % obj = Image( filename, center, scale, color )
             
             % ================ Check input argument =======================
             
@@ -55,6 +56,8 @@ classdef Image < baseObject
                 [self.center(1), self.center(2)] = RectCenter(self.baseRect);
                 self.GenerateRect;
                 
+                self.baseColor    = [ 0 0 0 ]; % [ R G B ] form 0 to 255
+                self.currentColor = self.baseColor;
                 
                 % ================== Callback =============================
                 
@@ -64,6 +67,11 @@ classdef Image < baseObject
                 
                 if nargin > 2 && ~isempty(scale)
                     self.Rescale(scale);
+                end
+                
+                if nargin > 3 && ~isempty(color)
+                    self.baseColor    = color;
+                    self.currentColor = color;
                 end
                 
             else

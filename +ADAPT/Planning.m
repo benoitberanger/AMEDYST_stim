@@ -69,6 +69,8 @@ NrTrials = sum(Paradigm(:,2));
 
 NrRewardPerValue = Parameters.Values/100 * NrTrials/length(Parameters.Values);
 UnitGain         = TotalMaxReward / sum(NrRewardPerValue);
+fprintf('UnitGain for this run     : %g € \n', UnitGain);
+
 
 % -------------------------------------------------------------------------
 
@@ -106,6 +108,9 @@ Parameters.ParadigmeAngle = ParadigmeAngle;
 
 TotalReward = sum(ParadigmeAngle(:,end)) * UnitGain;
 fprintf('Total reward for this run : %g € \n', TotalReward);
+
+Parameters.UnitGain    = UnitGain;
+Parameters.TotalReward = TotalReward;
 
 
 %% Define a planning <--- paradigme

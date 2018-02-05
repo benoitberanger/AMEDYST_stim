@@ -96,10 +96,13 @@ Parameters.ADAPT.Cursor.DimensionRatio = 0.04;        % diameter = DimensionRati
 Parameters.ADAPT.Cursor.DiskColor      = [255 255 0]; % [R G B] ( from 0 to 255 )
 
 % Small cross at the center => @FixationCross
-Parameters.ADAPT.Cross.ScreenRatio    = 0.05;          % ratio : dim   = ScreenHeight*ratio_screen
-Parameters.ADAPT.Cross.lineWidthRatio = 0.05;          % ratio : width = dim         *ratio_width
-Parameters.ADAPT.Cross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
+Parameters.ADAPT.Cross.ScreenRatio     = 0.05;          % ratio : dim   = ScreenHeight*ratio_screen
+Parameters.ADAPT.Cross.lineWidthRatio  = 0.05;          % ratio : width = dim         *ratio_width
+Parameters.ADAPT.Cross.Color           = [128 128 128]; % [R G B] ( from 0 to 255 )
 
+% Reward => @Image
+Parameters.ADAPT.Reward.ScreenRatio    = 0.25;          % ratio : dim   = ScreenHeight*ratio_screen
+Parameters.ADAPT.Reward.NoRewardColor  = [128 128 128]; % color of the rectangle when there is no reward
 
 %%%%%%%%%%%%%%
 %  Keybinds  %

@@ -88,6 +88,8 @@ try
                     % Counter = trial index
                     TrialIndex = TrialIndex + 1;
                     
+                    disp(Parameters.ParadigmeAngle(TrialIndex,:))
+                    
                     
                     %% ~~~ Step 0 : Jitter between trials ~~~
                     
@@ -368,8 +370,6 @@ try
                     step5Running = 1;
                     counter_step5 = 0;
                     
-                    Reward.content = (sprintf('+ %d',round(Parameters.ParadigmeAngle(TrialIndex,5))));
-                    
                     while step5Running
                         
                         counter_step5 = counter_step5 + 1;
@@ -418,7 +418,7 @@ try
                         counter_step6 = counter_step6 + 1;
                         
                         BigCircle.Draw
-                        Reward.Draw
+                        Reward.Draw(Parameters.ParadigmeAngle(TrialIndex,6));
                         ADAPT.UpdateCursor(Cursor, EP.Data{evt,5})
                         
                         Screen('DrawingFinished',S.PTB.wPtr);

@@ -451,21 +451,28 @@ if strcmp(Task,'SEQ')
     
 elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
     
-    % Compute stats & print them
-    [S.Stats.direct, S.Stats.deviation] = ADAPT.Stats.mean_std_RT_TT;
-    S.Stats.THETA = ADAPT.Stats.Theta;
-    S.Stats.XY    = ADAPT.Stats.XY   ;
-    
-    % Plot Theta(t)
-    switch OperationMode
-        case 'Acquisition'
-        case 'FastDebug'
-            ADAPT.Stats.plotTheta;
-            ADAPT.Stats.plotXY;
-        case 'RealisticDebug'
-            ADAPT.Stats.plotTheta;
-            ADAPT.Stats.plotXY;
+    if ~isempty(S.TaskData.OutRecorder.Data)
+        
+        % Compute stats & print them
+        [S.Stats.direct, S.Stats.deviation] = ADAPT.Stats.mean_std_RT_TT;
+        S.Stats.THETA = ADAPT.Stats.Theta;
+        S.Stats.XY    = ADAPT.Stats.XY   ;
+        
+        % Plot Theta(t)
+        switch OperationMode
+            case 'Acquisition'
+            case 'FastDebug'
+                ADAPT.Stats.plotTheta;
+                ADAPT.Stats.plotXY;
+            case 'RealisticDebug'
+                ADAPT.Stats.plotTheta;
+                ADAPT.Stats.plotXY;
+        end % switch
+        
     end
+    
+    fprintf('UnitGain for this run     : %g € \n', S.TaskData.Parameters.UnitGain);
+    fprintf('Total reward for this run : %g € \n', S.TaskData.Parameters.TotalReward);
     
 end
 
