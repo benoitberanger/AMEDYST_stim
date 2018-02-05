@@ -85,7 +85,7 @@ PTB.FPS   = Screen('FrameRate', PTB.wPtr);
 
 % Set up alpha-blending for smooth (anti-aliased) lines and alpha-blending
 % (transparent background textures)
-% Screen('BlendFunction', PTB.wPtr, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
+Screen('BlendFunction', PTB.wPtr, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
 
 % Center
 [ PTB.CenterH , PTB.CenterV ] = RectCenter( PTB.wRect );
