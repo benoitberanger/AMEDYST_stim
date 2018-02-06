@@ -67,7 +67,7 @@ NrTrials = sum(cell2mat(Paradigm(:,3)));
 
 
 % Create and prepare
-header = { 'event_name', 'onset(s)', 'duration(s)', 'Deviation(°)', 'Target angle (°)', 'Variable pause duration (s)', 'Probability of reward (%)', 'is rewarded (0/1)'};
+header = { 'event_name', 'onset(s)', 'duration(s)', 'Block#', 'Trial#', 'Deviation(°)', 'Target angle (°)', 'Variable pause duration (s)', 'Probability of reward (%)', 'is rewarded (0/1)'};
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration
@@ -100,7 +100,7 @@ for block = 1 : size(Paradigm,1)
         
         value = Parameters.Values(angleList(end)==Parameters.TargetAngles); % Fetch the Value associated with this TargetAngle
         
-        EP.AddPlanning({ Paradigm{block,1} NextOnset(EP) Parameters.TrialMaxDuration Paradigm{block,2}   angleList(end) pauseJitter value rand*100<value});
+        EP.AddPlanning({ Paradigm{block,1} NextOnset(EP) Parameters.TrialMaxDuration block trial_counter Paradigm{block,2}   angleList(end) pauseJitter value double(rand*100<value)});
         
         angleList(end) = []; % Remove the last angle used
         

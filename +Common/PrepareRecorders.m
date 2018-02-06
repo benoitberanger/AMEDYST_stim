@@ -6,10 +6,9 @@ global S
 % Create
 switch S.Task
     case 'SEQ'
-        ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'sequence_results'                                  } , size(EP.Data,1) );
+        ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'sequence_results' } , size(EP.Data,1) );
     case {'ADAPT_LowReward','ADAPT_HighReward'}
-        ER = EventRecorder( { 'event_name' , 'onset(s)' , 'durations(s)' , 'NrTrials'         , 'Deviation(°)' , 'BlockNumber' } , size(EP.Data,1) );
-    case 'EyelinkCalibration'
+        ER = EventRecorder( EP.Header                                                           , size(EP.Data,1) );
 end
 
 % Prepare
@@ -26,7 +25,7 @@ switch S.Task
         
     case {'ADAPT_LowReward','ADAPT_HighReward'}
         
-        RR = EventRecorder( { 'event_name' , 'onset(s)' , 'duration(s)' , 'BlockNumber', 'Trial index', 'jitter duration (s)', 'Deviation(°)', 'Value[0-100]' } , 5000 );
+        RR = EventRecorder( EP.Header , 5000 );
         
         OutRecorder = SampleRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Value[0-100]', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time OUT (ms)', 'Travel time OUT (ms)'} , 5000 );
         InRecorder  = SampleRecorder( { 'BlockNumber' 'Trial index', 'jitter duration (s)', 'Deviation (°)', 'Value[0-100]', 'Target angle (°)', 'frame_start', 'frame_stop', 'Reaction time IN (ms)' , 'Travel time IN (ms)' } , 5000 );
