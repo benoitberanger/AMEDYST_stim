@@ -36,57 +36,60 @@ switch S.OperationMode
     
     case 'Acquisition'
         
-        Paradigm = [
-            0           30
-            randSign*45 60
-            0           30
-            ];
+        Paradigm = {
+            'Direct_Pre'  0           30
+            'Deviation'   randSign*45 60
+            'Direct_Post' 0           30
+            };
         
     case 'FastDebug'
         
-        Paradigm = [
-            0           2
-            randSign*45 2
-            0           2
-            ];
+        Paradigm = {
+            'Direct_Pre'  0           2
+            'Deviation'   randSign*45 2
+            'Direct_Post' 0           2
+            };
         
     case 'RealisticDebug'
         
-        Paradigm = [
-            0           10
-            randSign*45 10
-            0           10
-            ];
+        Paradigm = {
+            'Direct_Pre'  0           10
+            'Deviation'   randSign*45 10
+            'Direct_Post' 0           10
+            };
         
 end
 
 % Some values...
-NrBlocks = size(Paradigm,1);
-NrTrials = sum(Paradigm(:,2));
+NrTrials = sum(cell2mat(Paradigm(:,3)));
 
-% -------------------------------------------------------------------------
-% Compute gain if rewarded
-
-NrRewardPerValue = Parameters.Values/100 * NrTrials/length(Parameters.Values);
-UnitGain         = TotalMaxReward / sum(NrRewardPerValue);
-fprintf('UnitGain for this run     : %g € \n', UnitGain);
+%% Define a planning <--- paradigme
 
 
-% -------------------------------------------------------------------------
+% Create and prepare
+header = { 'event_name', 'onset(s)', 'duration(s)', 'Deviation(°)', 'Target angle (°)', 'Variable pause duration (s)', 'Probability of reward (%)', 'is rewarded (0/1)'};
+EP     = EventPlanning(header);
+
+% NextOnset = PreviousOnset + PreviousDuration
+NextOnset = @(EP) EP.Data{end,2} + EP.Data{end,3};
 
 
-% Pre-allocate
-ParadigmeAngle = nan(NrTrials,6);
+% --- Start ---------------------------------------------------------------
+
+EP.AddStartTime('StartTime',0);
+
+% --- Stim ----------------------------------------------------------------
 
 % Shuffle the list of angles
 angleList = Shuffle(Parameters.TargetAngles);
 
-TrialIndex = 0;
-for block = 1 : NrBlocks
-    for dontcare = 1 :  Paradigm(block,2)
+trial_counter = 0;
+
+for block = 1 : size(Paradigm,1)
+    
+    for trial_idx_in_block = 1 : Paradigm{block,3}
         
-        % Counter = trial index
-        TrialIndex = TrialIndex + 1;
+        trial_counter = trial_counter + 1;
         
         % If angleList is empty, generate a new one
         if isempty(angleList)
@@ -97,53 +100,29 @@ for block = 1 : NrBlocks
         
         value = Parameters.Values(angleList(end)==Parameters.TargetAngles); % Fetch the Value associated with this TargetAngle
         
-        %                               deviation (°)       target angle (°)   variable pause duration (s)   block_number   value   reward(0/1)
-        ParadigmeAngle(TrialIndex,:) = [Paradigm(block,1)   angleList(end)     pauseJitter                   block          value   rand*100<value ]; % Use the last angle from the current list
+        EP.AddPlanning({ Paradigm{block,1} NextOnset(EP) Parameters.TrialMaxDuration Paradigm{block,2}   angleList(end) pauseJitter value rand*100<value});
+        
         angleList(end) = []; % Remove the last angle used
         
     end
-end
-
-Parameters.ParadigmeAngle = ParadigmeAngle;
-
-TotalReward = sum(ParadigmeAngle(:,end)) * UnitGain;
-fprintf('Total reward for this run : %g € \n', TotalReward);
-
-Parameters.UnitGain    = UnitGain;
-Parameters.TotalReward = TotalReward;
-
-
-%% Define a planning <--- paradigme
-
-
-% Create and prepare
-header = { 'event_name' , 'onset(s)' , 'duration(s)' , 'NrTrials' 'Deviation(°)' 'BlockNumber'};
-EP     = EventPlanning(header);
-
-% NextOnset = PreviousOnset + PreviousDuration
-NextOnset = @(EP) EP.Data{end,2} + EP.Data{end,3};
-
-
-% --- Start ---------------------------------------------------------------
-
-EP.AddPlanning({ 'StartTime' 0  0 [] [] []});
-
-% --- Stim ----------------------------------------------------------------
-
-for p = 1 : size(Paradigm,1)
-    
-    if  Paradigm(p,1) == 0
-        blockName = 'Direct';
-    else
-        blockName = 'Deviation';
-    end
-    EP.AddPlanning({ blockName NextOnset(EP) Parameters.TrialMaxDuration*Paradigm(p,2) Paradigm(p,2) Paradigm(p,1) p});
     
 end
 
 % --- Stop ----------------------------------------------------------------
 
-EP.AddPlanning({ 'StopTime' NextOnset(EP) 0 [] [] []});
+EP.AddStopTime('StopTime',NextOnset(EP));
+
+
+%% Compute gain when rewarded
+
+NrRewardPerValue = Parameters.Values/100 * NrTrials/length(Parameters.Values);
+UnitGain         = TotalMaxReward / sum(NrRewardPerValue);
+TotalReward      = sum(cell2mat(EP.Data(2:end-1,8))) * UnitGain;
+fprintf('UnitGain for this run     : %g € \n', UnitGain);
+fprintf('Total reward for this run : %g € \n', TotalReward);
+
+Parameters.UnitGain    = UnitGain;
+Parameters.TotalReward = TotalReward;
 
 
 %% Display

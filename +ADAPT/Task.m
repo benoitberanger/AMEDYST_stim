@@ -110,7 +110,7 @@ try
                         % Record trial onset & step onset
                         if counter_step0 == 1
                             ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
-                            RR.AddEvent({['Jitter___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
+                            RR.AddEvent({['Jitter__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                             step0onset = lastFlipOnset;
                         end
                         
@@ -384,7 +384,7 @@ try
                         % Record trial onset & step onset
                         if counter_step5 == 1
                             ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
-                            RR.AddEvent({['preReward___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
+                            RR.AddEvent({['preReward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                             step5onset = lastFlipOnset;
                         end
                         
@@ -427,7 +427,7 @@ try
                         % Record trial onset & step onset
                         if counter_step6 == 1
                             ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6}})
-                            RR.AddEvent({['Reward___' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
+                            RR.AddEvent({['Reward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,6} TrialIndex Parameters.ParadigmeAngle(TrialIndex,3) EP.Data{evt,5} Target.value})
                             step6onset = lastFlipOnset;
                         end
                         
