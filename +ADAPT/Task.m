@@ -84,11 +84,10 @@ try
                 
                 for trialIndexInBlock = 1 : EP.Data{evt,4}
                     
-                    
                     % Counter = trial index
                     TrialIndex = TrialIndex + 1;
                     
-                    disp(Parameters.ParadigmeAngle(TrialIndex,:))
+                    fprintf('#%3d deviation=%2d° target=%3d° value=%3d%% reward=%d \n',TrialIndex,round(Parameters.ParadigmeAngle(TrialIndex,[1 2 5 6])))
                     
                     
                     %% ~~~ Step 0 : Jitter between trials ~~~
