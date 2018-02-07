@@ -18,27 +18,27 @@ for block = 1 : 3
     data_in_block = data( data(:,1)==block , : );
     
     % Adjust number of chunks if necessary, be thow a warning
-    NrChuncks = size(data_in_block,1)/NrAngles;
-    if NrChuncks ~= round(NrChuncks)
+    NrChunks = size(data_in_block,1)/NrAngles;
+    if NrChunks ~= round(NrChunks)
         warning('chunk error : not an integer, in block #%d', block)
     end
-    NrChuncks = floor(NrChuncks);
+    NrChunks = floor(NrChunks);
     
     % Pre-allocation
-    RTmean = zeros(1,NrChuncks);
+    RTmean = zeros(1,NrChunks);
     RTstd  = RTmean;
     TTmean = RTmean;
     TTstd  = RTmean;
     
-    for chunk = 1 : NrChuncks
+    for chunk = 1 : NrChunks
         
-        idx = NrAngles * (chunk-1) + 1   :   NrAngles * chunk;
+        chk_idx = NrAngles * (chunk-1) + 1   :   NrAngles * chunk;
         
-        RTmean(chunk) = mean(data_in_block(idx,9));
-        RTstd (chunk) =  std(data_in_block(idx,9));
+        RTmean(chunk) = mean(data_in_block(chk_idx,9));
+        RTstd (chunk) =  std(data_in_block(chk_idx,9));
         
-        TTmean(chunk) = mean(data_in_block(idx,10));
-        TTstd (chunk) =  std(data_in_block(idx,10));
+        TTmean(chunk) = mean(data_in_block(chk_idx,10));
+        TTstd (chunk) =  std(data_in_block(chk_idx,10));
         
     end % chunk
     

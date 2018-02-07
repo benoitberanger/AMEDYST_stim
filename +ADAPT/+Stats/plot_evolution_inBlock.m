@@ -1,55 +1,77 @@
 function plot_evolution_inBlock
 global S
 
+%% Shortcut
+
 input = S.Stats.evolution_RT_TT_inBlock;
+data  = S.TaskData.OutRecorder.Data;
+NrAngles = length(S.TaskData.Parameters.TargetAngles);
 
-N1 = length(input.Direct_Pre.RTmean);
-N2 = length(input.Deviaton.RTmean);
-N3 = length(input.Direct_Post.RTmean);
+colors = lines(3);
 
-N = N1 + N2 + N3;
+
+%% Plot
 
 figure('Name','Evolution of RT TT in blocks','NumberTitle','off')
-ax(1) = subplot(2,1,1); hold(ax(1),'on');
-ax(2) = subplot(2,1,2); hold(ax(2),'on');
 
+nAxes = 2;
+ax = zeros(nAxes,1);
+
+for a = 1:nAxes
+    ax(a) = subplot(nAxes,1,a); hold(ax(a),'all');
+end
 
 for block = 1 : 3
     
-    switch block
-        case 1
-            idx_b1 = 1:N1;
-            if ~isempty(idx_b1)
-                plot(ax(1), idx_b1,input.Direct_Pre.RTmean, 'DisplayName','Direct-Pre'  )
-                plot(ax(2), idx_b1,input.Direct_Pre.TTmean, 'DisplayName','Direct-Pre'  )
-            end
-        case 2
-            if ~isempty(idx_b1)
-                idx_b2 = idx_b1(end)+1:idx_b1(end)+N2;
-                plot(ax(1), idx_b2,input.Deviaton.RTmean   ,'DisplayName','Deviaton'   )
-                plot(ax(2), idx_b2,input.Deviaton.TTmean   ,'DisplayName','Deviaton'   )
-            end
-        case 3
-            if ~isempty(idx_b2)
-                idx_b3 = idx_b2(end)+1:idx_b2(end)+N3;
-                plot(ax(1), idx_b3,input.Direct_Post.RTmean,'DisplayName','Direct-Post')
-                plot(ax(2), idx_b3,input.Direct_Post.TTmean,'DisplayName','Direct-Post')
-            end
-        otherwise
-            error('block ?')
+    % --- plot(block) + boxplot(plot) ---
+    
+    blk_idx = find(data(:,1) == block);
+    
+    plot(ax(1),blk_idx,data(blk_idx,9) ,'-s','Color',colors(block,:),'LineWidth',2)
+    plot(ax(2),blk_idx,data(blk_idx,10),'-s','Color',colors(block,:),'LineWidth',2)
+    % boxplot(ax(1),data(blk_idx,9),'Position',mean(blk_idx),'Notch','off','Whisker',1)
+    % boxplot(ax(2),data(blk_idx,10),'Position',mean(blk_idx),'Notch','off','Whisker',1)
+    
+    % --- boxplot(chunck@block) ---
+    
+    % Fetch data in the current block
+    data_in_block = data( data(:,1)==block , : );
+    
+    % Adjust number of chunks if necessary, be thow a warning
+    NrChunks = size(data_in_block,1)/NrAngles;
+    if NrChunks ~= round(NrChunks)
+        warning('chunk error : not an integer, in block #%d', block)
+    end
+    NrChunks = floor(NrChunks);
+    
+    for chunk = 1 : NrChunks
+        chk_idx = NrAngles * (chunk-1) + 1   :   NrAngles * chunk;
+        % boxplot(ax(1),data_in_block(chk_idx,9),'Position',mean(chk_idx)+(block-1)*NrChunks*NrAngles,'Color',colors(block,:),'Notch','off','Whisker',1)
+        % boxplot(ax(2),data_in_block(chk_idx,10),'Position',mean(chk_idx)+(block-1)*NrChunks*NrAngles,'Color',colors(block,:),'Notch','off','Whisker',1)
+        bar(ax(1),mean(chk_idx)+(block-1)*NrChunks*NrAngles,mean(data_in_block(chk_idx,9 )),NrAngles,'FaceColor','none','EdgeColor',colors(block,:))
+        bar(ax(2),mean(chk_idx)+(block-1)*NrChunks*NrAngles,mean(data_in_block(chk_idx,10)),NrAngles,'FaceColor','none','EdgeColor',colors(block,:))
+        errorbar(ax(1),mean(chk_idx)+(block-1)*NrChunks*NrAngles,mean(data_in_block(chk_idx,9 )),std(data_in_block(chk_idx,9 )),'Color',colors(block,:))
+        errorbar(ax(2),mean(chk_idx)+(block-1)*NrChunks*NrAngles,mean(data_in_block(chk_idx,10)),std(data_in_block(chk_idx,10)),'Color',colors(block,:))
     end
     
 end % block
 
-legend(ax(1),'show')
-xlabel(ax(1),'each point is the mean of 4 trials')
+
+for a = 1:nAxes
+    
+    axis(ax(a),'tight')
+    % legend(ax(a),'show')
+    xlabel(ax(a),'each point is the mean of 4 trials')
+    set   (ax(a),'XTick',1:size(data,1))
+    set   (ax(a),'XTickLabel',num2cell(1:size(data,1)))
+    
+end
+
 ylabel(ax(1),'RT in milliseconds')
-set   (ax(1),'XTick',1:N)
-legend(ax(2),'show')
-xlabel(ax(2),'each point is the mean of 4 trials')
 ylabel(ax(2),'TT in milliseconds')
-set   (ax(2),'XTick',1:N)
 
 linkaxes(ax,'xy')
+% ScaleAxisLimits(ax(1))
+
 
 end % function
