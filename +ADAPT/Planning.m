@@ -4,8 +4,8 @@ global S
 if nargout < 1 % only to plot the paradigme when we execute the function outside of the main script
     S.Environement  = 'MRI';
     S.OperationMode = 'Acquisition';
-    S.LowReward     = 06;
-    S.HighReward    = 30;
+    S.LowReward     = 06.4;
+    S.HighReward    = 32.0;
     S.Task          = 'ADAPT_HighReward';
 end
 
@@ -37,25 +37,25 @@ switch S.OperationMode
     case 'Acquisition'
         
         Paradigm = {
-            'Direct_Pre'  0           30
-            'Deviation'   randSign*45 60
-            'Direct_Post' 0           30
+            'Direct_Pre'  0           32
+            'Deviation'   randSign*45 64
+            'Direct_Post' 0           32
             };
         
     case 'FastDebug'
         
         Paradigm = {
-            'Direct_Pre'  0           2
-            'Deviation'   randSign*45 2
-            'Direct_Post' 0           2
+            'Direct_Pre'  0           4
+            'Deviation'   randSign*45 4
+            'Direct_Post' 0           4
             };
         
     case 'RealisticDebug'
         
         Paradigm = {
-            'Direct_Pre'  0           10
-            'Deviation'   randSign*45 10
-            'Direct_Post' 0           10
+            'Direct_Pre'  0           12
+            'Deviation'   randSign*45 12
+            'Direct_Post' 0           12
             };
         
 end

@@ -52,8 +52,8 @@ else % Create the figure
     
     %% Default values for Low reward & High reward
     
-    handles.defaultLowRreward  = 06;
-    handles.defaultHighRreward = 30;
+    handles.defaultLowRreward  = 06.4;
+    handles.defaultHighRreward = 32.0;
     
     
     %% Panel proportions
