@@ -23,14 +23,30 @@ end
 
 for block = 1 : 3
     
+    % Block name
+    switch block
+        case 1
+            name = 'Direct-Pre';
+        case 2
+            name = 'Deviaton';
+        case 3
+            name = 'Direct-Post';
+        otherwise
+            error('block ?')
+    end % switch
+    
     % --- plot(block) + boxplot(plot) ---
     
     blk_idx = find(data(:,1) == block);
     
-    plot(ax(1),blk_idx,data(blk_idx,9) ,'-s','Color',colors(block,:),'LineWidth',2)
-    plot(ax(2),blk_idx,data(blk_idx,10),'-s','Color',colors(block,:),'LineWidth',2)
+    plot(ax(1),blk_idx,data(blk_idx,9) ,'-s','Color',colors(block,:),'LineWidth',2,'DisplayName',name)
+    plot(ax(2),blk_idx,data(blk_idx,10),'-s','Color',colors(block,:),'LineWidth',2,'DisplayName',name)
     % boxplot(ax(1),data(blk_idx,9),'Position',mean(blk_idx),'Notch','off','Whisker',1)
     % boxplot(ax(2),data(blk_idx,10),'Position',mean(blk_idx),'Notch','off','Whisker',1)
+    bar     (ax(1),mean(blk_idx),mean(data(blk_idx,9 )),length(blk_idx),'FaceColor','none','EdgeColor',colors(block,:)*0.5,'LineStyle','--')
+    bar     (ax(2),mean(blk_idx),mean(data(blk_idx,10)),length(blk_idx),'FaceColor','none','EdgeColor',colors(block,:)*0.5,'LineStyle','--')
+    errorbar(ax(1),mean(blk_idx),mean(data(blk_idx,9 )),std(data(blk_idx,9 )),'Color',colors(block,:)*0.5,'LineStyle','--')
+    errorbar(ax(2),mean(blk_idx),mean(data(blk_idx,10)),std(data(blk_idx,10)),'Color',colors(block,:)*0.5,'LineStyle','--')
     
     % --- boxplot(chunck@block) ---
     
