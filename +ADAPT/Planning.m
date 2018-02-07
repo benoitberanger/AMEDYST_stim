@@ -117,7 +117,7 @@ EP.AddStopTime('StopTime',NextOnset(EP));
 
 NrRewardPerValue = Parameters.Values/100 * NrTrials/length(Parameters.Values);
 UnitGain         = TotalMaxReward / sum(NrRewardPerValue);
-TotalReward      = sum(cell2mat(EP.Data(2:end-1,8))) * UnitGain;
+TotalReward      = sum(cell2mat(EP.Data(2:end-1,10))) * UnitGain;
 fprintf('UnitGain for this run     : %g € \n', UnitGain);
 fprintf('Total reward for this run : %g € \n', TotalReward);
 
