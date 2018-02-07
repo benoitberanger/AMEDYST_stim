@@ -25,10 +25,11 @@ for method = 1 : 3
         case 3
             set(f,'Name','Plot Theta(t) ''normalized'' from 1, only TravelTime, cut after ReactionTime');
     end
-    ax(1) = subplot(2,1,1);
-    hold(ax(1), 'on')
-    ax(2) = subplot(2,1,2);
-    hold(ax(2), 'on')
+    
+    for block = 1 : 3
+        ax(block) = subplot(3,1,block); %#ok<AGROW>
+        hold(ax(block), 'on')
+    end
     
     % Loop : plot curve for each trial
     for trial = 1 : length(THETA(method).TRIAL)
@@ -37,16 +38,12 @@ for method = 1 : 3
         time      = THETA(method).TRIAL(trial).time;
         theta     = THETA(method).TRIAL(trial).theta;
         % target    = THETA(method).TRIAL(trial).target;
-        deviation = THETA(method).TRIAL(trial).deviation;
+        % deviation = THETA(method).TRIAL(trial).deviation;
         value     = THETA(method).TRIAL(trial).value;
         color     = Colors(value==sortedValues,:);
+        block     = THETA(method).TRIAL(trial).block;
         
-        if deviation ~= 0 % deviation
-            axx = ax(1);
-        else % direct
-            axx = ax(2);
-        end
-        plot( axx, time, theta, 'DisplayName', sprintf('Value - %d',value), 'Color', color)
+        plot( ax(block), time, theta, 'DisplayName', sprintf('Value - %d',value), 'Color', color)
         
     end
     
@@ -54,24 +51,19 @@ for method = 1 : 3
     
     limit = 5; % percentage (%)
     
-    plot( ax(1), [0 max_time], [1 1]*(1+limit/100), 'k:', 'DisplayName', '+5%');
-    plot( ax(1), [0 max_time], [1 1]*(1-limit/100), 'k:', 'DisplayName', '-5%');
-    
-    plot( ax(2), [0 max_time], [1 1]*(1+limit/100), 'k:', 'DisplayName', '+5%');
-    plot( ax(2), [0 max_time], [1 1]*(1-limit/100), 'k:', 'DisplayName', '-5%');
-    
-    title(ax(1),'Deviation')
-    title(ax(2),'Direct')
-    
-    axis(ax(1), 'tight')
-    axis(ax(2), 'tight')
+    for block = 1 : 3
+        plot  (ax(block), [0 max_time], [1 1]*(1+limit/100), 'k:', 'DisplayName', '+5%');
+        plot  (ax(block), [0 max_time], [1 1]*(1-limit/100), 'k:', 'DisplayName', '-5%');
+        axis  (ax(block), 'tight')
+        xlabel(ax(block), 'time (s)')
+        ylabel(ax(block), 'normalized unit')
+    end
     
     linkaxes(ax,'xy')
     
-    xlabel(ax(1),'time (s)')
-    xlabel(ax(2),'time (s)')
-    ylabel(ax(1),'normalized unit')
-    ylabel(ax(2),'normalized unit')
+    title(ax(1),'Deviation-Pre')
+    title(ax(2),'Direct')
+    title(ax(3),'Deviation-Post')
     
 end
 

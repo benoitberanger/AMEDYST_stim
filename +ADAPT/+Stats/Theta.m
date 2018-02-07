@@ -72,6 +72,7 @@ for method = 1 : 3
         THETA(method).TRIAL(trial).deviation   = from(trial,4);
         THETA(method).TRIAL(trial).value       = from(trial,5);
         THETA(method).TRIAL(trial).target      = from(trial,6);
+        THETA(method).TRIAL(trial).block       = from(trial,1);
         
     end
     

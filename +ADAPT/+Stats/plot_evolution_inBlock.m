@@ -1,10 +1,13 @@
-function plot_evolution_RT_TT_inBlock( input )
+function plot_evolution_inBlock
+global S
+
+input = S.Stats.evolution_RT_TT_inBlock;
 
 N1 = length(input.Direct_Pre.RTmean);
 N2 = length(input.Deviaton.RTmean);
 N3 = length(input.Direct_Post.RTmean);
 
-% N = N1 + N2 + N3;
+N = N1 + N2 + N3;
 
 figure('Name','Evolution of RT TT in blocks','NumberTitle','off')
 ax(1) = subplot(2,1,1); hold(ax(1),'on');
@@ -41,9 +44,11 @@ end % block
 legend(ax(1),'show')
 xlabel(ax(1),'each point is the mean of 4 trials')
 ylabel(ax(1),'RT in milliseconds')
+set   (ax(1),'XTick',1:N)
 legend(ax(2),'show')
 xlabel(ax(2),'each point is the mean of 4 trials')
 ylabel(ax(2),'TT in milliseconds')
+set   (ax(2),'XTick',1:N)
 
 linkaxes(ax,'xy')
 

@@ -468,13 +468,13 @@ elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
                 ADAPT.Stats.plotTheta;
                 ADAPT.Stats.plotXY;
                 
-                ADAPT.Stats.plot_evolution_RT_TT_inBlock(S.Stats.evolution_RT_TT_inBlock);
+                ADAPT.Stats.plot_evolution_inBlock
                 
             case 'RealisticDebug'
                 ADAPT.Stats.plotTheta;
                 ADAPT.Stats.plotXY;
                 
-                ADAPT.Stats.plot_evolution_RT_TT_inBlock(S.Stats.evolution_RT_TT_inBlock);
+                ADAPT.Stats.plot_evolution_inBlock
                 
         end % switch
         
