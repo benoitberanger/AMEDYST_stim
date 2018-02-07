@@ -458,15 +458,24 @@ elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
         S.Stats.THETA = ADAPT.Stats.Theta;
         S.Stats.XY    = ADAPT.Stats.XY   ;
         
+        S.Stats.evolution_RT_TT_inBlock = ADAPT.Stats.evolution_RT_TT_inBlock;
+        S.Stats.   global_RT_TT_inBlock = ADAPT.Stats.   global_RT_TT_inBlock;
+        
         % Plot Theta(t)
         switch OperationMode
             case 'Acquisition'
             case 'FastDebug'
                 ADAPT.Stats.plotTheta;
                 ADAPT.Stats.plotXY;
+                
+                ADAPT.Stats.plot_evolution_RT_TT_inBlock(S.Stats.evolution_RT_TT_inBlock);
+                
             case 'RealisticDebug'
                 ADAPT.Stats.plotTheta;
                 ADAPT.Stats.plotXY;
+                
+                ADAPT.Stats.plot_evolution_RT_TT_inBlock(S.Stats.evolution_RT_TT_inBlock);
+                
         end % switch
         
     end

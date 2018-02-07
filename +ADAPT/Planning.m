@@ -53,9 +53,9 @@ switch S.OperationMode
     case 'RealisticDebug'
         
         Paradigm = {
-            'Direct_Pre'  0           12
-            'Deviation'   randSign*45 12
-            'Direct_Post' 0           12
+            'Direct_Pre'  0           8
+            'Deviation'   randSign*45 8
+            'Direct_Post' 0           8
             };
         
 end
