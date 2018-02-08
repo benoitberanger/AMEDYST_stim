@@ -460,6 +460,8 @@ elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
         
         S.Stats.evolution_RT_TT_inBlock = ADAPT.Stats.evolution_RT_TT_inBlock;
         S.Stats.   global_RT_TT_inBlock = ADAPT.Stats.   global_RT_TT_inBlock;
+        S.Stats.evolution_AUC_inBlock   = ADAPT.Stats.evolution_AUC_inBlock;
+        S.Stats.   global_AUC_inBlock   = ADAPT.Stats.   global_AUC_inBlock;
         
         % Plot Theta(t)
         switch OperationMode

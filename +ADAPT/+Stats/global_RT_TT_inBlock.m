@@ -13,6 +13,18 @@ data = S.TaskData.OutRecorder.Data;
 
 for block = 1 : 3
     
+    % Block name
+    switch block
+        case 1
+            name = 'Direct__Pre';
+        case 2
+            name = 'Deviaton';
+        case 3
+            name = 'Direct__Post';
+        otherwise
+            error('block ?')
+    end % switch
+    
     % Fetch data in the current block
     block_idx     = find(data(:,1)==block);
     data_in_block = data( block_idx , : );
@@ -30,20 +42,7 @@ for block = 1 : 3
     s.TTstd  = TTstd ;
     s.block_index = block_idx;
     
-    % Block name
-    switch block
-        case 1
-            name = 'Direct__Pre';
-        case 2
-            name = 'Deviaton';
-        case 3
-            name = 'Direct__Post';
-        otherwise
-            error('block ?')
-    end % switch
-    
     output.(name)  = s;
-    
     
     fprintf('mean RT in block ''%s'' = %g ms \n', name, round(RTmean))
     fprintf('std  RT in block ''%s'' = %g ms \n', name, round(RTstd ))

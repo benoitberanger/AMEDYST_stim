@@ -14,6 +14,18 @@ NrAngles = length(S.TaskData.Parameters.TargetAngles);
 
 for block = 1 : 3
     
+    % Block name
+    switch block
+        case 1
+            name = 'Direct__Pre';
+        case 2
+            name = 'Deviaton';
+        case 3
+            name = 'Direct__Post';
+        otherwise
+            error('block ?')
+    end % switch
+    
     % Fetch data in the current block
     block_idx     = find(data(:,1)==block);
     data_in_block = data( block_idx , : );
@@ -52,18 +64,6 @@ for block = 1 : 3
     s.TTstd  = TTstd ;
     s.block_index = block_idx;
     s.chunk_idx   = chunk_idx;
-    
-    % Block name
-    switch block
-        case 1
-            name = 'Direct__Pre';
-        case 2
-            name = 'Deviaton';
-        case 3
-            name = 'Direct__Post';
-        otherwise
-            error('block ?')
-    end % switch
     
     output.(name)  = s;
     
