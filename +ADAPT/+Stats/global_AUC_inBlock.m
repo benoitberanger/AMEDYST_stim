@@ -3,6 +3,7 @@ global S
 
 output = struct;
 
+
 %% Shortcut
 
 data     = S.TaskData.OutRecorder.Data;

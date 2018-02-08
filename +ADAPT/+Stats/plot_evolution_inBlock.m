@@ -1,6 +1,7 @@
 function plot_evolution_inBlock
 global S
 
+
 %% Shortcut
 
 evoRT = S.Stats.evolution_RT_TT_inBlock;
@@ -16,13 +17,14 @@ colors = lines(3);
 
 %% Plot
 
-figure('Name','Evolution of RT TT in blocks','NumberTitle','off')
+figure('Name','Evolution of RT TT AUC in blocksn chunk by chunk','NumberTitle','off')
 
 nAxes = 3;
 ax = zeros(nAxes,1);
 
 for a = 1:nAxes
-    ax(a) = subplot(nAxes,1,a); hold(ax(a),'all');
+    ax(a) = subplot(nAxes,1,a);
+    hold(ax(a),'all');
 end
 
 chunk_offcet = 0;
@@ -80,14 +82,14 @@ for block = 1 : 3
 end % block
 
 
+%% Adjustments
+
 for a = 1:nAxes
-    
     axis(ax(a),'tight')
     % legend(ax(a),'show')
     xlabel(ax(a),'each point is the mean of 4 trials')
     set   (ax(a),'XTick',1:size(data,1))
     set   (ax(a),'XTickLabel',num2cell(1:size(data,1)))
-    
 end
 
 ylabel(ax(1),'RT in milliseconds')
