@@ -123,6 +123,15 @@ end
 S.HighReward = HighReward;
 
 
+%% GUI : Starting sign
+
+DeviationSign = get(handles.edit_DeviationSign,'String');
+if isempty(DeviationSign)
+    error('DeviationSign is empty')
+end
+S.DeviationSign = DeviationSign;
+
+
 %% GUI + MAIN : Subject ID & Run number
 
 SubjectID = get(handles.edit_SubjectID,'String');

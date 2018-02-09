@@ -83,7 +83,7 @@ end % block
 for a = 1:nAxes
     axis(ax(a),'tight')
     % legend(ax(a),'show')
-    xlabel(ax(a),'each point is the mean of 4 trials')
+    xlabel(ax(a),sprintf('each point is the mean of %d trials',NrAngles))
     set   (ax(a),'XTick',1:size(data,1))
     set   (ax(a),'XTickLabel',num2cell(1:size(data,1)))
 end

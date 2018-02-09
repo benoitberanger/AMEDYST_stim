@@ -722,13 +722,30 @@ else % Create the figure
         'Position',[p_tk_adapt.x p_tk_adapt.y p_tk_adapt.w p_tk_adapt.h],...
         'BackgroundColor',figureBGcolor);
     
-    p_tk_adapt.nbO    = 3; % Number of objects
+    p_tk_adapt.nbO    = 4; % Number of objects
     p_tk_adapt.Ow     = 1/(p_tk_adapt.nbO + 1); % Object width
     p_tk_adapt.countO = 0; % Object counter
     p_tk_adapt.xposO  = @(countO) p_tk_adapt.Ow/(p_tk_adapt.nbO+1)*countO + (countO-1)*p_tk_adapt.Ow;
     
     p_tk_adapt.y_marge = 0.05;
     
+    
+    % ---------------------------------------------------------------------
+    % Edit : Deviation signe +/-
+    
+    p_tk_adapt.countO = p_tk_adapt.countO + 1;
+    e_deviation_sign.x = p_tk_adapt.xposO(p_tk_adapt.countO);
+    e_deviation_sign.y = p_tk_adapt.y_marge;
+    e_deviation_sign.w = p_tk_adapt.Ow;
+    e_deviation_sign.h = 0.5 - p_tk_adapt.y_marge;
+    handles.edit_DeviationSign = uicontrol(handles.uipanel_Task_ADAPT,...
+        'Style','edit',...
+        'Units', 'Normalized',...
+        'Position',[e_deviation_sign.x e_deviation_sign.y e_deviation_sign.w e_deviation_sign.h],...
+        'BackgroundColor',editBGcolor,...
+        'String','',...
+        'Callback',@edit_DeviationSign_Callback,...
+        'Tooltip','can only be + or -');
     
     % ---------------------------------------------------------------------
     % Edit : High Reward
@@ -781,7 +798,8 @@ else % Create the figure
         'String','ADAPT : High reward',...
         'BackgroundColor',buttonBGcolor,...
         'Tag',b_adapt_high.tag,...
-        'Callback',@AMEDYST_main);
+        'Callback',@AMEDYST_main,...
+        'FontSize',8);
     
     
     % ---------------------------------------------------------------------
@@ -799,7 +817,8 @@ else % Create the figure
         'String','ADAPT : Low reward',...
         'BackgroundColor',buttonBGcolor,...
         'Tag',b_adapt_low.tag,...
-        'Callback',@AMEDYST_main);
+        'Callback',@AMEDYST_main,...
+        'FontSize',8);
     
     
     %% Panel : Cursor input method
@@ -1118,3 +1137,23 @@ else
 end
 
 end % function
+
+
+% -------------------------------------------------------------------------
+function edit_DeviationSign_Callback(hObject, ~)
+input = get(hObject, 'String');
+
+switch input
+    case '+'
+        
+    case '-'
+        
+    otherwise
+        set(hObject,'String','')
+        error('Deviation sign can only be + or -')
+end
+
+fprintf('Deviation sign is : %s \n', input)
+
+end % function
+
