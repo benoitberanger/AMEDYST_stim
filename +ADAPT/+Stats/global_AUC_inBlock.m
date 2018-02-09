@@ -59,6 +59,9 @@ for block = 1 : 3
         
         s.auc(trial) = auc;
         
+        s.Trials(trial).RT          = data_in_block(trial,9 );
+        s.Trials(trial).TT          = data_in_block(trial,10);
+        
     end % trial
     
     s.block_idx = block_idx;

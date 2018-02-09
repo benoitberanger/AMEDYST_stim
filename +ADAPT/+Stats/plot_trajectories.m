@@ -41,18 +41,13 @@ for block = 1 : 3
     % ideal trajectorty
     plot( ax(block), [0 data.(name).Trials(trial).targetPx], [0 0], 'k', 'LineWidth', 2, 'DisplayName', 'optimal');
     
-end % block
-
-
-%% Adjustments
-
-for a = 1:nAxes
-    axis  (ax(a),'tight')
+    axis  (ax(block),'tight')
     % legend(ax(a),'show')
-    xlabel(ax(a),'X (pixels)')
-    ylabel(ax(a),'Y (pixels)')
-    title (ax(a),name)
-end
+    xlabel(ax(block),'X (pixels)')
+    ylabel(ax(block),'Y (pixels)')
+    title (ax(block),name,'Interpreter','none')
+    
+end % block
 
 linkaxes(ax,'xy')
 % ScaleAxisLimits(ax(1))
