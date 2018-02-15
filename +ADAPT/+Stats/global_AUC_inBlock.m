@@ -70,8 +70,8 @@ for block = 1 : 3
     
     output.(name) = s;
     
-    fprintf('mean AUC in block ''%s'' = %g ms \n', name, round(s.AUCmean))
-    fprintf('std  AUC in block ''%s'' = %g ms \n', name, round(s.AUCstd ))
+    fprintf('mean AUC in block ''%s'' = %g pixels² \n', name, round(s.AUCmean))
+    fprintf('std  AUC in block ''%s'' = %g pixels² \n', name, round(s.AUCstd ))
     
 end % block
 

@@ -463,11 +463,11 @@ elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
     if ~isempty(S.TaskData.OutRecorder.Data)
         
         % Compute stats & print them
-        [S.Stats.direct, S.Stats.deviation] = ADAPT.Stats.mean_std_RT_TT;
-        S.Stats.THETA = ADAPT.Stats.Theta;
-        S.Stats.XY    = ADAPT.Stats.XY   ;
+        %         [S.Stats.direct, S.Stats.deviation] = ADAPT.Stats.mean_std_RT_TT;
+        %         S.Stats.THETA = ADAPT.Stats.Theta;
+        %         S.Stats.XY    = ADAPT.Stats.XY   ;
         
-        S.Stats.evolution_RT_TT_inBlock             = ADAPT.Stats.evolution_RT_TT_inBlock;
+        S.Stats.evolution_RT_TT_inBlock            = ADAPT.Stats.evolution_RT_TT_inBlock;
         S.Stats.   global_RT_TT_inBlock            = ADAPT.Stats.   global_RT_TT_inBlock;
         S.Stats.evolution_AUC_inBlock              = ADAPT.Stats.evolution_AUC_inBlock;
         S.Stats.   global_AUC_inBlock              = ADAPT.Stats.   global_AUC_inBlock;
@@ -477,15 +477,15 @@ elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
         switch OperationMode
             case 'Acquisition'
             case 'FastDebug'
-                ADAPT.Stats.plotTheta;
-                ADAPT.Stats.plotXY;
+                %                 ADAPT.Stats.plotTheta;
+                %                 ADAPT.Stats.plotXY;
                 
                 ADAPT.Stats.plot_trajectories
                 ADAPT.Stats.plot_evolution_inBlock
                 
             case 'RealisticDebug'
-                ADAPT.Stats.plotTheta;
-                ADAPT.Stats.plotXY;
+                %                 ADAPT.Stats.plotTheta;
+                %                 ADAPT.Stats.plotXY;
                 
                 ADAPT.Stats.plot_trajectories
                 ADAPT.Stats.plot_evolution_inBlock
