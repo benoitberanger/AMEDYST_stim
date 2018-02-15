@@ -96,7 +96,7 @@ try
                     
                     BigCircle.Draw
                     Cross.Draw
-                    ADAPT.UpdateCursor(Cursor, EP.get(evt,'Deviation'))
+                    ADAPT.UpdateCursor(Cursor, EP.Get(evt,'Deviation'))
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
                     lastFlipOnset = Screen('Flip',S.PTB.wPtr);
@@ -138,15 +138,15 @@ try
                 Cross.Draw
                 
                 Target.frameCurrentColor = Target.frameBaseColor;
-                Target.Move( TargetBigCirclePosition, EP.get(evt,'Target') )
-                Target.value = EP.get(evt,'Probability');
+                Target.Move( TargetBigCirclePosition, EP.Get(evt,'Target') )
+                Target.value = EP.Get(evt,'Probability');
                 Target.Draw
                 
                 PrevTarget.frameCurrentColor = Red;
                 PrevTarget.Move( 0, 0 )
                 PrevTarget.Draw
                 
-                ADAPT.UpdateCursor(Cursor, EP.get(evt,'Deviation'))
+                ADAPT.UpdateCursor(Cursor, EP.Get(evt,'Deviation'))
                 
                 Screen('DrawingFinished',S.PTB.wPtr);
                 flipOnset_step_1 = Screen('Flip',S.PTB.wPtr);
@@ -176,7 +176,7 @@ try
                     if draw_PrevTraget
                         PrevTarget.Draw
                     end
-                    ADAPT.UpdateCursor(Cursor, EP.get(evt,'Deviation'))
+                    ADAPT.UpdateCursor(Cursor, EP.Get(evt,'Deviation'))
                     Cursor.Draw
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
@@ -256,9 +256,9 @@ try
                 Target.Draw
                 
                 PrevTarget.frameCurrentColor = Red;
-                PrevTarget.Move( TargetBigCirclePosition, EP.get(evt,'Target')  )
+                PrevTarget.Move( TargetBigCirclePosition, EP.Get(evt,'Target')  )
                 
-                ADAPT.UpdateCursor(Cursor, EP.get(evt,'Deviation'))
+                ADAPT.UpdateCursor(Cursor, EP.Get(evt,'Deviation'))
                 Cursor.Draw
                 
                 Screen('DrawingFinished',S.PTB.wPtr);
@@ -286,7 +286,7 @@ try
                     BigCircle.Draw
                     Cross.Draw
                     Target.Draw
-                    ADAPT.UpdateCursor(Cursor, EP.get(evt,'Deviation'))
+                    ADAPT.UpdateCursor(Cursor, EP.Get(evt,'Deviation'))
                     Cursor.Draw
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
@@ -366,7 +366,7 @@ try
                     
                     BigCircle.Draw
                     Cross.Draw
-                    ADAPT.UpdateCursor(Cursor, EP.get(evt,'Deviation'))
+                    ADAPT.UpdateCursor(Cursor, EP.Get(evt,'Deviation'))
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
                     lastFlipOnset = Screen('Flip',S.PTB.wPtr);
@@ -407,8 +407,8 @@ try
                     counter_step6 = counter_step6 + 1;
                     
                     BigCircle.Draw
-                    Reward.Draw(EP.get(evt,'rewarded') );
-                    ADAPT.UpdateCursor(Cursor, EP.get(evt,'Deviation'))
+                    Reward.Draw(EP.Get(evt,'rewarded') );
+                    ADAPT.UpdateCursor(Cursor, EP.Get(evt,'Deviation'))
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
                     lastFlipOnset = Screen('Flip',S.PTB.wPtr);
@@ -459,7 +459,7 @@ try
     % "The end"
     BigCircle.Draw
     Cross.Draw
-    ADAPT.UpdateCursor(Cursor, EP.get(evt,'Deviation'))
+    ADAPT.UpdateCursor(Cursor, EP.Get(evt,'Deviation'))
     Screen('DrawingFinished',S.PTB.wPtr);
     lastFlipOnset = Screen('Flip',S.PTB.wPtr);
     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
