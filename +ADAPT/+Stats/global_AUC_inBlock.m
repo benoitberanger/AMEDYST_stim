@@ -53,7 +53,7 @@ for block = 1 : 3
         s.Trials(trial).xy          = xy;
         s.Trials(trial).deviation   = data_in_block(trial,4);
         s.Trials(trial).value       = data_in_block(trial,5);
-        s.Trials(trial).traget      = data_in_block(trial,6);
+        s.Trials(trial).target      = data_in_block(trial,6);
         s.Trials(trial).targetPx    = targetPx;
         s.Trials(trial).auc         = auc;
         

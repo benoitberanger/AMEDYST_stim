@@ -66,7 +66,7 @@ for block = 1 : 3
             s.Chunk(chunk).Trials(trial).xy          = xy;
             s.Chunk(chunk).Trials(trial).deviation   = data_in_chunk(trial,4);
             s.Chunk(chunk).Trials(trial).value       = data_in_chunk(trial,5);
-            s.Chunk(chunk).Trials(trial).traget      = data_in_chunk(trial,6);
+            s.Chunk(chunk).Trials(trial).target      = data_in_chunk(trial,6);
             s.Chunk(chunk).Trials(trial).targetPx    = targetPx;
             s.Chunk(chunk).Trials(trial).auc         = auc;
             
