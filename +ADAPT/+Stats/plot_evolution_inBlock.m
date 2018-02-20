@@ -1,5 +1,4 @@
-function plot_evolution_inBlock
-global S
+function plot_evolution_inBlock( S )
 
 
 %% Shortcut

@@ -480,15 +480,13 @@ elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
                 %                 ADAPT.Stats.plotTheta;
                 %                 ADAPT.Stats.plotXY;
                 
-                ADAPT.Stats.plot_trajectories
-                ADAPT.Stats.plot_evolution_inBlock
+                ADAPT.Stats.PLOT_ALL( S )
                 
             case 'RealisticDebug'
                 %                 ADAPT.Stats.plotTheta;
                 %                 ADAPT.Stats.plotXY;
                 
-                ADAPT.Stats.plot_trajectories
-                ADAPT.Stats.plot_evolution_inBlock
+                ADAPT.Stats.PLOT_ALL( S )
                 
         end % switch
         

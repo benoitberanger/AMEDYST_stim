@@ -591,7 +591,7 @@ else % Create the figure
     p_tk_x_spacing = 0.02;
     
     p_tk_seq.x = panelProp.xposP;
-    p_tk_seq.w = panelProp.wP*(1-p_tk_x_spacing)/2;
+    p_tk_seq.w = panelProp.wP*(1-p_tk_x_spacing)*1/3;
     
     panelProp.countP = panelProp.countP - 1;
     p_tk_seq.y = panelProp.yposP(panelProp.countP);
@@ -711,7 +711,7 @@ else % Create the figure
     %% Panel : Task : ADAPT
     
     p_tk_adapt.x = p_tk_seq.x + p_tk_seq.w + p_tk_x_spacing;
-    p_tk_adapt.w = p_tk_seq.w;
+    p_tk_adapt.w = p_tk_seq.w*2 ;
     
     p_tk_adapt.y = panelProp.yposP(panelProp.countP);
     p_tk_adapt.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
@@ -722,7 +722,7 @@ else % Create the figure
         'Position',[p_tk_adapt.x p_tk_adapt.y p_tk_adapt.w p_tk_adapt.h],...
         'BackgroundColor',figureBGcolor);
     
-    p_tk_adapt.nbO    = 4; % Number of objects
+    p_tk_adapt.nbO    = 5; % Number of objects
     p_tk_adapt.Ow     = 1/(p_tk_adapt.nbO + 1); % Object width
     p_tk_adapt.countO = 0; % Object counter
     p_tk_adapt.xposO  = @(countO) p_tk_adapt.Ow/(p_tk_adapt.nbO+1)*countO + (countO-1)*p_tk_adapt.Ow;
@@ -819,6 +819,28 @@ else % Create the figure
         'Tag',b_adapt_low.tag,...
         'Callback',@AMEDYST_main,...
         'FontSize',8);
+    
+    
+    % ---------------------------------------------------------------------
+    % Pushbutton : PLOT_ALL
+    
+    p_tk_adapt.countO  = p_tk_adapt.countO + 2;
+    b_PLOT_ALL.x   = p_tk_adapt.xposO(p_tk_adapt.countO);
+    b_PLOT_ALL.y   = p_tk_adapt.y_marge;
+    b_PLOT_ALL.w   = p_tk_adapt.Ow;
+    b_PLOT_ALL.h   = 0.5 - p_tk_adapt.y_marge;
+    b_PLOT_ALL.tag = 'pushbutton_PLOT_ALL';
+    handles.(b_PLOT_ALL.tag) = uicontrol(handles.uipanel_Task_ADAPT,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_PLOT_ALL.x b_PLOT_ALL.y b_PLOT_ALL.w b_PLOT_ALL.h],...
+        'String','plot_stats',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_PLOT_ALL.tag,...
+        'Callback',@pushbutton_PLOT_ALL_GUIroutine,...
+        'ButtonDownFcn',@pushbutton_PLOT_ALL_GUIroutine,...
+        'FontSize',8,...
+        'Tooltip','Left click : plot last data  //  Right click : open UI to load specific data');
     
     
     %% Panel : Cursor input method
@@ -1157,3 +1179,33 @@ fprintf('Deviation sign is : %s \n', input)
 
 end % function
 
+
+% -------------------------------------------------------------------------
+function pushbutton_PLOT_ALL_GUIroutine(~, eventdata)
+
+switch eventdata.EventName
+    
+    case 'Action'
+        
+        global S %#ok<TLEV>
+        
+        if isempty(S)
+            warning('No stats to plot')
+            return
+        end
+        
+        ADAPT.Stats.PLOT_ALL( S )
+        
+    case 'ButtonDown'
+        
+        % Get file
+        [filename, pathname] = uigetfile(fullfile('..','data','*.mat'));
+        
+        % Load
+        L = load(fullfile(pathname,filename));
+        
+        % Plot loaded file
+        ADAPT.Stats.PLOT_ALL( L.S )
+end
+
+end % function

@@ -1,6 +1,4 @@
-function plot_stat_by_reward
-
-global S
+function plot_stat_by_reward( S )
 
 
 %% Shortcut

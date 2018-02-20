@@ -1,5 +1,4 @@
-function plot_trajectories
-global S
+function plot_trajectories( S )
 
 
 %% Shortcut
