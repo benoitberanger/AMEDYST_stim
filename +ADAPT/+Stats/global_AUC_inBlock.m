@@ -29,6 +29,11 @@ for block = 1 : 3
     
     % Fetch data in the current block
     block_idx     = find(data(:,1)==block);
+    
+    if isempty( block_idx ) % no data for this block : ESCAPE key pressed ?
+        continue
+    end
+    
     data_in_block = data( block_idx , : );
     NrTrials      = size(data_in_block,1);
     

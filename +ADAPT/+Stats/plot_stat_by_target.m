@@ -5,6 +5,9 @@ function plot_stat_by_target( S )
 
 evoTG = S.Stats.evolution_RT_TT_AUC_inTarget;
 
+gloRT = S.Stats.global_RT_TT_inBlock;
+gloAU = S.Stats.global_AUC_inBlock;
+
 colors = lines(3);
 
 
@@ -35,22 +38,36 @@ for block = 1 : 3
             error('block ?')
     end % switch
     
-    for target_idx =  1 : length(evoTG.Deviaton.Targets)
-        counter_X_pos = counter_X_pos + 1;
-        bar     (ax(1), counter_X_pos, evoTG.(name).Targets(target_idx).RTmean,  1, 'FaceColor','none', 'EdgeColor',colors(block,:), 'LineStyle','-', 'DisplayName',['mean ' name])
-        bar     (ax(2), counter_X_pos, evoTG.(name).Targets(target_idx).TTmean,  1, 'FaceColor','none', 'EdgeColor',colors(block,:), 'LineStyle','-', 'DisplayName',['mean ' name])
-        bar     (ax(3), counter_X_pos, evoTG.(name).Targets(target_idx).AUCmean, 1, 'FaceColor','none', 'EdgeColor',colors(block,:), 'LineStyle','-', 'DisplayName',['mean ' name])
-        errorbar(ax(1), counter_X_pos, evoTG.(name).Targets(target_idx).RTmean,  evoTG.(name).Targets(target_idx).RTstd,  'Color',colors(block,:), 'LineStyle','--', 'DisplayName',['std ' name])
-        errorbar(ax(2), counter_X_pos, evoTG.(name).Targets(target_idx).TTmean,  evoTG.(name).Targets(target_idx).TTstd,  'Color',colors(block,:), 'LineStyle','--', 'DisplayName',['std ' name])
-        errorbar(ax(3), counter_X_pos, evoTG.(name).Targets(target_idx).AUCmean, evoTG.(name).Targets(target_idx).AUCstd, 'Color',colors(block,:), 'LineStyle','--', 'DisplayName',['std ' name])
+    if ~isfield(evoTG,name)
+        continue
     end
+    
+    nrTargets = length(evoTG.Direct__Pre.Targets);
+    
+    for target_idx =  1 : nrTargets
+        counter_X_pos = counter_X_pos + 1;
+        bar     (ax(1), counter_X_pos, evoTG.(name).Targets(target_idx).RTmean,  1, 'FaceColor','none',               'EdgeColor',colors(block,:), 'LineWidth',1.5, 'DisplayName',['mean ' name])
+        bar     (ax(2), counter_X_pos, evoTG.(name).Targets(target_idx).TTmean,  1, 'FaceColor','none',               'EdgeColor',colors(block,:), 'LineWidth',1.5, 'DisplayName',['mean ' name])
+        bar     (ax(3), counter_X_pos, evoTG.(name).Targets(target_idx).AUCmean, 1, 'FaceColor','none',               'EdgeColor',colors(block,:), 'LineWidth',1.5, 'DisplayName',['mean ' name])
+        errorbar(ax(1), counter_X_pos, evoTG.(name).Targets(target_idx).RTmean,  evoTG.(name).Targets(target_idx).RTstd,  'Color',colors(block,:), 'LineWidth',1.5, 'DisplayName',['std '  name])
+        errorbar(ax(2), counter_X_pos, evoTG.(name).Targets(target_idx).TTmean,  evoTG.(name).Targets(target_idx).TTstd,  'Color',colors(block,:), 'LineWidth',1.5, 'DisplayName',['std '  name])
+        errorbar(ax(3), counter_X_pos, evoTG.(name).Targets(target_idx).AUCmean, evoTG.(name).Targets(target_idx).AUCstd, 'Color',colors(block,:), 'LineWidth',1.5, 'DisplayName',['std '  name])
+    end
+    
+    block_X_pos = counter_X_pos - nrTargets/2 + 0.5;
+    bar     (ax(1), block_X_pos, gloRT.(name).RTmean,  nrTargets, 'FaceColor','none', 'EdgeColor',colors(block,:)*0.5, 'DisplayName',['mean ' name])
+    bar     (ax(2), block_X_pos, gloRT.(name).TTmean,  nrTargets, 'FaceColor','none', 'EdgeColor',colors(block,:)*0.5, 'DisplayName',['mean ' name])
+    bar     (ax(3), block_X_pos, gloAU.(name).AUCmean, nrTargets, 'FaceColor','none', 'EdgeColor',colors(block,:)*0.5, 'DisplayName',['mean ' name])
+    errorbar(ax(1), block_X_pos, gloRT.(name).RTmean,  gloRT.(name).RTstd,                'Color',colors(block,:)*0.5, 'DisplayName',['std '  name])
+    errorbar(ax(2), block_X_pos, gloRT.(name).TTmean,  gloRT.(name).TTstd,                'Color',colors(block,:)*0.5, 'DisplayName',['std '  name])
+    errorbar(ax(3), block_X_pos, gloAU.(name).AUCmean, gloAU.(name).AUCstd,               'Color',colors(block,:)*0.5, 'DisplayName',['std '  name])
     
 end % block
 
 
 %% Adjustments
 
-allTargets = [evoTG.Deviaton.Targets.target];
+allTargets = [evoTG.Direct__Pre.Targets.target];
 
 for a = 1:nAxes
     axis(ax(a),'tight')

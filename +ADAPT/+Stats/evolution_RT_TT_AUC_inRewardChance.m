@@ -23,7 +23,11 @@ for block = 1 : 3
         otherwise
             error('block ?')
     end % switch
-
+    
+    if ~isfield(gloAU,name)
+        continue
+    end
+    
     values_in_block = floor([gloAU.(name).Trials.value]);
     [Values,~,trial2value] = unique(values_in_block);
     Values = floor(Values);

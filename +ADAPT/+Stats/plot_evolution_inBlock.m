@@ -41,6 +41,10 @@ for block = 1 : 3
             error('block ?')
     end % switch
     
+    if ~isfield(gloAU,name)
+        continue
+    end
+    
     % --- plot(block) // bar + error(plot) ---
     
     block_idx = gloRT.(name).block_index;

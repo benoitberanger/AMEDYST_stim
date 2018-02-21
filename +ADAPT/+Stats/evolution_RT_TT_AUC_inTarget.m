@@ -23,6 +23,10 @@ for block = 1 : 3
             error('block ?')
     end % switch
 
+    if ~isfield(gloAU,name)
+        continue
+    end
+    
     targets_in_block = floor([gloAU.(name).Trials.target]);
     [Targets,~,trial2target] = unique(targets_in_block);
     Targets = floor(Targets);

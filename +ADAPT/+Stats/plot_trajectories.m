@@ -31,6 +31,10 @@ for block = 1 : 3
             error('block ?')
     end % switch
     
+    if ~isfield(data,name)
+        continue
+    end
+    
     NrTrials = length(data.(name).Trials);
     
     for trial = 1 : NrTrials
