@@ -408,6 +408,40 @@ Priority( 0 );
 [ names , onsets , durations ] = SPMnod;
 
 
+%% MAIN : perform stats computation
+
+if strcmp(Task,'SEQ')
+    
+    printResults(S.TaskData.ER)
+    
+elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
+    
+    if ~isempty(S.TaskData.OutRecorder.Data)
+        
+        S.Stats.evolution_RT_TT_inBlock            = ADAPT.Stats.evolution_RT_TT_inBlock;
+        S.Stats.   global_RT_TT_inBlock            = ADAPT.Stats.   global_RT_TT_inBlock;
+        S.Stats.evolution_AUC_inBlock              = ADAPT.Stats.evolution_AUC_inBlock;
+        S.Stats.   global_AUC_inBlock              = ADAPT.Stats.   global_AUC_inBlock;
+        S.Stats.evolution_RT_TT_AUC_inRewardChance = ADAPT.Stats.evolution_RT_TT_AUC_inRewardChance;
+        S.Stats.evolution_RT_TT_AUC_inTarget       = ADAPT.Stats.evolution_RT_TT_AUC_inTarget;
+        
+        % Plot 
+        switch OperationMode
+            case 'Acquisition'
+            case 'FastDebug'
+                ADAPT.Stats.PLOT_ALL( S )
+            case 'RealisticDebug'
+                ADAPT.Stats.PLOT_ALL( S )
+        end % switch
+        
+    end
+    
+    fprintf('UnitGain for this run     : %g € \n', S.TaskData.Parameters.UnitGain);
+    fprintf('Total reward for this run : %g € \n', S.TaskData.Parameters.TotalReward);
+    
+end
+
+
 %% MAIN : Saving data strucure
 
 if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
@@ -416,7 +450,7 @@ if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
         mkdir(DataPath);
     end
     
-    save(DataFile, 'S', 'names', 'onsets', 'durations');
+    save(DataFile,     'S', 'names', 'onsets', 'durations');
     save([DataFile '_SPM'], 'names', 'onsets', 'durations');
     
 end
@@ -453,52 +487,6 @@ end
 set(handles.text_LastFileNameAnnouncer, 'Visible','on'                             )
 set(handles.text_LastFileName         , 'Visible','on'                             )
 set(handles.text_LastFileName         , 'String' , DataFile(length(DataPath)+1:end))
-
-if strcmp(Task,'SEQ')
-    
-    printResults(S.TaskData.ER)
-    
-elseif any(strcmp(Task,{'ADAPT_LowReward','ADAPT_HighReward'}))
-    
-    if ~isempty(S.TaskData.OutRecorder.Data)
-        
-        % Compute stats & print them
-        %         [S.Stats.direct, S.Stats.deviation] = ADAPT.Stats.mean_std_RT_TT;
-        %         S.Stats.THETA = ADAPT.Stats.Theta;
-        %         S.Stats.XY    = ADAPT.Stats.XY   ;
-        
-        S.Stats.evolution_RT_TT_inBlock            = ADAPT.Stats.evolution_RT_TT_inBlock;
-        S.Stats.   global_RT_TT_inBlock            = ADAPT.Stats.   global_RT_TT_inBlock;
-        S.Stats.evolution_AUC_inBlock              = ADAPT.Stats.evolution_AUC_inBlock;
-        S.Stats.   global_AUC_inBlock              = ADAPT.Stats.   global_AUC_inBlock;
-        S.Stats.evolution_RT_TT_AUC_inRewardChance = ADAPT.Stats.evolution_RT_TT_AUC_inRewardChance;
-        S.Stats.evolution_RT_TT_AUC_inTarget       = ADAPT.Stats.evolution_RT_TT_AUC_inTarget;
-        
-        % Plot Theta(t)
-        switch OperationMode
-            case 'Acquisition'
-            case 'FastDebug'
-                %                 ADAPT.Stats.plotTheta;
-                %                 ADAPT.Stats.plotXY;
-                
-                ADAPT.Stats.PLOT_ALL( S )
-                
-            case 'RealisticDebug'
-                %                 ADAPT.Stats.plotTheta;
-                %                 ADAPT.Stats.plotXY;
-                
-                ADAPT.Stats.PLOT_ALL( S )
-                
-        end % switch
-        
-    end
-    
-    fprintf('UnitGain for this run     : %g € \n', S.TaskData.Parameters.UnitGain);
-    fprintf('Total reward for this run : %g € \n', S.TaskData.Parameters.TotalReward);
-    
-end
-
-assignin('base', 'S', S);
 
 WaitSecs(0.100);
 pause(0.100);

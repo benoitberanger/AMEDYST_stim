@@ -1201,6 +1201,10 @@ switch eventdata.EventName
         % Get file
         [filename, pathname] = uigetfile(fullfile('..','data','*.mat'));
         
+        if isnumeric(filename)
+            return
+        end
+        
         % Load
         L = load(fullfile(pathname,filename));
         

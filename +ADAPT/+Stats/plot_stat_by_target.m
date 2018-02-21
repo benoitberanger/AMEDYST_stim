@@ -10,7 +10,7 @@ colors = lines(3);
 
 %% Plot
 
-figure('Name','Evolution of RT TT AUC in blocks, sorted by target','NumberTitle','off')
+figure('Name','Evolution of RT TT AUC in blocks, sorted by target position','NumberTitle','off')
 
 nAxes = 3;
 ax = zeros(nAxes,1);
@@ -34,8 +34,6 @@ for block = 1 : 3
         otherwise
             error('block ?')
     end % switch
-    
-    % --- plot(block) // bar + error(plot) ---
     
     for target_idx =  1 : length(evoTG.Deviaton.Targets)
         counter_X_pos = counter_X_pos + 1;
