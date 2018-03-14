@@ -18,11 +18,14 @@ try
     
     %% Prepare objects
     
-    Cross                  = ADAPT.Prepare.Cross    ;
-    BigCircle              = ADAPT.Prepare.BigCircle;
-    [ Target, PrevTarget ] = ADAPT.Prepare.Target   ;
-    Cursor                 = ADAPT.Prepare.Cursor   ;
-    Reward                 = ADAPT.Prepare.Reward   ;
+    Cross                  = ADAPT.Prepare.Cross ;
+    [ Target, PrevTarget ] = ADAPT.Prepare.Target;
+    Cursor                 = ADAPT.Prepare.Cursor;
+    Reward                 = ADAPT.Prepare.Reward;
+    Symbol                 = ADAPT.Prepare.Symbol;
+    
+    diameter               = ( S.PTB.wRect(4)/2 - Target.diameter/2 - max(Symbol.baseRect) ) * 2;
+    BigCircle              = ADAPT.Prepare.BigCircle( diameter );
     
     
     %% Eyelink
@@ -35,6 +38,7 @@ try
     % Initialize some variables
     EXIT = 0;
     TargetBigCirclePosition = (BigCircle.diameter-BigCircle.thickness)/2;
+    R_Symbol = BigCircle.diameter/2 + Target.diameter/2 + max(Symbol.baseRect)/2;
     
     Red   = [255 0   0  ];
     Green = [0   255 0  ];
@@ -151,6 +155,9 @@ try
                 PrevTarget.Move( 0, 0 )
                 PrevTarget.Draw
                 
+                Symbol.Move(R_Symbol, EP.Get('Target',evt))
+                Symbol.Draw
+                
                 ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
                 
                 Screen('DrawingFinished',S.PTB.wPtr);
@@ -178,6 +185,7 @@ try
                     BigCircle.Draw
                     Cross.Draw
                     Target.Draw
+                    Symbol.Draw
                     if draw_PrevTraget
                         PrevTarget.Draw
                     end

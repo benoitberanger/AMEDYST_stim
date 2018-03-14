@@ -1,7 +1,7 @@
-function [ bigcircle ] = BigCircle
+function [ bigcircle ] = BigCircle( diameter )
 global S
 
-diameter   = S.Parameters.ADAPT.Circle.DimensionRatio*S.PTB.wRect(4);
+% diameter   = S.Parameters.ADAPT.Circle.DimensionRatio*S.PTB.wRect(4);
 thickness  = S.Parameters.ADAPT.Circle.WidthRatio*diameter;
 frameColor = S.Parameters.ADAPT.Circle.FrameColor;
 diskColor  = S.Parameters.ADAPT.Circle.DiskColor;

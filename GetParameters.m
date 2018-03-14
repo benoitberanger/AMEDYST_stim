@@ -78,7 +78,7 @@ Parameters.SEQ.ResponseButtons.buttonsColor = ...
 %%%%%%%%%%%%%%
 
 % Big circle => @Circle
-Parameters.ADAPT.Circle.DimensionRatio = 0.90;                                   % diameter  = DimensionRatio*ScreenHeight
+% Parameters.ADAPT.Circle.DimensionRatio = 0.90;                                   % diameter  = DimensionRatio*ScreenHeight
 Parameters.ADAPT.Circle.WidthRatio     = 0.01;                                   % thickness = WidthRatio    *diameter
 Parameters.ADAPT.Circle.FrameColor     = [128 128 128];                          % [R G B] ( from 0 to 255 )
 Parameters.ADAPT.Circle.DiskColor      = Parameters.Video.ScreenBackgroundColor; % [R G B] ( from 0 to 255 )
@@ -103,6 +103,10 @@ Parameters.ADAPT.Cross.Color           = [128 128 128]; % [R G B] ( from 0 to 25
 % Reward => @Image
 Parameters.ADAPT.Reward.ScreenRatio    = 0.25;          % ratio : dim   = ScreenHeight*ratio_screen
 Parameters.ADAPT.Reward.NoRewardColor  = [128 128 128]; % color of the rectangle when there is no reward
+
+% Symbol => @ImagePolar
+Parameters.ADAPT.Symbol.baseResolution = [135 102];
+
 
 %%%%%%%%%%%%%%
 %  Keybinds  %

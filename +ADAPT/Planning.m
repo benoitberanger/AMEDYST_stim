@@ -7,7 +7,7 @@ if nargout < 1 % only to plot the paradigme when we execute the function outside
     S.LowReward     = 06.4;
     S.HighReward    = 32.0;
     S.Task          = 'ADAPT_HighReward';
-    S.DeviationSign = '+'
+    S.DeviationSign = '+';
 end
 
 switch S.Task
@@ -28,7 +28,8 @@ Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
 Parameters.TimeWaitReward              = 0.5; % seconds
 Parameters.RewardDisplayTime           = 1.0; % seconds
 
-Parameters.TargetAngles                =         [20 60 120 160]       ;
+Parameters.TargetAngles                =         [20 60 120 160];
+% Parameters.TargetAngles                =         [90 45 -90 0];
 Parameters.Values                      = Shuffle([0  1  2   3  ]/3 * 100); % Association of 1 TargetAngle with 1 Value (randomized for each run)
 
 switch S.DeviationSign
