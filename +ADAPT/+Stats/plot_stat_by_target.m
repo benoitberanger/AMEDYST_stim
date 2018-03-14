@@ -42,7 +42,7 @@ for block = 1 : 3
         continue
     end
     
-    nrTargets = length(evoTG.Direct__Pre.Targets);
+    nrTargets = length(evoTG.(name).Targets);
     
     for target_idx =  1 : nrTargets
         counter_X_pos = counter_X_pos + 1;

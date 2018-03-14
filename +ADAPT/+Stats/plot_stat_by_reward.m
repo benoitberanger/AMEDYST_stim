@@ -42,7 +42,7 @@ for block = 1 : 3
         continue
     end
     
-    nrValues = length(evoRW.Direct__Pre.Values);
+    nrValues = length(evoRW.(name).Values);
     
     for value_idx =  1 : nrValues
         counter_X_pos = counter_X_pos + 1;
