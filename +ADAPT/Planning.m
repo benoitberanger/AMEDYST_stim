@@ -7,7 +7,7 @@ if nargout < 1 % only to plot the paradigme when we execute the function outside
     S.LowReward     = 06.4;
     S.HighReward    = 32.0;
     S.Task          = 'ADAPT_HighReward';
-    S.DeviationSign = '+'
+    S.DeviationSign = '+';
 end
 
 switch S.Task
