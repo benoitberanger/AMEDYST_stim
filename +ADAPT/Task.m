@@ -24,6 +24,18 @@ try
     Cursor                 = ADAPT.Prepare.Cursor   ;
     Reward                 = ADAPT.Prepare.Reward   ;
     
+    %% Prepare the conversion [0% .. 100%] chance into color [gray .. gold]
+    
+    gray = S.Parameters.ADAPT.Circle.FrameColor;
+    gold = S.Parameters.ADAPT.Target.ValueColor;
+    
+    p = nan(3,2);
+    for c = 1 : 3 % RGB
+        p(c,:) = polyfit([0 100],[gray(c) gold(c)],1);
+    end
+    
+    GetColor = @(x) [polyval(p(1,:), x) polyval(p(2,:), x) polyval(p(3,:), x)];
+    
     
     %% Eyelink
     
@@ -38,7 +50,6 @@ try
     
     Red   = [255 0   0  ];
     Green = [0   255 0  ];
-    Blue  = [0   128 255];
     
     % Loop over the EventPlanning
     for evt = 1 : size( EP.Data , 1 )
@@ -63,8 +74,6 @@ try
                 
                 prevX = newX;
                 prevY = newY;
-                
-                Target.valueCurrentColor = Blue;
                 
                 BigCircle.Draw
                 Cross.Draw
@@ -145,6 +154,7 @@ try
                 Target.frameCurrentColor = Target.frameBaseColor;
                 Target.Move( TargetBigCirclePosition, EP.Get('Target',evt) )
                 Target.value = EP.Get('Probability',evt);
+                Target.valueCurrentColor = GetColor(Target.value);
                 Target.Draw
                 
                 PrevTarget.frameCurrentColor = Red;
@@ -258,6 +268,7 @@ try
                 Target.frameCurrentColor = Target.frameBaseColor;
                 Target.Move(0,0)
                 Target.value = 0;
+                Target.valueCurrentColor = Target.diskCurrentColor;
                 Target.Draw
                 
                 PrevTarget.frameCurrentColor = Red;
