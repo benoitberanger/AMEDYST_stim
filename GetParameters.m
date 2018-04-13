@@ -93,7 +93,7 @@ Parameters.ADAPT.Target.ValueColor     = [255 215 0];                           
 
 % Cursor => @Dot
 Parameters.ADAPT.Cursor.DimensionRatio = 0.04;        % diameter = DimensionRatio*ScreenHeight
-Parameters.ADAPT.Cursor.DiskColor      = [255 255 0]; % [R G B] ( from 0 to 255 )
+Parameters.ADAPT.Cursor.DiskColor      = [0 128 255]; % [R G B] ( from 0 to 255 )
 
 % Small cross at the center => @FixationCross
 Parameters.ADAPT.Cross.ScreenRatio     = 0.05;          % ratio : dim   = ScreenHeight*ratio_screen
