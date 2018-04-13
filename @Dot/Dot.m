@@ -16,9 +16,13 @@ classdef Dot < baseObject
         screenY           = zeros(0)   % number of vertical   pixels of the screen
         
         diskBaseColor     = zeros(0,4) % [R G B a] from 0 to 255
-        diskCurrentColor  = zeros(0,4) % [R G B a] from 0 to 255
+        frameBaseColor    = zeros(0,4) % [R G B a] from 0 to 255
+        
         
         % Internal variables
+        
+        diskCurrentColor  = zeros(0,4) % [R G B a] from 0 to 255
+        frameCurrentColor = zeros(0,4) % [R G B a] from 0 to 255
         
         X                 = zeros(0)   % X      coordiantes from (Xorigin,Yorigin), in pixels
         Y                 = zeros(0)   % Y      coordiantes from (Xorigin,Yorigin), in pixels
@@ -41,10 +45,11 @@ classdef Dot < baseObject
         % -----------------------------------------------------------------
         %                           Constructor
         % -----------------------------------------------------------------
-        function obj = Dot( diameter, diskColor, Xorigin, Yorigin, screenX, screenY )
+        function obj = Dot( diameter, diskColor, frameColor, Xorigin, Yorigin, screenX, screenY )
             % obj = FixationCross(
             % diameter=ScreenHeight*0.9 (pixels) ,
             % diskColor=[128 128 128 255] from 0 to 255 ,
+            % frameColor=[0 0 0 255] from 0 to 255 ,
             % Xorigin = CenterX (pixels) ,
             % Yorigin = CenterX (pixels) ,
             % screenX = wRect(3) (pixels) ,
@@ -62,6 +67,10 @@ classdef Dot < baseObject
                 % --- diskColor ----
                 assert( isvector(diskColor) && isnumeric(diskColor) && all( uint8(diskColor)==diskColor ) , ...
                     'diskColor = [R G B a] from 0 to 255' )
+                
+                % --- frameColor ----
+                assert( isvector(frameColor) && isnumeric(frameColor) && all( uint8(frameColor)==frameColor ) , ...
+                    'frameColor = [R G B a] from 0 to 255' )
                 
                 % --- Xorigin ----
                 assert( isscalar(Xorigin) && isnumeric(Xorigin) && Xorigin>0 && Xorigin==round(Xorigin) , ...
@@ -82,6 +91,8 @@ classdef Dot < baseObject
                 obj.diameter          = diameter;
                 obj.diskBaseColor     = diskColor;
                 obj.diskCurrentColor  = diskColor;
+                obj.frameBaseColor    = frameColor;
+                obj.frameCurrentColor = frameColor;
                 obj.Xorigin           = Xorigin;
                 obj.Yorigin           = Yorigin;
                 obj.screenX           = screenX;

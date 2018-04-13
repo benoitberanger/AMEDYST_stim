@@ -5,6 +5,7 @@ switch S.OperationMode
     case 'Acquisition'
         HideCursor(S.ScreenID)
     case 'FastDebug'
+        HideCursor(S.ScreenID)
     case 'RealisticDebug'
         HideCursor(S.ScreenID)
     otherwise
