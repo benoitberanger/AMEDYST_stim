@@ -16,7 +16,7 @@ for block = 1 : 3
         case 1
             name = 'Direct__Pre';
         case 2
-            name = 'Deviaton';
+            name = 'Deviation';
         case 3
             name = 'Direct__Post';
         otherwise

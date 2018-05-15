@@ -24,7 +24,7 @@ for block = 1 : 3
         case 1
             name = 'Direct__Pre';
         case 2
-            name = 'Deviaton';
+            name = 'Deviation';
         case 3
             name = 'Direct__Post';
         otherwise
@@ -36,13 +36,14 @@ for block = 1 : 3
     end
     
     NrTrials = length(data.(name).Trials);
+    colors = jet(NrTrials);
     
     for trial = 1 : NrTrials
-        plot( ax(block), data.(name).Trials(trial).xy(:,1), data.(name).Trials(trial).xy(:,2) )
+        plot( ax(block), data.(name).Trials(trial).xy(:,1), data.(name).Trials(trial).xy(:,2), 'Color', colors(trial,:) )
     end % trial
     
     % ideal trajectorty
-    plot( ax(block), [0 data.(name).Trials(trial).targetPx], [0 0], 'k', 'LineWidth', 2, 'DisplayName', 'optimal');
+    plot( ax(block), [0 data.(name).Trials(trial).targetPx], [0 0], 'k', 'LineWidth', 2, 'DisplayName', 'optimal' );
     
     axis  (ax(block),'tight')
     % legend(ax(a),'show')
