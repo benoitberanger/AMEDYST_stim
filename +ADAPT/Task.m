@@ -26,7 +26,8 @@ try
     
     %% Prepare the conversion [0% .. 100%] chance into color [gray .. gold]
     
-    gray = S.Parameters.ADAPT.Circle.FrameColor;
+%     gray = S.Parameters.ADAPT.Circle.FrameColor;
+    gray = [0 0 0];
     gold = S.Parameters.ADAPT.Target.ValueColor;
     
     p = nan(3,2);

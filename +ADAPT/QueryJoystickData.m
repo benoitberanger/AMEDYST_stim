@@ -10,8 +10,8 @@ Y = double(-data.axes(2))/2^15 * ScreenHeight/2;
 if X > 0
     X = X * 2^15/28500;
 end
-if Y < 0
-    Y = Y * 2^15/30100;
-end
+% if Y < 0
+%     Y = Y * 2^15/30100;
+% end
 
 end % function

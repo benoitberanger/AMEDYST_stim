@@ -180,8 +180,17 @@ end
 RunNumber = LastRunNumber + 1;
 % -----------------------------------------------------------------
 
-DataFile     = sprintf('%s%s_%s_%s_%s_run%0.2d', DataPath, S.TimeStampFile, SubjectID, Environement, Task, RunNumber );
-DataFileName = sprintf(  '%s_%s_%s_%s_run%0.2d',           S.TimeStampFile, SubjectID, Environement, Task, RunNumber  );
+switch DeviationSign
+    case '+'
+        sgn = 'Plus';
+    case '-'
+        sgn = 'Minus';
+    otherwise
+            error('DeviationSign')
+end
+
+DataFile     = sprintf('%s%s_%s_%s_%s_%s_run%0.2d', DataPath, S.TimeStampFile, SubjectID, Environement, Task, sgn, RunNumber );
+DataFileName = sprintf(  '%s_%s_%s_%s_%s_run%0.2d',           S.TimeStampFile, SubjectID, Environement, Task, sgn, RunNumber  );
 
 S.SubjectID     = SubjectID;
 S.RunNumber     = RunNumber;
