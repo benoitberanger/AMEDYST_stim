@@ -103,12 +103,12 @@ try
                 fprintf('#%3d deviation=%3d° target=%3d° value=%3d%% reward=%d \n', round( cell2mat(EP.Data(evt,[5 6 7 9 10])) ) )
                 
                 
-                %% ~~~ Step 0 : Jitter between trials ~~~
+                %% ~~~ Jitter between trials ~~~
                 
-                step0Running  = 1;
+                stepJitterRunning  = 1;
                 counter_step0 = 0;
                 
-                while step0Running
+                while stepJitterRunning
                     
                     counter_step0 = counter_step0 + 1;
                     
@@ -128,7 +128,7 @@ try
                     end
                     
                     if lastFlipOnset >= step0onset + EP.Data{evt,8}
-                        step0Running = 0;
+                        stepJitterRunning = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -143,19 +143,19 @@ try
                     end
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     
-                end % while : step 0
+                end % while
                 
                 if EXIT
                     break
                 end
                 
                 
-                %% ~~~ Step 5 : Pause before dislpay of the reward ~~~
+                %% ~~~ Pause before dislpay of the reward ~~~
                 
-                step5Running  = 1;
+                stepPauseBeforeRewardRunning  = 1;
                 counter_step5 = 0;
                 
-                while step5Running
+                while stepPauseBeforeRewardRunning
                     
                     counter_step5 = counter_step5 + 1;
                     
@@ -174,7 +174,7 @@ try
                     end
                     
                     if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
-                        step5Running = 0;
+                        stepPauseBeforeRewardRunning = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -189,17 +189,17 @@ try
                     end
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     
-                end % while : step 5
+                end % while
                 
                 
-                %% ~~~ Step 6 : Show probability of reward ~~~
+                %% ~~~ Show probability of reward ~~~
                 
-                step6Running  = 1;
+                stepShowProbaRunning  = 1;
                 counter_step6 = 0;
                 
                 proba_str = sprintf( '%d %%' , floor(EP.Get('Proba',evt)) ); % looks like "33 %"
                 
-                while step6Running
+                while stepShowProbaRunning
                     
                     counter_step6 = counter_step6 + 1;
                     
@@ -218,7 +218,7 @@ try
                     end
                     
                     if lastFlipOnset >= step6onset +Parameters.RewardDisplayTime
-                        step6Running = 0;
+                        stepShowProbaRunning = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -233,19 +233,19 @@ try
                     end
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     
-                end % while : step 6
+                end % while
                 
                 if EXIT
                     break
                 end
                 
                 
-                %% ~~~ Step 5 : Pause before start of motor sequence ~~~
+                %% ~~~ Pause before start of motor sequence ~~~
                 
-                step5Running  = 1;
+                stepPauseBeforeMotorRunning  = 1;
                 counter_step5 = 0;
                 
-                while step5Running
+                while stepPauseBeforeMotorRunning
                     
                     counter_step5 = counter_step5 + 1;
                     
@@ -264,7 +264,7 @@ try
                     end
                     
                     if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
-                        step5Running = 0;
+                        stepPauseBeforeMotorRunning = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -279,10 +279,10 @@ try
                     end
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     
-                end % while : step 5
+                end % while
                 
                 
-                %% ~~~ Step 1 : Draw target @ big ring ~~~
+                %% ~~~ Draw target @ big ring ~~~
                 
                 BigCircle.Draw
                 Cross.Draw
@@ -305,10 +305,10 @@ try
                 RR.AddEvent({['Draw@Ring__' EP.Data{evt,1}] flipOnset_step_1-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                 
                 
-                %% ~~~ Step 2 : User moves cursor to target @ big ring  ~~~
+                %% ~~~ User moves cursor to target @ big ring  ~~~
                 
                 startCursorInTarget = [];
-                step1Running        = 1;
+                stepActionRunning        = 1;
                 
                 draw_PrevTraget      = 1;
                 has_already_traveled = 0;
@@ -320,14 +320,14 @@ try
                 ReactionTimeOUT = NaN;
                 TravelTimeOUT   = NaN;
                 
-                while step1Running
+                while stepActionRunning
                     
                     counter_step1 = counter_step1 + 1;
                     
                     if counter_step1 > 1
                         value = Parameters.TrialMaxDuration - (lastFlipOnset - flipOnset_step_1);
                         if value < S.PTB.slack
-                            step1Running = 0;
+                            stepActionRunning = 0;
                         end
                         RushTimer.Draw( value )
                     end
@@ -374,7 +374,7 @@ try
                             end
                             
                         elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
-                            step1Running = 0;
+                            stepActionRunning = 0;
                         end
                         
                     else % no, then reset
@@ -406,7 +406,7 @@ try
                 end
                 
                 
-                %% ~~~ Step 3 : Draw target @ center ~~~
+                %% ~~~ Draw target @ center ~~~
                 
                 BigCircle.Draw
                 Cross.Draw
@@ -429,10 +429,10 @@ try
                 RR.AddEvent({['Draw@Center__' EP.Data{evt,1}] flipOnset_step_3-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                 
                 
-                %% ~~~ Step 4 : User moves cursor to target @ center ~~~
+                %% ~~~ User moves cursor to target @ center ~~~
                 
                 startCursorInTarget = [];
-                step4Running        = 1;
+                stepGoBackRunning   = 1;
                 
                 draw_PrevTraget      = 1;
                 has_already_traveled = 0;
@@ -441,7 +441,7 @@ try
                 
                 counter_step4 = 0;
                 
-                while step4Running
+                while stepGoBackRunning
                     
                     counter_step4 = counter_step4 + 1;
                     
@@ -485,7 +485,7 @@ try
                             end
                             
                         elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
-                            step4Running = 0;
+                            stepGoBackRunning = 0;
                         end
                         
                     else % no, then reset
@@ -517,12 +517,12 @@ try
                 end
                 
                 
-                %% ~~~ Step 5 : Pause before dislpay of the reward ~~~
+                %% ~~~ Pause before dislpay of the reward ~~~
                 
-                step5Running  = 1;
+                stepPauseBeforeRewarRunning = 1;
                 counter_step5 = 0;
                 
-                while step5Running
+                while stepPauseBeforeRewarRunning
                     
                     counter_step5 = counter_step5 + 1;
                     
@@ -541,7 +541,7 @@ try
                     end
                     
                     if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
-                        step5Running = 0;
+                        stepPauseBeforeRewarRunning = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -559,12 +559,12 @@ try
                 end % while : step 5
                 
                 
-                %% ~~~ Step 6 : Show reward ~~~
+                %% ~~~ Show reward ~~~
                 
-                step6Running  = 1;
+                stepShowRewardRunning = 1;
                 counter_step6 = 0;
                 
-                while step6Running
+                while stepShowRewardRunning
                     
                     counter_step6 = counter_step6 + 1;
                     
@@ -583,7 +583,7 @@ try
                     end
                     
                     if lastFlipOnset >= step6onset +Parameters.RewardDisplayTime
-                        step6Running = 0;
+                        stepShowRewardRunning = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

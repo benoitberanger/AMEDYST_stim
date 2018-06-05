@@ -21,7 +21,7 @@ end
 
 %% Paradigme
 
-Parameters.TrialMaxDuration            = 5.0; % seconds
+Parameters.TrialMaxDuration            = 4.0; % seconds
 Parameters.TimeSpentOnTargetToValidate = 0.5; % seconds
 Parameters.MinPauseBetweenTrials       = 0.5; % seconds
 Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
