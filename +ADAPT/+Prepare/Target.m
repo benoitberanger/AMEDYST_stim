@@ -29,6 +29,6 @@ target.AssertReady % just to check
 prevTarget = target.CopyObject;
 
 % Switch the flag 'on' after the copy of the object
-target.valued = 1;
+% target.valued = 1;
 
 end % function

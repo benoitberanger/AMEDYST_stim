@@ -28,16 +28,16 @@ try
     
     %% Prepare the conversion [0% .. 100%] chance into color [gray .. gold]
     
-%     gray = S.Parameters.ADAPT.Circle.FrameColor;
-    gray = [0 0 0];
-    gold = S.Parameters.ADAPT.Target.ValueColor;
-    
-    p = nan(3,2);
-    for c = 1 : 3 % RGB
-        p(c,:) = polyfit([0 100],[gray(c) gold(c)],1);
-    end
-    
-    GetColor = @(x) [polyval(p(1,:), x) polyval(p(2,:), x) polyval(p(3,:), x)];
+    % %     gray = S.Parameters.ADAPT.Circle.FrameColor;
+    %     gray = [0 0 0];
+    %     gold = S.Parameters.ADAPT.Target.ValueColor;
+    %
+    %     p = nan(3,2);
+    %     for c = 1 : 3 % RGB
+    %         p(c,:) = polyfit([0 100],[gray(c) gold(c)],1);
+    %     end
+    %
+    %     GetColor = @(x) [polyval(p(1,:), x) polyval(p(2,:), x) polyval(p(3,:), x)];
     
     
     %% Eyelink
@@ -288,8 +288,8 @@ try
                 
                 Target.frameCurrentColor = Target.frameBaseColor;
                 Target.Move( TargetBigCirclePosition, EP.Get('Target',evt) )
-                Target.value = EP.Get('Probability',evt);
-                Target.valueCurrentColor = GetColor(Target.value);
+                %                 Target.value = EP.Get('Probability',evt);
+                %                 Target.valueCurrentColor = GetColor(Target.value);
                 Target.Draw
                 
                 PrevTarget.frameCurrentColor = Red;
@@ -402,8 +402,8 @@ try
                 
                 Target.frameCurrentColor = Target.frameBaseColor;
                 Target.Move(0,0)
-                Target.value = 0;
-                Target.valueCurrentColor = Target.diskCurrentColor;
+                %                 Target.value = 0;
+                %                 Target.valueCurrentColor = Target.diskCurrentColor;
                 Target.Draw
                 
                 PrevTarget.frameCurrentColor = Red;
