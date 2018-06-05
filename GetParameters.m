@@ -105,6 +105,10 @@ Parameters.ADAPT.Cross.Color           = [128 128 128]; % [R G B] ( from 0 to 25
 Parameters.ADAPT.Reward.ScreenRatio    = 0.25;          % ratio : dim   = ScreenHeight*ratio_screen
 Parameters.ADAPT.Reward.NoRewardColor  = [128 128 128]; % color of the rectangle when there is no reward
 
+% Timer => @Timer
+Parameters.ADAPT.Timer.ScreenRation    = 0.05;          % ratio : dim = ScreenHeight*ratio_screen
+
+
 %%%%%%%%%%%%%%
 %  Keybinds  %
 %%%%%%%%%%%%%%

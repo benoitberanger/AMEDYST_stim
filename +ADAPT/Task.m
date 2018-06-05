@@ -24,6 +24,7 @@ try
     Cursor                 = ADAPT.Prepare.Cursor     ;
     Reward                 = ADAPT.Prepare.Reward     ;
     Probility              = ADAPT.Prepare.Probability;
+    RushTimer              = ADAPT.Prepare.RushTimer(Parameters);
     
     
     %% Prepare the conversion [0% .. 100%] chance into color [gray .. gold]
@@ -307,7 +308,7 @@ try
                 %% ~~~ Step 2 : User moves cursor to target @ big ring  ~~~
                 
                 startCursorInTarget = [];
-                step2Running        = 1;
+                step1Running        = 1;
                 
                 draw_PrevTraget      = 1;
                 has_already_traveled = 0;
@@ -316,10 +317,20 @@ try
                 
                 counter_step1 = 0;
                 
-                while step2Running
+                ReactionTimeOUT = NaN;
+                TravelTimeOUT   = NaN;
+                
+                while step1Running
                     
                     counter_step1 = counter_step1 + 1;
                     
+                    if counter_step1 > 1
+                        value = Parameters.TrialMaxDuration - (lastFlipOnset - flipOnset_step_1);
+                        if value < S.PTB.slack
+                            step1Running = 0;
+                        end
+                        RushTimer.Draw( value )
+                    end
                     BigCircle.Draw
                     Cross.Draw
                     Target.Draw
@@ -363,7 +374,7 @@ try
                             end
                             
                         elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
-                            step2Running = 0;
+                            step1Running = 0;
                         end
                         
                     else % no, then reset

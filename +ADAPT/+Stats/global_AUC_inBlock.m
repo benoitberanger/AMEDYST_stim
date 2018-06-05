@@ -70,8 +70,8 @@ for block = 1 : 3
     end % trial
     
     s.block_idx = block_idx;
-    s.AUCmean   = mean(s.auc);
-    s.AUCstd    = std (s.auc);
+    s.AUCmean   = nanmean(s.auc);
+    s.AUCstd    = nanstd (s.auc);
     
     output.(name) = s;
     

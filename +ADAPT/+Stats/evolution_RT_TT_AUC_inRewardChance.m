@@ -37,14 +37,14 @@ for block = 1 : 3
         s.Values(value_idx).value   = Values(value_idx);
         s.Values(value_idx).idx     = find(trial2value==value_idx);
         s.Values(value_idx).RT      = [gloAU.(name).Trials(s.Values(value_idx).idx).RT ];
-        s.Values(value_idx).RTmean  = mean(s.Values(value_idx).RT);
-        s.Values(value_idx).RTstd   = std (s.Values(value_idx).RT);
+        s.Values(value_idx).RTmean  = nanmean(s.Values(value_idx).RT);
+        s.Values(value_idx).RTstd   = nanstd (s.Values(value_idx).RT);
         s.Values(value_idx).TT      = [gloAU.(name).Trials(s.Values(value_idx).idx).TT ];
-        s.Values(value_idx).TTmean  = mean(s.Values(value_idx).TT);
-        s.Values(value_idx).TTstd   = std (s.Values(value_idx).TT);
+        s.Values(value_idx).TTmean  = nanmean(s.Values(value_idx).TT);
+        s.Values(value_idx).TTstd   = nanstd (s.Values(value_idx).TT);
         s.Values(value_idx).AUC     = [gloAU.(name).Trials(s.Values(value_idx).idx).auc];
-        s.Values(value_idx).AUCmean = mean(s.Values(value_idx).AUC);
-        s.Values(value_idx).AUCstd  = std (s.Values(value_idx).AUC);
+        s.Values(value_idx).AUCmean = nanmean(s.Values(value_idx).AUC);
+        s.Values(value_idx).AUCstd  = nanstd (s.Values(value_idx).AUC);
     end
     output.(name) = s;
     

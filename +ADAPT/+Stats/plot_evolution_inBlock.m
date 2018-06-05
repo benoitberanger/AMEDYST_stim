@@ -53,7 +53,7 @@ for block = 1 : 3
     plot(ax(2), block_idx, data(block_idx,10), ':', 'Color',colors(block,:), 'LineWidth',1, 'DisplayName',name)
     plot(ax(3), block_idx, gloAU.(name).auc,   ':', 'Color',colors(block,:), 'LineWidth',1, 'DisplayName',name)
     
-    block_X_pos = mean(block_idx);
+    block_X_pos = nanmean(block_idx);
     bar     (ax(1), block_X_pos, gloRT.(name).RTmean,  length(block_idx), 'FaceColor','none', 'EdgeColor',colors(block,:)*0.5, 'LineStyle','-', 'DisplayName',['mean ' name])
     bar     (ax(2), block_X_pos, gloRT.(name).TTmean,  length(block_idx), 'FaceColor','none', 'EdgeColor',colors(block,:)*0.5, 'LineStyle','-', 'DisplayName',['mean ' name])
     bar     (ax(3), block_X_pos, gloAU.(name).AUCmean, length(block_idx), 'FaceColor','none', 'EdgeColor',colors(block,:)*0.5, 'LineStyle','-', 'DisplayName',['mean ' name])
@@ -68,7 +68,7 @@ for block = 1 : 3
     
     for chunk = 1 : NrChunks(end)
         chunk_idx = evoRT.(name).chunk_idx{chunk};
-        chunk_X_pos = mean(chunk_idx)+chunk_offcet;
+        chunk_X_pos = nanmean(chunk_idx)+chunk_offcet;
         bar     (ax(1), chunk_X_pos, evoRT.(name).RTmean(chunk),        NrAngles, 'FaceColor','none', 'EdgeColor',colors(block,:) ,'LineWidth',1.5, 'DisplayName',['mean ' name])
         bar     (ax(2), chunk_X_pos, evoRT.(name).TTmean(chunk),        NrAngles, 'FaceColor','none', 'EdgeColor',colors(block,:) ,'LineWidth',1.5, 'DisplayName',['mean ' name])
         bar     (ax(3), chunk_X_pos, evoAU.(name).Chunk(chunk).AUCmean, NrAngles, 'FaceColor','none', 'EdgeColor',colors(block,:) ,'LineWidth',1.5, 'DisplayName',['mean ' name])

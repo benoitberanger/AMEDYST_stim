@@ -44,11 +44,11 @@ for trial = 1 : size(from,1)
     XY(method).TRIAL(trial).targetPx    = targetPx;
     XY(method).TRIAL(trial).auc         = abs(trapz(xy(:,1),xy(:,2)));
     XY(method).AUC.Deviation.vect       = auc_deviation;
-    XY(method).AUC.Deviation.mean       = round(mean(auc_deviation));
-    XY(method).AUC.Deviation.std        = round(std(auc_deviation));
+    XY(method).AUC.Deviation.mean       = round(nanmean(auc_deviation));
+    XY(method).AUC.Deviation.std        = round(nanstd(auc_deviation));
     XY(method).AUC.Direct.vect          = auc_direct;
-    XY(method).AUC.Direct.mean          = round(mean(auc_direct));
-    XY(method).AUC.Direct.std           = round(std(auc_direct));
+    XY(method).AUC.Direct.mean          = round(nanmean(auc_direct));
+    XY(method).AUC.Direct.std           = round(nanstd(auc_direct));
     
 end
 

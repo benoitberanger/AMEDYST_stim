@@ -38,12 +38,12 @@ direct         = struct;
 direct.idx     = find(from(:,4) == 0);
 
 direct.RT_vect = from(direct.idx,9);
-direct.RT_mean = round(mean(direct.RT_vect));
-direct.RT_std  = round( std(direct.RT_vect));
+direct.RT_mean = round(nanmean(direct.RT_vect));
+direct.RT_std  = round( nanstd(direct.RT_vect));
 
 direct.TT_vect = from(direct.idx,10);
-direct.TT_mean = round(mean(direct.TT_vect));
-direct.TT_std  = round( std(direct.TT_vect));
+direct.TT_mean = round(nanmean(direct.TT_vect));
+direct.TT_std  = round( nanstd(direct.TT_vect));
 
 
 % Deviation
@@ -52,12 +52,12 @@ deviation         = struct;
 deviation.idx     = find(from(:,4) ~= 0);
 
 deviation.RT_vect = from(deviation.idx,9);
-deviation.RT_mean = round(mean(deviation.RT_vect));
-deviation.RT_std  = round( std(deviation.RT_vect));
+deviation.RT_mean = round(nanmean(deviation.RT_vect));
+deviation.RT_std  = round( nanstd(deviation.RT_vect));
 
 deviation.TT_vect = from(deviation.idx,10);
-deviation.TT_mean = round(mean(deviation.TT_vect));
-deviation.TT_std  = round( std(deviation.TT_vect));
+deviation.TT_mean = round(nanmean(deviation.TT_vect));
+deviation.TT_std  = round( nanstd(deviation.TT_vect));
 
 
 % Direct(value) & Deviation(value)
@@ -67,20 +67,20 @@ for currentValue = sortedValues
     vect = intersect(direct.idx, find(from(:,5)==currentValue) );
     name = sprintf('value%.3d',round(currentValue));
     direct.(name).RT_vect = from(vect,9);
-    direct.(name).RT_mean = round(mean(direct.(name).RT_vect));
-    direct.(name).RT_std  = round( std(direct.(name).RT_vect));
+    direct.(name).RT_mean = round(nanmean(direct.(name).RT_vect));
+    direct.(name).RT_std  = round( nanstd(direct.(name).RT_vect));
     direct.(name).TT_vect = from(vect,10);
-    direct.(name).TT_mean = round(mean(direct.(name).TT_vect));
-    direct.(name).TT_std  = round( std(direct.(name).TT_vect));
+    direct.(name).TT_mean = round(nanmean(direct.(name).TT_vect));
+    direct.(name).TT_std  = round( nanstd(direct.(name).TT_vect));
     
     vect = intersect(deviation.idx, find(from(:,5)==currentValue) );
     name = sprintf('value%.3d',round(currentValue));
     deviation.(name).RT_vect = from(vect,9);
-    deviation.(name).RT_mean = round(mean(deviation.(name).RT_vect));
-    deviation.(name).RT_std  = round( std(deviation.(name).RT_vect));
+    deviation.(name).RT_mean = round(nanmean(deviation.(name).RT_vect));
+    deviation.(name).RT_std  = round( nanstd(deviation.(name).RT_vect));
     deviation.(name).TT_vect = from(vect,10);
-    deviation.(name).TT_mean = round(mean(deviation.(name).TT_vect));
-    deviation.(name).TT_std  = round( std(deviation.(name).TT_vect));
+    deviation.(name).TT_mean = round(nanmean(deviation.(name).TT_vect));
+    deviation.(name).TT_std  = round( nanstd(deviation.(name).TT_vect));
     
 end
 

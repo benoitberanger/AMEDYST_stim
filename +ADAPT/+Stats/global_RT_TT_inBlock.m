@@ -29,11 +29,11 @@ for block = 1 : 3
     block_idx     = find(data(:,1)==block);
     data_in_block = data( block_idx , : );
     
-    RTmean = mean(data_in_block(:,9));
-    RTstd  =  std(data_in_block(:,9));
+    RTmean = nanmean(data_in_block(:,9));
+    RTstd  =  nanstd(data_in_block(:,9));
     
-    TTmean = mean(data_in_block(:,10));
-    TTstd  =  std(data_in_block(:,10));
+    TTmean = nanmean(data_in_block(:,10));
+    TTstd  =  nanstd(data_in_block(:,10));
     
     s = struct;
     s.RTmean = RTmean;

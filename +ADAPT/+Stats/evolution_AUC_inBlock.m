@@ -75,8 +75,8 @@ for block = 1 : 3
         end % trial
         
         s.Chunk(chunk).idx     = chunk_idx{chunk};
-        s.Chunk(chunk).AUCmean = mean(s.Chunk(chunk).auc);
-        s.Chunk(chunk).AUCstd  = std (s.Chunk(chunk).auc);
+        s.Chunk(chunk).AUCmean = nanmean(s.Chunk(chunk).auc);
+        s.Chunk(chunk).AUCstd  = nanstd (s.Chunk(chunk).auc);
         
     end % chunk
     

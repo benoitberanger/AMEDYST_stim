@@ -35,8 +35,8 @@ results.completSeq = length(completSeq);
 iti = diff(cell2mat(sidedata(:,2)));
 iti = round(iti*1000);
 results.iti      = iti;              % milliseconds
-results.iti_mean = round(mean(iti)); % milliseconds
-results.iti_std  = round(std(iti));  % milliseconds
+results.iti_mean = round(nanmean(iti)); % milliseconds
+results.iti_std  = round(nanstd(iti));  % milliseconds
 
 % error
 results.error = results.N - results.completSeq*length(sequence);

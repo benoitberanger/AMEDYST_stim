@@ -36,14 +36,14 @@ for block = 1 : 3
         s.Targets(target_idx).target   = Targets(target_idx);
         s.Targets(target_idx).idx     = find(trial2target==target_idx);
         s.Targets(target_idx).RT      = [gloAU.(name).Trials(s.Targets(target_idx).idx).RT ];
-        s.Targets(target_idx).RTmean  = mean(s.Targets(target_idx).RT);
-        s.Targets(target_idx).RTstd   = std (s.Targets(target_idx).RT);
+        s.Targets(target_idx).RTmean  = nanmean(s.Targets(target_idx).RT);
+        s.Targets(target_idx).RTstd   = nanstd (s.Targets(target_idx).RT);
         s.Targets(target_idx).TT      = [gloAU.(name).Trials(s.Targets(target_idx).idx).TT ];
-        s.Targets(target_idx).TTmean  = mean(s.Targets(target_idx).TT);
-        s.Targets(target_idx).TTstd   = std (s.Targets(target_idx).TT);
+        s.Targets(target_idx).TTmean  = nanmean(s.Targets(target_idx).TT);
+        s.Targets(target_idx).TTstd   = nanstd (s.Targets(target_idx).TT);
         s.Targets(target_idx).AUC     = [gloAU.(name).Trials(s.Targets(target_idx).idx).auc];
-        s.Targets(target_idx).AUCmean = mean(s.Targets(target_idx).AUC);
-        s.Targets(target_idx).AUCstd  = std (s.Targets(target_idx).AUC);
+        s.Targets(target_idx).AUCmean = nanmean(s.Targets(target_idx).AUC);
+        s.Targets(target_idx).AUCstd  = nanstd (s.Targets(target_idx).AUC);
     end
     output.(name) = s;
     

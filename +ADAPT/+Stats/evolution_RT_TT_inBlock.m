@@ -49,11 +49,11 @@ for block = 1 : 3
         
         chunk_idx{chunk} = NrAngles * (chunk-1) + 1   :   NrAngles * chunk;
         
-        RTmean(chunk) = mean(data_in_block(chunk_idx{chunk},9));
-        RTstd (chunk) =  std(data_in_block(chunk_idx{chunk},9));
+        RTmean(chunk) = nanmean(data_in_block(chunk_idx{chunk},9));
+        RTstd (chunk) =  nanstd(data_in_block(chunk_idx{chunk},9));
         
-        TTmean(chunk) = mean(data_in_block(chunk_idx{chunk},10));
-        TTstd (chunk) =  std(data_in_block(chunk_idx{chunk},10));
+        TTmean(chunk) = nanmean(data_in_block(chunk_idx{chunk},10));
+        TTstd (chunk) =  nanstd(data_in_block(chunk_idx{chunk},10));
         
     end % chunk
     
