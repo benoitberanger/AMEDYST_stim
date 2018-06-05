@@ -18,11 +18,13 @@ try
     
     %% Prepare objects
     
-    Cross                  = ADAPT.Prepare.Cross    ;
-    BigCircle              = ADAPT.Prepare.BigCircle;
-    [ Target, PrevTarget ] = ADAPT.Prepare.Target   ;
-    Cursor                 = ADAPT.Prepare.Cursor   ;
-    Reward                 = ADAPT.Prepare.Reward   ;
+    Cross                  = ADAPT.Prepare.Cross      ;
+    BigCircle              = ADAPT.Prepare.BigCircle  ;
+    [ Target, PrevTarget ] = ADAPT.Prepare.Target     ;
+    Cursor                 = ADAPT.Prepare.Cursor     ;
+    Reward                 = ADAPT.Prepare.Reward     ;
+    Probility              = ADAPT.Prepare.Probability;
+    
     
     %% Prepare the conversion [0% .. 100%] chance into color [gray .. gold]
     
@@ -145,6 +147,138 @@ try
                 if EXIT
                     break
                 end
+                
+                
+                %% ~~~ Step 5 : Pause before dislpay of the reward ~~~
+                
+                step5Running  = 1;
+                counter_step5 = 0;
+                
+                while step5Running
+                    
+                    counter_step5 = counter_step5 + 1;
+                    
+                    BigCircle.Draw
+                    Cross.Draw
+                    ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
+                    
+                    Screen('DrawingFinished',S.PTB.wPtr);
+                    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                    
+                    % Record trial onset & step onset
+                    if counter_step5 == 1
+                        RR.AddEvent({['preReward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                        step5onset = lastFlipOnset;
+                    end
+                    
+                    if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
+                        step5Running = 0;
+                    end
+                    
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    % Fetch keys
+                    [keyIsDown, ~, keyCode] = KbCheck;
+                    if keyIsDown
+                        % ~~~ ESCAPE key ? ~~~
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
+                            break
+                        end
+                    end
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    
+                end % while : step 5
+                
+                
+                %% ~~~ Step 6 : Show probability of reward ~~~
+                
+                step6Running  = 1;
+                counter_step6 = 0;
+                
+                proba_str = sprintf( '%d %%' , floor(EP.Get('Proba',evt)) ); % looks like "33 %"
+                
+                while step6Running
+                    
+                    counter_step6 = counter_step6 + 1;
+                    
+                    BigCircle.Draw
+                    Probility.Draw( proba_str );
+                    ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
+                    
+                    Screen('DrawingFinished',S.PTB.wPtr);
+                    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                    
+                    % Record trial onset & step onset
+                    if counter_step6 == 1
+                        RR.AddEvent({['Probability__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                        step6onset = lastFlipOnset;
+                    end
+                    
+                    if lastFlipOnset >= step6onset +Parameters.RewardDisplayTime
+                        step6Running = 0;
+                    end
+                    
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    % Fetch keys
+                    [keyIsDown, ~, keyCode] = KbCheck;
+                    if keyIsDown
+                        % ~~~ ESCAPE key ? ~~~
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
+                            break
+                        end
+                    end
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    
+                end % while : step 6
+                
+                if EXIT
+                    break
+                end
+                
+                
+                %% ~~~ Step 5 : Pause before start of motor sequence ~~~
+                
+                step5Running  = 1;
+                counter_step5 = 0;
+                
+                while step5Running
+                    
+                    counter_step5 = counter_step5 + 1;
+                    
+                    BigCircle.Draw
+                    Cross.Draw
+                    ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
+                    
+                    Screen('DrawingFinished',S.PTB.wPtr);
+                    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                    
+                    % Record trial onset & step onset
+                    if counter_step5 == 1
+                        RR.AddEvent({['preMotor__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                        step5onset = lastFlipOnset;
+                    end
+                    
+                    if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
+                        step5Running = 0;
+                    end
+                    
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    % Fetch keys
+                    [keyIsDown, ~, keyCode] = KbCheck;
+                    if keyIsDown
+                        % ~~~ ESCAPE key ? ~~~
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
+                            break
+                        end
+                    end
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    
+                end % while : step 5
                 
                 
                 %% ~~~ Step 1 : Draw target @ big ring ~~~
