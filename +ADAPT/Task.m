@@ -576,7 +576,7 @@ try
                     if S.Feedback
                         Reward.Draw(EP.Get('rewarded',evt) );
                     else
-                        Reward.Draw(-1)
+                        % pass, don't sow anything
                     end
                     ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
                     
