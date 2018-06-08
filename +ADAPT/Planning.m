@@ -28,8 +28,8 @@ Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
 Parameters.TimeWaitReward              = 0.5; % seconds
 Parameters.RewardDisplayTime           = 1.0; % seconds
 
-Parameters.TargetAngles                =         [20 60 120 160]       ;
-Parameters.Values                      = Shuffle([0  1  2   3  ]/3 * 100); % Association of 1 TargetAngle with 1 Value (randomized for each run)
+Parameters.TargetAngles                = [20 60 120 160]        ;
+Parameters.Values                      = [0  1  2   3  ]/3 * 100;
 
 switch S.DeviationSign
     case '+'
@@ -61,15 +61,19 @@ switch S.OperationMode
     case 'RealisticDebug'
         
         Paradigm = {
-            'Direct_Pre'  0       8
-            'Deviation'   Sign*45 8
-            'Direct_Post' 0       8
+            'Direct_Pre'  0       32
+            'Deviation'   Sign*45 64
+            'Direct_Post' 0       32
             };
         
 end
 
+
 % Some values...
-NrTrials = sum(cell2mat(Paradigm(:,3)));
+NrTrials  = sum(cell2mat(Paradigm(:,3)));
+NrTargets = length(Parameters.TargetAngles);
+NrValues  = length(Parameters.Values);
+
 
 %% Define a planning <--- paradigme
 
@@ -88,12 +92,37 @@ EP.AddStartTime('StartTime',0);
 
 % --- Stim ----------------------------------------------------------------
 
-% Shuffle the list of angles
-angleList = Shuffle(Parameters.TargetAngles);
-
 trial_counter = 0;
 
 for block = 1 : size(Paradigm,1)
+    
+    % For each block, counterbalance Targets-Values
+    
+    % Some values... per block
+    NrTrialsPerBlock  = Paradigm{block,3};
+    
+    % Counter-banlanced randomization of Vales per Targets
+    
+    NrValuesPerTarget = NrTrialsPerBlock / NrTargets / NrValues;
+    
+    if NrValuesPerTarget < 1 % in Debug mode, it an happen, because of very few trials
+        NrValuesPerTarget = 1;
+    end
+    
+    LinkTargetValue = nan(NrTrialsPerBlock/NrTargets, NrTargets); % pre-allocation
+    
+    if NrValuesPerTarget == 1
+        LinkTargetValue = Common.ShuffleN( Parameters.Values, NrValuesPerTarget );
+    else
+        for target = 1 : NrTargets
+            LinkTargetValue(:, target) = Common.ShuffleN( Parameters.Values, NrValuesPerTarget );
+        end
+    end
+    
+    % Shuffle the list of angles
+    angleList = Shuffle( 1 : NrTargets );
+    
+    link_counter = 1;
     
     for trial_idx_in_block = 1 : Paradigm{block,3}
         
@@ -101,14 +130,15 @@ for block = 1 : size(Paradigm,1)
         
         % If angleList is empty, generate a new one
         if isempty(angleList)
-            angleList = Shuffle(Parameters.TargetAngles);
+            angleList = Shuffle( 1 : NrTargets );
+            link_counter = link_counter + 1;
         end
         
         pauseJitter = Parameters.MinPauseBetweenTrials + (Parameters.MaxPauseBetweenTrials-Parameters.MinPauseBetweenTrials)*rand; % in seconds (s), random value beween [a;b] interval
         
-        value = Parameters.Values(angleList(end)==Parameters.TargetAngles); % Fetch the Value associated with this TargetAngle
+        value = LinkTargetValue( link_counter , angleList(end) ); % Fetch the Value associated with this TargetAngle
         
-        EP.AddPlanning({ Paradigm{block,1} NextOnset(EP) Parameters.TrialMaxDuration block trial_counter Paradigm{block,2}   angleList(end) pauseJitter value double(rand*100<value)});
+        EP.AddPlanning({ Paradigm{block,1} NextOnset(EP) Parameters.TrialMaxDuration block trial_counter Paradigm{block,2}  Parameters.TargetAngles(angleList(end)) pauseJitter value double(rand*100<value)});
         
         angleList(end) = []; % Remove the last angle used
         
@@ -119,6 +149,49 @@ end
 % --- Stop ----------------------------------------------------------------
 
 EP.AddStopTime('StopTime',NextOnset(EP));
+
+
+%% Check counter-balance design
+
+data = EP.Data;
+
+for block = 1 : 3
+    
+    % Block name
+    switch block
+        case 1
+            name = 'Direct_Pre';
+        case 2
+            name = 'Deviation';
+        case 3
+            name = 'Direct_Post';
+        otherwise
+            error('block ?')
+    end % switch
+    
+    % Fetch data in the current block
+    block_idx     = strcmp(data(:,1),name);
+    data_in_block = cell2mat(data( block_idx , 2:end ));
+    
+    for target  = 1 : NrTargets
+        
+        taget_idx =  Parameters.TargetAngles(target) == data_in_block(:,EP.Get('Target')-1) ;
+        
+        vales_target = data_in_block(taget_idx,EP.Get('Probability')-1);
+        
+        valesCountVect = nan(NrValues,1);
+        
+        for value = 1 : NrValues
+            valesCountVect(value) = sum(vales_target == Parameters.Values(value));
+        end
+        
+        if sum(diff(valesCountVect)) > 0
+            warning('error in counter-balance of Target-ProbaValues (dont worry in FastDebug)')
+        end
+        
+    end
+    
+end
 
 
 %% Compute gain when rewarded
