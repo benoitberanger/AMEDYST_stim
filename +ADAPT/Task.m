@@ -197,7 +197,11 @@ try
                 stepShowProbaRunning  = 1;
                 counter_step6 = 0;
                 
-                proba_str = sprintf( '%d %%' , floor(EP.Get('Proba',evt)) ); % looks like "33 %"
+                if S.Feedback
+                    proba_str = sprintf( '%d %%' , floor(EP.Get('Proba',evt)) ); % looks like "33 %"
+                else
+                    proba_str = sprintf( '' );
+                end
                 
                 while stepShowProbaRunning
                     
@@ -569,7 +573,11 @@ try
                     counter_step6 = counter_step6 + 1;
                     
                     BigCircle.Draw
-                    Reward.Draw(EP.Get('rewarded',evt) );
+                    if S.Feedback
+                        Reward.Draw(EP.Get('rewarded',evt) );
+                    else
+                        Reward.Draw(-1)
+                    end
                     ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
                     
                     Screen('DrawingFinished',S.PTB.wPtr);

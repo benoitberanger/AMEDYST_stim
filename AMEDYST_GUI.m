@@ -618,7 +618,7 @@ else % Create the figure
     e_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
     e_seq.y   = p_tk_seq.y_marge;
     e_seq.w   = p_tk_seq.Ow*2;
-    e_seq.h   = 0.50;
+    e_seq.h   = 0.55;
     e_seq.tag = 'edit_ComplexSequence';
     handles.(e_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
         'Style','edit',...
@@ -637,7 +637,7 @@ else % Create the figure
     b_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
     b_seq.y   = p_tk_seq.y_marge;
     b_seq.w   = p_tk_seq.Ow;
-    b_seq.h   = 0.50;
+    b_seq.h   = 0.55;
     b_seq.tag = 'pushbutton_SEQ';
     handles.(b_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
         'Style','pushbutton',...
@@ -737,7 +737,7 @@ else % Create the figure
     e_deviation_sign.x = p_tk_adapt.xposO(p_tk_adapt.countO);
     e_deviation_sign.y = p_tk_adapt.y_marge;
     e_deviation_sign.w = p_tk_adapt.Ow;
-    e_deviation_sign.h = 0.5 - p_tk_adapt.y_marge;
+    e_deviation_sign.h = 0.6 - p_tk_adapt.y_marge;
     handles.edit_DeviationSign = uicontrol(handles.uipanel_Task_ADAPT,...
         'Style','edit',...
         'Units', 'Normalized',...
@@ -754,7 +754,7 @@ else % Create the figure
     e_high_reward.x = p_tk_adapt.xposO(p_tk_adapt.countO);
     e_high_reward.y = p_tk_adapt.y_marge;
     e_high_reward.w = p_tk_adapt.Ow;
-    e_high_reward.h = 0.20;
+    e_high_reward.h = 0.25;
     handles.edit_HighReward = uicontrol(handles.uipanel_Task_ADAPT,...
         'Style','edit',...
         'Units', 'Normalized',...
@@ -828,7 +828,7 @@ else % Create the figure
     b_PLOT_ALL.x   = p_tk_adapt.xposO(p_tk_adapt.countO);
     b_PLOT_ALL.y   = p_tk_adapt.y_marge;
     b_PLOT_ALL.w   = p_tk_adapt.Ow;
-    b_PLOT_ALL.h   = 0.5 - p_tk_adapt.y_marge;
+    b_PLOT_ALL.h   = e_deviation_sign.h;
     b_PLOT_ALL.tag = 'pushbutton_PLOT_ALL';
     handles.(b_PLOT_ALL.tag) = uicontrol(handles.uipanel_Task_ADAPT,...
         'Style','pushbutton',...
@@ -846,7 +846,7 @@ else % Create the figure
     %% Panel : Cursor input method
     
     p_cursorinput.x = panelProp.xposP;
-    p_cursorinput.w = panelProp.wP;
+    p_cursorinput.w = panelProp.wP*2/3;
     
     p_cursorinput.y = b_adapt_low.y + b_adapt_low.h + p_tk_adapt.y_marge;
     p_cursorinput.h = 1 - p_cursorinput.y - p_tk_adapt.y_marge;
@@ -907,6 +907,25 @@ else % Create the figure
     
     % Uncheck the button : this is my way to force the user to select a method
     set(handles.uipanel_CursorInput,'SelectedObject','')
+    
+    
+    % ---------------------------------------------------------------------
+    % Checkbox : Display Feedback
+    
+    c_fb.x = panelProp.wP*3/4;
+    c_fb.y = p_cursorinput.y;
+    c_fb.w = panelProp.wP*1/3;
+    c_fb.h = p_cursorinput.h;
+    handles.checkbox_ATAPT_display_feedback = uicontrol(handles.uipanel_Task_ADAPT,...
+        'Style','checkbox',...
+        'Units', 'Normalized',...
+        'Position',[c_fb.x c_fb.y c_fb.w c_fb.h],...
+        'String','Show Reward',...
+        'HorizontalAlignment','Center',...
+        'TooltipString','Send messages via parallel port : useful for Eyelink',...
+        'BackgroundColor',figureBGcolor,...
+        'Value',1,...
+        'Tooltip','Show reward probability & result');
     
     
     %% Panel : Operation mode

@@ -232,6 +232,17 @@ S.ParPortMessages = Common.PrepareParPort;
 handles.ParPort    = ParPort;
 
 
+%% GUI : ADAPT : Show reward ?
+
+switch Task
+    
+    case {'ADAPT_LowReward','ADAPT_HighReward'}
+        
+        Feedback = get( handles.checkbox_ATAPT_display_feedback , 'Value' );
+        S.Feedback = Feedback;
+        
+end
+
 
 %% GUI : Left or right handed ?
 
@@ -249,16 +260,21 @@ S.Side = Side;
 
 %% GUI : SEQ : visual feedback ?
 
-switch get(get(handles.uipanel_Feedback,'SelectedObject'),'Tag')
-    case 'radiobutton_FeedbackOn'
-        Feedback = 'On';
-    case 'radiobutton_FeedbackOff'
-        Feedback = 'Off';
-    otherwise
-        warning('AMEDYST:Feedback','Error in Feedback')
+switch Task
+    
+    case 'SEQ'
+        
+        switch get(get(handles.uipanel_Feedback,'SelectedObject'),'Tag')
+            case 'radiobutton_FeedbackOn'
+                Feedback = 'On';
+            case 'radiobutton_FeedbackOff'
+                Feedback = 'Off';
+            otherwise
+                warning('AMEDYST:Feedback','Error in Feedback')
+        end
+        S.Feedback = Feedback;
+        
 end
-
-S.Feedback = Feedback;
 
 
 %% GUI : ADAPT : input method ?
