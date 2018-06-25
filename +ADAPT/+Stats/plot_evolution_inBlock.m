@@ -49,9 +49,9 @@ for block = 1 : 3
     
     block_idx = gloRT.(name).block_index;
     
-    plot(ax(1) ,block_idx, data(block_idx,9 ), ':', 'Color',colors(block,:), 'LineWidth',1, 'DisplayName',name)
-    plot(ax(2), block_idx, data(block_idx,10), ':', 'Color',colors(block,:), 'LineWidth',1, 'DisplayName',name)
-    plot(ax(3), block_idx, gloAU.(name).auc,   ':', 'Color',colors(block,:), 'LineWidth',1, 'DisplayName',name)
+    plot(ax(1) ,block_idx, data(block_idx,9 ), 'x:', 'Color',colors(block,:), 'LineWidth',1, 'DisplayName',name)
+    plot(ax(2), block_idx, data(block_idx,10), 'x:', 'Color',colors(block,:), 'LineWidth',1, 'DisplayName',name)
+    plot(ax(3), block_idx, gloAU.(name).auc,   'x:', 'Color',colors(block,:), 'LineWidth',1, 'DisplayName',name)
     
     block_X_pos = nanmean(block_idx);
     bar     (ax(1), block_X_pos, gloRT.(name).RTmean,  length(block_idx), 'FaceColor','none', 'EdgeColor',colors(block,:)*0.5, 'LineStyle','-', 'DisplayName',['mean ' name])

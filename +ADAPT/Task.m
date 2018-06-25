@@ -79,7 +79,7 @@ try
                 prevX = newX;
                 prevY = newY;
                 
-                BigCircle.Draw
+                % BigCircle.Draw
                 Cross.Draw
                 Screen('DrawingFinished',S.PTB.wPtr);
                 Screen('Flip',S.PTB.wPtr);
@@ -106,13 +106,13 @@ try
                 %% ~~~ Jitter between trials ~~~
                 
                 stepJitterRunning  = 1;
-                counter_step0 = 0;
+                counter_step_jitter = 0;
                 
                 while stepJitterRunning
                     
-                    counter_step0 = counter_step0 + 1;
+                    counter_step_jitter = counter_step_jitter + 1;
                     
-                    BigCircle.Draw
+                    % BigCircle.Draw
                     Cross.Draw
                     ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
                     
@@ -121,7 +121,7 @@ try
                     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     % Record trial onset & step onset
-                    if counter_step0 == 1
+                    if counter_step_jitter == 1
                         ER.AddEvent({EP.Data{evt,1}              lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         RR.AddEvent({['Jitter__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step0onset = lastFlipOnset;
@@ -150,52 +150,52 @@ try
                 end
                 
                 
-                %% ~~~ Pause before dislpay of the reward ~~~
-                
-                stepPauseBeforeRewardRunning  = 1;
-                counter_step5 = 0;
-                
-                while stepPauseBeforeRewardRunning
-                    
-                    counter_step5 = counter_step5 + 1;
-                    
-                    BigCircle.Draw
-                    Cross.Draw
-                    ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
-                    
-                    Screen('DrawingFinished',S.PTB.wPtr);
-                    lastFlipOnset = Screen('Flip',S.PTB.wPtr);
-                    SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
-                    
-                    % Record trial onset & step onset
-                    if counter_step5 == 1
-                        RR.AddEvent({['preReward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
-                        step5onset = lastFlipOnset;
-                    end
-                    
-                    if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
-                        stepPauseBeforeRewardRunning = 0;
-                    end
-                    
-                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                    % Fetch keys
-                    [keyIsDown, ~, keyCode] = KbCheck;
-                    if keyIsDown
-                        % ~~~ ESCAPE key ? ~~~
-                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
-                        if EXIT
-                            break
-                        end
-                    end
-                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                    
-                end % while
+                %                 %% ~~~ Pause before dislpay of the reward ~~~
+                %
+                %                 stepPauseBeforeRewardRunning  = 1;
+                %                 counter_step5 = 0;
+                %
+                %                 while stepPauseBeforeRewardRunning
+                %
+                %                     counter_step5 = counter_step5 + 1;
+                %
+                %                     BigCircle.Draw
+                %                     Cross.Draw
+                %                     ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
+                %
+                %                     Screen('DrawingFinished',S.PTB.wPtr);
+                %                     lastFlipOnset = Screen('Flip',S.PTB.wPtr);
+                %                     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                %
+                %                     % Record trial onset & step onset
+                %                     if counter_step5 == 1
+                %                         RR.AddEvent({['preReward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                %                         step5onset = lastFlipOnset;
+                %                     end
+                %
+                %                     if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
+                %                         stepPauseBeforeRewardRunning = 0;
+                %                     end
+                %
+                %                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                %                     % Fetch keys
+                %                     [keyIsDown, ~, keyCode] = KbCheck;
+                %                     if keyIsDown
+                %                         % ~~~ ESCAPE key ? ~~~
+                %                         [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                %                         if EXIT
+                %                             break
+                %                         end
+                %                     end
+                %                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                %
+                %                 end % while
                 
                 
                 %% ~~~ Show probability of reward ~~~
                 
-                stepShowProbaRunning  = 1;
-                counter_step6 = 0;
+                stepShowRewardProba  = 1;
+                counter_step_show_reward_proba = 0;
                 
                 if S.Feedback
                     proba_str = sprintf( '%d %%' , floor(EP.Get('Proba',evt)) ); % looks like "33 %"
@@ -203,11 +203,11 @@ try
                     proba_str = sprintf( '' );
                 end
                 
-                while stepShowProbaRunning
+                while stepShowRewardProba
                     
-                    counter_step6 = counter_step6 + 1;
+                    counter_step_show_reward_proba = counter_step_show_reward_proba + 1;
                     
-                    BigCircle.Draw
+                    % BigCircle.Draw
                     Probility.Draw( proba_str );
                     ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
                     
@@ -216,13 +216,13 @@ try
                     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     % Record trial onset & step onset
-                    if counter_step6 == 1
-                        RR.AddEvent({['Probability__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                    if counter_step_show_reward_proba == 1
+                        RR.AddEvent({['ShowProbability__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step6onset = lastFlipOnset;
                     end
                     
-                    if lastFlipOnset >= step6onset +Parameters.RewardDisplayTime
-                        stepShowProbaRunning = 0;
+                    if lastFlipOnset >= step6onset +Parameters.RewardProbabilityDuration
+                        stepShowRewardProba = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -246,12 +246,12 @@ try
                 
                 %% ~~~ Pause before start of motor sequence ~~~
                 
-                stepPauseBeforeMotorRunning  = 1;
-                counter_step5 = 0;
+                stepPauseBeforeMotor  = 1;
+                counter_step_pause_preMotor = 0;
                 
-                while stepPauseBeforeMotorRunning
+                while stepPauseBeforeMotor
                     
-                    counter_step5 = counter_step5 + 1;
+                    counter_step_pause_preMotor = counter_step_pause_preMotor + 1;
                     
                     BigCircle.Draw
                     Cross.Draw
@@ -262,13 +262,13 @@ try
                     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     % Record trial onset & step onset
-                    if counter_step5 == 1
-                        RR.AddEvent({['preMotor__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                    if counter_step_pause_preMotor == 1
+                        RR.AddEvent({['PausePreMotor__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step5onset = lastFlipOnset;
                     end
                     
-                    if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
-                        stepPauseBeforeMotorRunning = 0;
+                    if lastFlipOnset >= step5onset +Parameters.PausePreMotor
+                        stepPauseBeforeMotor = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -312,23 +312,23 @@ try
                 %% ~~~ User moves cursor to target @ big ring  ~~~
                 
                 startCursorInTarget = [];
-                stepActionRunning        = 1;
+                stepActionRunning   = 1;
                 
                 draw_PrevTraget      = 1;
                 has_already_traveled = 0;
                 
                 frame_start = SR.SampleCount;
                 
-                counter_step1 = 0;
+                counter_step_Action = 0;
                 
                 ReactionTimeOUT = NaN;
                 TravelTimeOUT   = NaN;
                 
                 while stepActionRunning
                     
-                    counter_step1 = counter_step1 + 1;
+                    counter_step_Action = counter_step_Action + 1;
                     
-                    if counter_step1 > 1
+                    if counter_step_Action > 1
                         value = Parameters.TrialMaxDuration - (lastFlipOnset - flipOnset_step_1);
                         if value < S.PTB.slack
                             stepActionRunning = 0;
@@ -349,7 +349,7 @@ try
                     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     % Record step onset
-                    if counter_step1 == 1
+                    if counter_step_Action == 1
                         RR.AddEvent({['Move@Ring__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                     end
                     
@@ -443,11 +443,11 @@ try
                 
                 frame_start = SR.SampleCount;
                 
-                counter_step4 = 0;
+                counter_step_go_back = 0;
                 
                 while stepGoBackRunning
                     
-                    counter_step4 = counter_step4 + 1;
+                    counter_step_go_back = counter_step_go_back + 1;
                     
                     BigCircle.Draw
                     Cross.Draw
@@ -460,7 +460,7 @@ try
                     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     % Record step onset
-                    if counter_step4 == 1
+                    if counter_step_go_back == 1
                         RR.AddEvent({['Move@Center__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                     end
                     
@@ -523,12 +523,12 @@ try
                 
                 %% ~~~ Pause before dislpay of the reward ~~~
                 
-                stepPauseBeforeRewarRunning = 1;
-                counter_step5 = 0;
+                stepPausePostMotor = 1;
+                counter_step_pause_postMotor = 0;
                 
-                while stepPauseBeforeRewarRunning
+                while stepPausePostMotor
                     
-                    counter_step5 = counter_step5 + 1;
+                    counter_step_pause_postMotor = counter_step_pause_postMotor + 1;
                     
                     BigCircle.Draw
                     Cross.Draw
@@ -539,13 +539,13 @@ try
                     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     % Record trial onset & step onset
-                    if counter_step5 == 1
+                    if counter_step_pause_postMotor == 1
                         RR.AddEvent({['preReward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step5onset = lastFlipOnset;
                     end
                     
-                    if lastFlipOnset >= step5onset +Parameters.RewardDisplayTime
-                        stepPauseBeforeRewarRunning = 0;
+                    if lastFlipOnset >= step5onset +Parameters.PausePostMotor
+                        stepPausePostMotor = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -565,12 +565,12 @@ try
                 
                 %% ~~~ Show reward ~~~
                 
-                stepShowRewardRunning = 1;
-                counter_step6 = 0;
+                stepShowRealReward = 1;
+                counter_step_show_real_reward = 0;
                 
-                while stepShowRewardRunning
+                while stepShowRealReward
                     
-                    counter_step6 = counter_step6 + 1;
+                    counter_step_show_real_reward = counter_step_show_real_reward + 1;
                     
                     BigCircle.Draw
                     if S.Feedback
@@ -585,13 +585,13 @@ try
                     SR.AddSample([lastFlipOnset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     % Record trial onset & step onset
-                    if counter_step6 == 1
+                    if counter_step_show_real_reward == 1
                         RR.AddEvent({['Reward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step6onset = lastFlipOnset;
                     end
                     
-                    if lastFlipOnset >= step6onset +Parameters.RewardDisplayTime
-                        stepShowRewardRunning = 0;
+                    if lastFlipOnset >= step6onset +Parameters.ShowRewardDuration
+                        stepShowRealReward = 0;
                     end
                     
                     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

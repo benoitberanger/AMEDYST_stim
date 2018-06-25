@@ -38,7 +38,7 @@ RR.AddStartTime( 'StartTime' , 0 );
 
 %% Sample recorder
 
-SR = SampleRecorder( { 'time (s)', 'X (pixels)', 'Y (pixels)', 'R (pixels)', 'Theta (°)' } , EP.Data{end,2}*S.PTB.FPS*1.20 ); % ( duration of the task +20% )
+SR = SampleRecorder( { 'time (s)', 'X (pixels)', 'Y (pixels)', 'R (pixels)', 'Theta (°)' } , round(EP.Data{end,2}*S.PTB.FPS*1.20) ); % ( duration of the task +20% )
 
 
 %% Prepare the logger of MRI triggers

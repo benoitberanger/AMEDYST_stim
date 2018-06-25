@@ -21,12 +21,24 @@ end
 
 %% Paradigme
 
-Parameters.TrialMaxDuration            = 4.0; % seconds
-Parameters.TimeSpentOnTargetToValidate = 0.5; % seconds
+% Jitter
 Parameters.MinPauseBetweenTrials       = 0.5; % seconds
 Parameters.MaxPauseBetweenTrials       = 1.5; % seconds
-Parameters.TimeWaitReward              = 0.5; % seconds
-Parameters.RewardDisplayTime           = 1.0; % seconds
+
+% Show reward probability
+Parameters.RewardProbabilityDuration   = 1.0; % seconds
+
+Parameters.PausePreMotor               = 0.5; % seconds
+
+% Move cursor
+Parameters.TrialMaxDuration            = 4.0; % seconds
+Parameters.TimeSpentOnTargetToValidate = 0.5; % seconds
+
+Parameters.PausePostMotor              = 0.5; % seconds
+
+% Show real reward
+Parameters.ShowRewardDuration          = 1.0; % seconds
+
 
 Parameters.TargetAngles                = [20 60 120 160]        ;
 Parameters.Values                      = [0  1  2   3  ]/3 * 100;
@@ -138,7 +150,9 @@ for block = 1 : size(Paradigm,1)
         
         value = LinkTargetValue( link_counter , angleList(end) ); % Fetch the Value associated with this TargetAngle
         
-        EP.AddPlanning({ Paradigm{block,1} NextOnset(EP) Parameters.TrialMaxDuration block trial_counter Paradigm{block,2}  Parameters.TargetAngles(angleList(end)) pauseJitter value double(rand*100<value)});
+        trialDuration = pauseJitter + Parameters.RewardProbabilityDuration + Parameters.RewardProbabilityDuration + Parameters.PausePreMotor + Parameters.TrialMaxDuration * 2 + Parameters.PausePostMotor + Parameters.ShowRewardDuration;
+        
+        EP.AddPlanning({ Paradigm{block,1} NextOnset(EP) trialDuration block trial_counter Paradigm{block,2}  Parameters.TargetAngles(angleList(end)) pauseJitter value double(rand*100<value)});
         
         angleList(end) = []; % Remove the last angle used
         
