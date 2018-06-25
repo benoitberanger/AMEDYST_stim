@@ -115,8 +115,13 @@ Parameters.ADAPT.Timer.ScreenRation    = 0.05;          % ratio : dim = ScreenHe
 
 KbName('UnifyKeyNames');
 
+if IsLinux
+    Parameters.Keybinds.TTL_t_ASCII = KbName('t'); % MRI trigger has to be the first defined key
+end
+if IsWindows
+    Parameters.Keybinds.TTL_t_ASCII = KbName('5%'); % MRI trigger has to be the first defined key
+end
 
-Parameters.Keybinds.TTL_t_ASCII          = KbName('t'); % MRI trigger has to be the first defined key
 % Parameters.Keybinds.emulTTL_s_ASCII      = KbName('s');
 Parameters.Keybinds.Stop_Escape_ASCII    = KbName('ESCAPE');
 
