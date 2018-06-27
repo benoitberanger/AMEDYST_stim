@@ -125,6 +125,7 @@ try
                         ER.AddEvent({EP.Data{evt,1}              lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         RR.AddEvent({['Jitter__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step0onset = lastFlipOnset;
+                        Common.SendParPortMessage( 'Jitter' )
                     end
                     
                     if lastFlipOnset >= step0onset + EP.Data{evt,8}
@@ -219,6 +220,7 @@ try
                     if counter_step_show_reward_proba == 1
                         RR.AddEvent({['ShowProbability__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step6onset = lastFlipOnset;
+                        Common.SendParPortMessage( 'ShowProbability' )
                     end
                     
                     if lastFlipOnset >= step6onset +Parameters.RewardProbabilityDuration
@@ -265,6 +267,7 @@ try
                     if counter_step_pause_preMotor == 1
                         RR.AddEvent({['PausePreMotor__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step5onset = lastFlipOnset;
+                        Common.SendParPortMessage( 'PausePreMotor' )
                     end
                     
                     if lastFlipOnset >= step5onset +Parameters.PausePreMotor
@@ -304,9 +307,10 @@ try
                 ADAPT.UpdateCursor(Cursor, EP.Get('Deviation',evt))
                 
                 Screen('DrawingFinished',S.PTB.wPtr);
-                flipOnset_step_1 = Screen('Flip',S.PTB.wPtr);
-                SR.AddSample([flipOnset_step_1-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
-                RR.AddEvent({['Draw@Ring__' EP.Data{evt,1}] flipOnset_step_1-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                flipOnset_step_Action = Screen('Flip',S.PTB.wPtr);
+                SR.AddSample([flipOnset_step_Action-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                RR.AddEvent({['Motor__Start' EP.Data{evt,1}] flipOnset_step_Action-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                Common.SendParPortMessage( 'Motor__Start' )
                 
                 
                 %% ~~~ User moves cursor to target @ big ring  ~~~
@@ -329,7 +333,7 @@ try
                     counter_step_Action = counter_step_Action + 1;
                     
                     if counter_step_Action > 1
-                        value = Parameters.TrialMaxDuration - (lastFlipOnset - flipOnset_step_1);
+                        value = Parameters.TrialMaxDuration - (lastFlipOnset - flipOnset_step_Action);
                         if value < S.PTB.slack
                             stepActionRunning = 0;
                         end
@@ -359,7 +363,9 @@ try
                     elseif draw_PrevTraget % just outside
                         PrevTarget.frameCurrentColor = PrevTarget.frameBaseColor;
                         draw_PrevTraget = 0;
-                        ReactionTimeOUT = lastFlipOnset - flipOnset_step_1;
+                        ReactionTimeOUT = lastFlipOnset - flipOnset_step_Action;
+                        RR.AddEvent({['Motor__RT__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                        Common.SendParPortMessage( 'Motor__RT' )
                     else
                     end
                     
@@ -373,12 +379,14 @@ try
                             startCursorInTarget = lastFlipOnset;
                             
                             if ~has_already_traveled
-                                TravelTimeOUT = lastFlipOnset - flipOnset_step_1 - ReactionTimeOUT;
+                                TravelTimeOUT = lastFlipOnset - flipOnset_step_Action - ReactionTimeOUT;
                                 has_already_traveled = 1;
                             end
                             
                         elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
                             stepActionRunning = 0;
+                            RR.AddEvent({['Motor__TT__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                            Common.SendParPortMessage( 'Motor__TT' )
                         end
                         
                     else % no, then reset
@@ -430,7 +438,8 @@ try
                 Screen('DrawingFinished',S.PTB.wPtr);
                 flipOnset_step_3 = Screen('Flip',S.PTB.wPtr);
                 SR.AddSample([flipOnset_step_3-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
-                RR.AddEvent({['Draw@Center__' EP.Data{evt,1}] flipOnset_step_3-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                RR.AddEvent({['GoBack__Start__' EP.Data{evt,1}] flipOnset_step_3-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                Common.SendParPortMessage( 'GoBack__Start' )
                 
                 
                 %% ~~~ User moves cursor to target @ center ~~~
@@ -471,6 +480,7 @@ try
                         PrevTarget.frameCurrentColor = PrevTarget.frameBaseColor;
                         draw_PrevTraget = 0;
                         ReactionTimeIN = lastFlipOnset - flipOnset_step_3;
+                        RR.AddEvent({['GoBack__RT__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                     else
                     end
                     
@@ -490,6 +500,8 @@ try
                             
                         elseif lastFlipOnset >= startCursorInTarget + Parameters.TimeSpentOnTargetToValidate % Cursor remained in the target long enough
                             stepGoBackRunning = 0;
+                            RR.AddEvent({['GoBack__TT__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                            Common.SendParPortMessage( 'GoBack__TT' )
                         end
                         
                     else % no, then reset
@@ -540,8 +552,9 @@ try
                     
                     % Record trial onset & step onset
                     if counter_step_pause_postMotor == 1
-                        RR.AddEvent({['preReward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                        RR.AddEvent({['PausePreReward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step5onset = lastFlipOnset;
+                        Common.SendParPortMessage( 'PausePreReward' )
                     end
                     
                     if lastFlipOnset >= step5onset +Parameters.PausePostMotor
@@ -586,8 +599,9 @@ try
                     
                     % Record trial onset & step onset
                     if counter_step_show_real_reward == 1
-                        RR.AddEvent({['Reward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
+                        RR.AddEvent({['ShowReward__' EP.Data{evt,1}] lastFlipOnset-StartTime [] EP.Data{evt,4} EP.Data{evt,5} EP.Data{evt,6} EP.Data{evt,7} EP.Data{evt,8} EP.Data{evt,9} EP.Data{evt,10} })
                         step6onset = lastFlipOnset;
+                        Common.SendParPortMessage( 'ShowReward' )
                     end
                     
                     if lastFlipOnset >= step6onset +Parameters.ShowRewardDuration
