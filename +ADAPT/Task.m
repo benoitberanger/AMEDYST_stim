@@ -328,6 +328,8 @@ try
                 ReactionTimeOUT = NaN;
                 TravelTimeOUT   = NaN;
                 
+                too_late = 0;
+                
                 while stepActionRunning
                     
                     counter_step_Action = counter_step_Action + 1;
@@ -336,8 +338,10 @@ try
                         value = Parameters.TrialMaxDuration - (lastFlipOnset - flipOnset_step_Action);
                         if value < S.PTB.slack
                             stepActionRunning = 0;
+                            too_late = 1;
+                        else
+                            RushTimer.Draw( value )
                         end
-                        RushTimer.Draw( value )
                     end
                     BigCircle.Draw
                     Cross.Draw
@@ -587,7 +591,11 @@ try
                     
                     BigCircle.Draw
                     if S.Feedback
-                        Reward.Draw(EP.Get('rewarded',evt) );
+                        if too_late
+                            Reward.Draw( 0 );
+                        else
+                            Reward.Draw( EP.Get('rewarded',evt) );
+                        end
                     else
                         % pass, don't sow anything
                     end
