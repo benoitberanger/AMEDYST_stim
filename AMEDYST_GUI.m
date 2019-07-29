@@ -588,130 +588,134 @@ else % Create the figure
     
     %% Panel : Task : SEQ
     
-    p_tk_x_spacing = 0.02;
-    
-    p_tk_seq.x = panelProp.xposP;
-    p_tk_seq.w = panelProp.wP*(1-p_tk_x_spacing)*1/3;
-    
+    %     p_tk_x_spacing = 0.02;
+    %
+    %     p_tk_seq.x = panelProp.xposP;
+    %     p_tk_seq.w = panelProp.wP*(1-p_tk_x_spacing)*1/3;
+    %
     panelProp.countP = panelProp.countP - 1;
-    p_tk_seq.y = panelProp.yposP(panelProp.countP);
-    p_tk_seq.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
-    
-    handles.uipanel_Task_SEQ = uibuttongroup(handles.(mfilename),...
-        'Title','SEQ',...
-        'Units', 'Normalized',...
-        'Position',[p_tk_seq.x p_tk_seq.y p_tk_seq.w p_tk_seq.h],...
-        'BackgroundColor',figureBGcolor);
-    
-    p_tk_seq.nbO    = 3; % Number of objects
-    p_tk_seq.Ow     = 1/(p_tk_seq.nbO + 1); % Object width
-    p_tk_seq.countO = 0; % Object counter
-    p_tk_seq.xposO  = @(countO) p_tk_seq.Ow/(p_tk_seq.nbO+1)*countO + (countO-1)*p_tk_seq.Ow;
-    
-    p_tk_seq.y_marge = 0.05;
-    
-    
-    % ---------------------------------------------------------------------
-    % Edit : Complex sequence
-    
-    p_tk_seq.countO = p_tk_seq.countO + 1;
-    e_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
-    e_seq.y   = p_tk_seq.y_marge;
-    e_seq.w   = p_tk_seq.Ow*2;
-    e_seq.h   = 0.55;
-    e_seq.tag = 'edit_ComplexSequence';
-    handles.(e_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
-        'Style','edit',...
-        'Units', 'Normalized',...
-        'Position',[e_seq.x e_seq.y e_seq.w e_seq.h],...
-        'BackgroundColor',editBGcolor,...
-        'String','',...
-        'Callback',@edit_Seqeunce_Callback,...
-        'Tooltip','Sequence, such as 54325432');
-    
-    
-    % ---------------------------------------------------------------------
-    % Pushbutton : SEQ
-    
-    p_tk_seq.countO  = p_tk_seq.countO + 2;
-    b_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
-    b_seq.y   = p_tk_seq.y_marge;
-    b_seq.w   = p_tk_seq.Ow;
-    b_seq.h   = 0.55;
-    b_seq.tag = 'pushbutton_SEQ';
-    handles.(b_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
-        'Style','pushbutton',...
-        'Units', 'Normalized',...
-        'Position',[b_seq.x b_seq.y b_seq.w b_seq.h],...
-        'String','SEQ',...
-        'BackgroundColor',buttonBGcolor,...
-        'Tag',b_seq.tag,...
-        'Callback',@AMEDYST_main);
+    %     p_tk_seq.y = panelProp.yposP(panelProp.countP);
+    %     p_tk_seq.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    %
+    %     handles.uipanel_Task_SEQ = uibuttongroup(handles.(mfilename),...
+    %         'Title','SEQ',...
+    %         'Units', 'Normalized',...
+    %         'Position',[p_tk_seq.x p_tk_seq.y p_tk_seq.w p_tk_seq.h],...
+    %         'BackgroundColor',figureBGcolor);
+    %
+    %     p_tk_seq.nbO    = 3; % Number of objects
+    %     p_tk_seq.Ow     = 1/(p_tk_seq.nbO + 1); % Object width
+    %     p_tk_seq.countO = 0; % Object counter
+    %     p_tk_seq.xposO  = @(countO) p_tk_seq.Ow/(p_tk_seq.nbO+1)*countO + (countO-1)*p_tk_seq.Ow;
+    %
+    %     p_tk_seq.y_marge = 0.05;
+    %
+    %
+    %     % ---------------------------------------------------------------------
+    %     % Edit : Complex sequence
+    %
+    %     p_tk_seq.countO = p_tk_seq.countO + 1;
+    %     e_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
+    %     e_seq.y   = p_tk_seq.y_marge;
+    %     e_seq.w   = p_tk_seq.Ow*2;
+    %     e_seq.h   = 0.55;
+    %     e_seq.tag = 'edit_ComplexSequence';
+    %     handles.(e_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
+    %         'Style','edit',...
+    %         'Units', 'Normalized',...
+    %         'Position',[e_seq.x e_seq.y e_seq.w e_seq.h],...
+    %         'BackgroundColor',editBGcolor,...
+    %         'String','',...
+    %         'Callback',@edit_Seqeunce_Callback,...
+    %         'Tooltip','Sequence, such as 54325432');
+    %
+    %
+    %     % ---------------------------------------------------------------------
+    %     % Pushbutton : SEQ
+    %
+    %     p_tk_seq.countO  = p_tk_seq.countO + 2;
+    %     b_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
+    %     b_seq.y   = p_tk_seq.y_marge;
+    %     b_seq.w   = p_tk_seq.Ow;
+    %     b_seq.h   = 0.55;
+    %     b_seq.tag = 'pushbutton_SEQ';
+    %     handles.(b_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
+    %         'Style','pushbutton',...
+    %         'Units', 'Normalized',...
+    %         'Position',[b_seq.x b_seq.y b_seq.w b_seq.h],...
+    %         'String','SEQ',...
+    %         'BackgroundColor',buttonBGcolor,...
+    %         'Tag',b_seq.tag,...
+    %         'Callback',@AMEDYST_main);
     
     
     %% Panel : Display feedback
     
-    p_feedback.x = panelProp.xposP;
-    p_feedback.w = panelProp.wP;
-    
-    p_feedback.y = b_seq.y + b_seq.h + p_tk_seq.y_marge;
-    p_feedback.h = 1 - p_feedback.y - p_tk_seq.y_marge;
-    
-    handles.uipanel_Feedback = uibuttongroup(handles.uipanel_Task_SEQ,...
-        'Title','Display visual feeedback',...
-        'TitlePosition','righttop',...
-        'Units', 'Normalized',...
-        'Position',[p_feedback.x p_feedback.y p_feedback.w p_feedback.h],...
-        'BackgroundColor',figureBGcolor);
-    
-    p_feedback.nbO    = 2; % Number of objects
-    p_feedback.Ow     = 1/(p_feedback.nbO + 1); % Object width
-    p_feedback.countO = 0; % Object counter
-    p_feedback.xposO  = @(countO) p_feedback.Ow/(p_feedback.nbO+1)*countO + (countO-1)*p_feedback.Ow;
-    
-    
-    % ---------------------------------------------------------------------
-    % RadioButton : Feedback Off
-    
-    p_feedback.countO = p_feedback.countO + 1;
-    r_fboff.x   = p_feedback.xposO(p_feedback.countO);
-    r_fboff.y   = 0.1 ;
-    r_fboff.w   = p_feedback.Ow;
-    r_fboff.h   = 0.8;
-    r_fboff.tag = 'radiobutton_FeedbackOff';
-    handles.(r_fboff.tag) = uicontrol(handles.uipanel_Feedback,...
-        'Style','radiobutton',...
-        'Units', 'Normalized',...
-        'Position',[r_fboff.x r_fboff.y r_fboff.w r_fboff.h],...
-        'String','Off',...
-        'HorizontalAlignment','Center',...
-        'Tag',r_fboff.tag,...
-        'BackgroundColor',figureBGcolor);
-    
-    
-    % ---------------------------------------------------------------------
-    % RadioButton : Feedback On
-    
-    p_feedback.countO = p_feedback.countO + 1;
-    r_fbon.x   = p_feedback.xposO(p_feedback.countO);
-    r_fbon.y   = 0.1 ;
-    r_fbon.w   = p_feedback.Ow;
-    r_fbon.h   = 0.8;
-    r_fbon.tag = 'radiobutton_FeedbackOn';
-    handles.(r_fbon.tag) = uicontrol(handles.uipanel_Feedback,...
-        'Style','radiobutton',...
-        'Units', 'Normalized',...
-        'Position',[r_fbon.x r_fbon.y r_fbon.w r_fbon.h],...
-        'String','On',...
-        'HorizontalAlignment','Center',...
-        'Tag',r_fbon.tag,...
-        'BackgroundColor',figureBGcolor);
+    %     p_feedback.x = panelProp.xposP;
+    %     p_feedback.w = panelProp.wP;
+    %
+    %     p_feedback.y = b_seq.y + b_seq.h + p_tk_seq.y_marge;
+    %     p_feedback.h = 1 - p_feedback.y - p_tk_seq.y_marge;
+    %     p_feedback.y = b_seq.y + b_seq.h + p_tk_seq.y_marge;
+    %     p_feedback.h = 1 - p_feedback.y - p_tk_seq.y_marge;
+    %
+    %     handles.uipanel_Feedback = uibuttongroup(handles.uipanel_Task_SEQ,...
+    %         'Title','Display visual feeedback',...
+    %         'TitlePosition','righttop',...
+    %         'Units', 'Normalized',...
+    %         'Position',[p_feedback.x p_feedback.y p_feedback.w p_feedback.h],...
+    %         'BackgroundColor',figureBGcolor);
+    %
+    %     p_feedback.nbO    = 2; % Number of objects
+    %     p_feedback.Ow     = 1/(p_feedback.nbO + 1); % Object width
+    %     p_feedback.countO = 0; % Object counter
+    %     p_feedback.xposO  = @(countO) p_feedback.Ow/(p_feedback.nbO+1)*countO + (countO-1)*p_feedback.Ow;
+    %
+    %
+    %     % ---------------------------------------------------------------------
+    %     % RadioButton : Feedback Off
+    %
+    %     p_feedback.countO = p_feedback.countO + 1;
+    %     r_fboff.x   = p_feedback.xposO(p_feedback.countO);
+    %     r_fboff.y   = 0.1 ;
+    %     r_fboff.w   = p_feedback.Ow;
+    %     r_fboff.h   = 0.8;
+    %     r_fboff.tag = 'radiobutton_FeedbackOff';
+    %     handles.(r_fboff.tag) = uicontrol(handles.uipanel_Feedback,...
+    %         'Style','radiobutton',...
+    %         'Units', 'Normalized',...
+    %         'Position',[r_fboff.x r_fboff.y r_fboff.w r_fboff.h],...
+    %         'String','Off',...
+    %         'HorizontalAlignment','Center',...
+    %         'Tag',r_fboff.tag,...
+    %         'BackgroundColor',figureBGcolor);
+    %
+    %
+    %     % ---------------------------------------------------------------------
+    %     % RadioButton : Feedback On
+    %
+    %     p_feedback.countO = p_feedback.countO + 1;
+    %     r_fbon.x   = p_feedback.xposO(p_feedback.countO);
+    %     r_fbon.y   = 0.1 ;
+    %     r_fbon.w   = p_feedback.Ow;
+    %     r_fbon.h   = 0.8;
+    %     r_fbon.tag = 'radiobutton_FeedbackOn';
+    %     handles.(r_fbon.tag) = uicontrol(handles.uipanel_Feedback,...
+    %         'Style','radiobutton',...
+    %         'Units', 'Normalized',...
+    %         'Position',[r_fbon.x r_fbon.y r_fbon.w r_fbon.h],...
+    %         'String','On',...
+    %         'HorizontalAlignment','Center',...
+    %         'Tag',r_fbon.tag,...
+    %         'BackgroundColor',figureBGcolor);
     
     
     %% Panel : Task : ADAPT
     
-    p_tk_adapt.x = p_tk_seq.x + p_tk_seq.w + p_tk_x_spacing;
-    p_tk_adapt.w = p_tk_seq.w*2 ;
+    %     p_tk_adapt.x = p_tk_seq.x + p_tk_seq.w + p_tk_x_spacing;
+    %     p_tk_adapt.w = p_tk_seq.w*2 ;
+    p_tk_adapt.x = panelProp.xposP;
+    p_tk_adapt.w = panelProp.wP;
     
     p_tk_adapt.y = panelProp.yposP(panelProp.countP);
     p_tk_adapt.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
@@ -1073,32 +1077,32 @@ end % function
 
 
 % -------------------------------------------------------------------------
-function edit_Seqeunce_Callback(hObject, ~)
-
-NrTap = 8;
-
-sequence_str = get(hObject,'String');
-
-if length(sequence_str) ~= NrTap
-    set(hObject,'String','')
-    error('ComplexSequence must be %d non consecutive numbers', NrTap)
-end
-
-sequence_vect = (  cellstr(sequence_str')' );
-sequence_vect = cellfun(@str2double,sequence_vect);
-if any(sequence_vect > 5  |  sequence_vect < 2  |  round(sequence_vect) ~= sequence_vect)
-    set(hObject,'String','')
-    error('ComplexSequence must be numbers from 2 to 5 (positive integers)')
-end
-
-if any( diff(sequence_vect) == 0 )
-    set(hObject,'String','')
-    error('ComplexSequence not have two identical consecutive numbers')
-end
-
-fprintf('ComplexSequence OK : %s \n', sequence_str)
-
-end % function
+% function edit_Seqeunce_Callback(hObject, ~)
+% 
+% NrTap = 8;
+% 
+% sequence_str = get(hObject,'String');
+% 
+% if length(sequence_str) ~= NrTap
+%     set(hObject,'String','')
+%     error('ComplexSequence must be %d non consecutive numbers', NrTap)
+% end
+% 
+% sequence_vect = (  cellstr(sequence_str')' );
+% sequence_vect = cellfun(@str2double,sequence_vect);
+% if any(sequence_vect > 5  |  sequence_vect < 2  |  round(sequence_vect) ~= sequence_vect)
+%     set(hObject,'String','')
+%     error('ComplexSequence must be numbers from 2 to 5 (positive integers)')
+% end
+% 
+% if any( diff(sequence_vect) == 0 )
+%     set(hObject,'String','')
+%     error('ComplexSequence not have two identical consecutive numbers')
+% end
+% 
+% fprintf('ComplexSequence OK : %s \n', sequence_str)
+% 
+% end % function
 
 
 % -------------------------------------------------------------------------

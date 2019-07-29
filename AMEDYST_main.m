@@ -1,6 +1,6 @@
 function AMEDYST_main(hObject, ~)
 % AMEDYST_main is the main program, calling the different tasks and
-% routines, accoding to the paramterts defined in the GUI
+% routines, according to the paramterts defined in the GUI
 
 
 %% GUI : open a new one or retrive data from the current one
@@ -101,11 +101,11 @@ S.OperationMode = OperationMode;
 
 %% GUI : ComplexSequence
 
-ComplexSequence = get(handles.edit_ComplexSequence,'String');
-if isempty(ComplexSequence)
-    error('ComplexSequence is empty')
-end
-S.ComplexSequence = ComplexSequence;
+% ComplexSequence = get(handles.edit_ComplexSequence,'String');
+% if isempty(ComplexSequence)
+%     error('ComplexSequence is empty')
+% end
+% S.ComplexSequence = ComplexSequence;
 
 
 %% GUI : Low / High reward
