@@ -244,18 +244,18 @@ switch Task
 end
 
 
-%% GUI : Left or right handed ?
-
-switch get(get(handles.uipanel_LeftRight,'SelectedObject'),'Tag')
-    case 'radiobutton_LeftButtons'
-        Side = 'Left';
-    case 'radiobutton_RightButtons'
-        Side = 'Right';
-    otherwise
-        warning('AMEDYST:LeftRight','Error in LeftRight')
-end
-
-S.Side = Side;
+% %% GUI : Left or right handed ?
+% 
+% switch get(get(handles.uipanel_LeftRight,'SelectedObject'),'Tag')
+%     case 'radiobutton_LeftButtons'
+%         Side = 'Left';
+%     case 'radiobutton_RightButtons'
+%         Side = 'Right';
+%     otherwise
+%         warning('AMEDYST:LeftRight','Error in LeftRight')
+% end
+% 
+% S.Side = Side;
 
 
 %% GUI : SEQ : visual feedback ?

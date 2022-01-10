@@ -60,17 +60,17 @@ Parameters.SEQ.FixationCross.ScreenRatio    = 0.10;          % ratio : dim   = S
 Parameters.SEQ.FixationCross.lineWidthRatio = 0.05;          % ratio : width = dim        *ratio_width
 Parameters.SEQ.FixationCross.Color          = [128 128 128]; % [R G B] ( from 0 to 255 )
 
-% ResponseButtons
-Parameters.SEQ.ResponseButtons.ScreenRatio  = 0.60;           % height = ScreenHeight * ratio
-Parameters.SEQ.ResponseButtons.Side         = S.Side;        % 'Left' or 'Right'
-Parameters.SEQ.ResponseButtons.frameColor   = [128 128 128]; % [R G B] ( from 0 to 255 )
-Parameters.SEQ.ResponseButtons.buttonsColor = ...
-    [255 80 60    % 5 == red
-    30 190 70     % 4 == green
-    255 224 54    % 3 == yellow
-    40 100 210]'; % 2 == blue
-% [R G B] ( from 0 to 255 )
-% colors here are both left and right buttons
+% % ResponseButtons
+% Parameters.SEQ.ResponseButtons.ScreenRatio  = 0.60;           % height = ScreenHeight * ratio
+% Parameters.SEQ.ResponseButtons.Side         = S.Side;        % 'Left' or 'Right'
+% Parameters.SEQ.ResponseButtons.frameColor   = [128 128 128]; % [R G B] ( from 0 to 255 )
+% Parameters.SEQ.ResponseButtons.buttonsColor = ...
+%     [255 80 60    % 5 == red
+%     30 190 70     % 4 == green
+%     255 224 54    % 3 == yellow
+%     40 100 210]'; % 2 == blue
+% % [R G B] ( from 0 to 255 )
+% % colors here are both left and right buttons
 
 
 %%%%%%%%%%%%%%
