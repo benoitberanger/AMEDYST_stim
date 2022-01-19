@@ -7,6 +7,7 @@ Build to be used at :
 # Requirement
 Psychtoolbox : http://psychtoolbox.org/  
 StimTemplate : https://github.com/benoitberanger/StimTemplate.git  
+joymex2 : https://github.com/escabe/joymex2
 
 # Setup
 Data are printed in ../data  
