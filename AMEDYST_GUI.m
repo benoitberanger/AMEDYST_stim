@@ -303,65 +303,6 @@ else % Create the figure
         'Tag',(r_practice.tag),...
         'BackgroundColor',figureBGcolor);
     
-%     
-%     %% Panel : Left & Right buttons
-%     
-%     p_pplr.x = panelProp.xposP;
-%     p_pplr.w = panelProp.wP;
-%     
-%     panelProp.countP = panelProp.countP - 1;
-%     p_pplr.y = panelProp.yposP(panelProp.countP);
-%     p_pplr.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
-%     
-%     handles.uipanel_LeftRight = uibuttongroup(handles.(mfilename),...
-%         'Title','Left/Right buttons',...
-%         'Units', 'Normalized',...
-%         'Position',[p_pplr.x p_pplr.y p_pplr.w p_pplr.h],...
-%         'BackgroundColor',figureBGcolor);
-%     
-%     p_pplr.nbO    = 2; % Number of objects
-%     p_pplr.Ow     = 1/(p_pplr.nbO + 1); % Object width
-%     p_pplr.countO = 0; % Object counter
-%     p_pplr.xposO  = @(countO) p_pplr.Ow/(p_pplr.nbO+1)*countO + (countO-1)*p_pplr.Ow;
-%     
-%     
-%     % ---------------------------------------------------------------------
-%     % RadioButton : Left buttons
-%     
-%     p_pplr.countO = p_pplr.countO + 1;
-%     r_left.x   = p_pplr.xposO(p_pplr.countO);
-%     r_left.y   = 0.1 ;
-%     r_left.w   = p_pplr.Ow;
-%     r_left.h   = 0.8;
-%     r_left.tag = 'radiobutton_LeftButtons';
-%     handles.(r_left.tag) = uicontrol(handles.uipanel_LeftRight,...
-%         'Style','radiobutton',...
-%         'Units', 'Normalized',...
-%         'Position',[r_left.x r_left.y r_left.w r_left.h],...
-%         'String','Left buttons',...
-%         'HorizontalAlignment','Center',...
-%         'Tag',r_left.tag,...
-%         'BackgroundColor',figureBGcolor);
-%     
-%     
-%     % ---------------------------------------------------------------------
-%     % RadioButton : Right buttons
-%     
-%     p_pplr.countO = p_pplr.countO + 1;
-%     r_right.x   = p_pplr.xposO(p_pplr.countO);
-%     r_right.y   = 0.1 ;
-%     r_right.w   = p_pplr.Ow;
-%     r_right.h   = 0.8;
-%     r_right.tag = 'radiobutton_RightButtons';
-%     handles.(r_right.tag) = uicontrol(handles.uipanel_LeftRight,...
-%         'Style','radiobutton',...
-%         'Units', 'Normalized',...
-%         'Position',[r_right.x r_right.y r_right.w r_right.h],...
-%         'String','Right buttons',...
-%         'HorizontalAlignment','Center',...
-%         'Tag',r_right.tag,...
-%         'BackgroundColor',figureBGcolor);
-    
     
     %% Panel : Eyelink mode
     
@@ -586,130 +527,6 @@ else % Create the figure
         'Callback','Eyelink.ForceShutDown');
     
     
-    %% Panel : Task : SEQ
-    
-    %     p_tk_x_spacing = 0.02;
-    %
-    %     p_tk_seq.x = panelProp.xposP;
-    %     p_tk_seq.w = panelProp.wP*(1-p_tk_x_spacing)*1/3;
-    %
-    panelProp.countP = panelProp.countP - 1;
-    %     p_tk_seq.y = panelProp.yposP(panelProp.countP);
-    %     p_tk_seq.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
-    %
-    %     handles.uipanel_Task_SEQ = uibuttongroup(handles.(mfilename),...
-    %         'Title','SEQ',...
-    %         'Units', 'Normalized',...
-    %         'Position',[p_tk_seq.x p_tk_seq.y p_tk_seq.w p_tk_seq.h],...
-    %         'BackgroundColor',figureBGcolor);
-    %
-    %     p_tk_seq.nbO    = 3; % Number of objects
-    %     p_tk_seq.Ow     = 1/(p_tk_seq.nbO + 1); % Object width
-    %     p_tk_seq.countO = 0; % Object counter
-    %     p_tk_seq.xposO  = @(countO) p_tk_seq.Ow/(p_tk_seq.nbO+1)*countO + (countO-1)*p_tk_seq.Ow;
-    %
-    %     p_tk_seq.y_marge = 0.05;
-    %
-    %
-    %     % ---------------------------------------------------------------------
-    %     % Edit : Complex sequence
-    %
-    %     p_tk_seq.countO = p_tk_seq.countO + 1;
-    %     e_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
-    %     e_seq.y   = p_tk_seq.y_marge;
-    %     e_seq.w   = p_tk_seq.Ow*2;
-    %     e_seq.h   = 0.55;
-    %     e_seq.tag = 'edit_ComplexSequence';
-    %     handles.(e_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
-    %         'Style','edit',...
-    %         'Units', 'Normalized',...
-    %         'Position',[e_seq.x e_seq.y e_seq.w e_seq.h],...
-    %         'BackgroundColor',editBGcolor,...
-    %         'String','',...
-    %         'Callback',@edit_Seqeunce_Callback,...
-    %         'Tooltip','Sequence, such as 54325432');
-    %
-    %
-    %     % ---------------------------------------------------------------------
-    %     % Pushbutton : SEQ
-    %
-    %     p_tk_seq.countO  = p_tk_seq.countO + 2;
-    %     b_seq.x   = p_tk_seq.xposO(p_tk_seq.countO);
-    %     b_seq.y   = p_tk_seq.y_marge;
-    %     b_seq.w   = p_tk_seq.Ow;
-    %     b_seq.h   = 0.55;
-    %     b_seq.tag = 'pushbutton_SEQ';
-    %     handles.(b_seq.tag) = uicontrol(handles.uipanel_Task_SEQ,...
-    %         'Style','pushbutton',...
-    %         'Units', 'Normalized',...
-    %         'Position',[b_seq.x b_seq.y b_seq.w b_seq.h],...
-    %         'String','SEQ',...
-    %         'BackgroundColor',buttonBGcolor,...
-    %         'Tag',b_seq.tag,...
-    %         'Callback',@AMEDYST_main);
-    
-    
-    %% Panel : Display feedback
-    
-    %     p_feedback.x = panelProp.xposP;
-    %     p_feedback.w = panelProp.wP;
-    %
-    %     p_feedback.y = b_seq.y + b_seq.h + p_tk_seq.y_marge;
-    %     p_feedback.h = 1 - p_feedback.y - p_tk_seq.y_marge;
-    %     p_feedback.y = b_seq.y + b_seq.h + p_tk_seq.y_marge;
-    %     p_feedback.h = 1 - p_feedback.y - p_tk_seq.y_marge;
-    %
-    %     handles.uipanel_Feedback = uibuttongroup(handles.uipanel_Task_SEQ,...
-    %         'Title','Display visual feeedback',...
-    %         'TitlePosition','righttop',...
-    %         'Units', 'Normalized',...
-    %         'Position',[p_feedback.x p_feedback.y p_feedback.w p_feedback.h],...
-    %         'BackgroundColor',figureBGcolor);
-    %
-    %     p_feedback.nbO    = 2; % Number of objects
-    %     p_feedback.Ow     = 1/(p_feedback.nbO + 1); % Object width
-    %     p_feedback.countO = 0; % Object counter
-    %     p_feedback.xposO  = @(countO) p_feedback.Ow/(p_feedback.nbO+1)*countO + (countO-1)*p_feedback.Ow;
-    %
-    %
-    %     % ---------------------------------------------------------------------
-    %     % RadioButton : Feedback Off
-    %
-    %     p_feedback.countO = p_feedback.countO + 1;
-    %     r_fboff.x   = p_feedback.xposO(p_feedback.countO);
-    %     r_fboff.y   = 0.1 ;
-    %     r_fboff.w   = p_feedback.Ow;
-    %     r_fboff.h   = 0.8;
-    %     r_fboff.tag = 'radiobutton_FeedbackOff';
-    %     handles.(r_fboff.tag) = uicontrol(handles.uipanel_Feedback,...
-    %         'Style','radiobutton',...
-    %         'Units', 'Normalized',...
-    %         'Position',[r_fboff.x r_fboff.y r_fboff.w r_fboff.h],...
-    %         'String','Off',...
-    %         'HorizontalAlignment','Center',...
-    %         'Tag',r_fboff.tag,...
-    %         'BackgroundColor',figureBGcolor);
-    %
-    %
-    %     % ---------------------------------------------------------------------
-    %     % RadioButton : Feedback On
-    %
-    %     p_feedback.countO = p_feedback.countO + 1;
-    %     r_fbon.x   = p_feedback.xposO(p_feedback.countO);
-    %     r_fbon.y   = 0.1 ;
-    %     r_fbon.w   = p_feedback.Ow;
-    %     r_fbon.h   = 0.8;
-    %     r_fbon.tag = 'radiobutton_FeedbackOn';
-    %     handles.(r_fbon.tag) = uicontrol(handles.uipanel_Feedback,...
-    %         'Style','radiobutton',...
-    %         'Units', 'Normalized',...
-    %         'Position',[r_fbon.x r_fbon.y r_fbon.w r_fbon.h],...
-    %         'String','On',...
-    %         'HorizontalAlignment','Center',...
-    %         'Tag',r_fbon.tag,...
-    %         'BackgroundColor',figureBGcolor);
-    
-    
     %% Panel : Task : ADAPT
     
     %     p_tk_adapt.x = p_tk_seq.x + p_tk_seq.w + p_tk_x_spacing;
@@ -717,6 +534,8 @@ else % Create the figure
     p_tk_adapt.x = panelProp.xposP;
     p_tk_adapt.w = panelProp.wP;
     
+    
+    panelProp.countP = panelProp.countP - 1;
     p_tk_adapt.y = panelProp.yposP(panelProp.countP);
     p_tk_adapt.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
     
@@ -741,7 +560,7 @@ else % Create the figure
     e_deviation_sign.x = p_tk_adapt.xposO(p_tk_adapt.countO);
     e_deviation_sign.y = p_tk_adapt.y_marge;
     e_deviation_sign.w = p_tk_adapt.Ow;
-    e_deviation_sign.h = 0.6 - p_tk_adapt.y_marge;
+    e_deviation_sign.h = 0.4 - p_tk_adapt.y_marge;
     handles.edit_DeviationSign = uicontrol(handles.uipanel_Task_ADAPT,...
         'Style','edit',...
         'Units', 'Normalized',...
@@ -758,7 +577,7 @@ else % Create the figure
     e_high_reward.x = p_tk_adapt.xposO(p_tk_adapt.countO);
     e_high_reward.y = p_tk_adapt.y_marge;
     e_high_reward.w = p_tk_adapt.Ow;
-    e_high_reward.h = 0.25;
+    e_high_reward.h = 0.15;
     handles.edit_HighReward = uicontrol(handles.uipanel_Task_ADAPT,...
         'Style','edit',...
         'Units', 'Normalized',...
@@ -864,7 +683,7 @@ else % Create the figure
         'SelectionChangeFcn',@uipanel_CursorInput_SelectionChangeFcn);
     
     
-    p_cursorinput.nbO    = 2; % Number of objects
+    p_cursorinput.nbO    = 3; % Number of objects
     p_cursorinput.Ow     = 1/(p_cursorinput.nbO + 1); % Object width
     p_cursorinput.countO = 0; % Object counter
     p_cursorinput.xposO  = @(countO) p_cursorinput.Ow/(p_cursorinput.nbO+1)*countO + (countO-1)*p_cursorinput.Ow;
@@ -875,9 +694,9 @@ else % Create the figure
     
     p_cursorinput.countO = p_cursorinput.countO + 1;
     r_joystick.x   = p_cursorinput.xposO(p_cursorinput.countO);
-    r_joystick.y   = 0.1 ;
+    r_joystick.y   = 0.5;
     r_joystick.w   = p_cursorinput.Ow;
-    r_joystick.h   = 0.8;
+    r_joystick.h   = 0.4;
     r_joystick.tag = 'radiobutton_Joystick';
     handles.(r_joystick.tag) = uicontrol(handles.uipanel_CursorInput,...
         'Style','radiobutton',...
@@ -892,13 +711,34 @@ else % Create the figure
     
     
     % ---------------------------------------------------------------------
+    % Pushbutton : Joystick calibration
+    
+    p_cursorinput.countO = p_cursorinput.countO + 1;
+    p_joycal.x   = p_cursorinput.xposO(p_cursorinput.countO);
+    p_joycal.y   = 0.5;
+    p_joycal.w   = p_cursorinput.Ow;
+    p_joycal.h   = 0.4;
+    p_joycal.tag = 'pushbutton_JoystickCalibration';
+    handles.(p_joycal.tag) = uicontrol(handles.uipanel_CursorInput,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[p_joycal.x p_joycal.y p_joycal.w p_joycal.h],...
+        'String','JCalibration',...
+        'HorizontalAlignment','Center',...
+        'Tag',p_joycal.tag,...
+        'BackgroundColor',figureBGcolor,...
+        'Callback',@joystick_calibration,...
+        'Visible', 'off');
+    
+    
+    % ---------------------------------------------------------------------
     % RadioButton : Mouse
     
     p_cursorinput.countO = p_cursorinput.countO + 1;
     r_mouse.x   = p_cursorinput.xposO(p_cursorinput.countO);
-    r_mouse.y   = 0.1 ;
+    r_mouse.y   = 0.5;
     r_mouse.w   = p_cursorinput.Ow;
-    r_mouse.h   = 0.8;
+    r_mouse.h   = 0.4;
     r_mouse.tag = 'radiobutton_Mouse';
     handles.(r_mouse.tag) = uicontrol(handles.uipanel_CursorInput,...
         'Style','radiobutton',...
@@ -926,10 +766,27 @@ else % Create the figure
         'Position',[c_fb.x c_fb.y c_fb.w c_fb.h],...
         'String','Show Reward',...
         'HorizontalAlignment','Center',...
-        'TooltipString','Send messages via parallel port : useful for Eyelink',...
         'BackgroundColor',figureBGcolor,...
         'Value',1,...
         'Tooltip','Show reward probability & result');
+    
+    
+    % ---------------------------------------------------------------------
+    % edit : xmin xmax ymin ymax
+    
+    e_xymm.x = 0.1;
+    e_xymm.w = 0.8;
+    e_xymm.y = 0.1;
+    e_xymm.h = 0.4;
+    e_xymm.tag = 'edit_xmin_ymin_xmax_ymax';
+    handles.(e_xymm.tag) = uicontrol(handles.uipanel_CursorInput,...
+        'Style','edit',...
+        'Units', 'Normalized',...
+        'Position',[e_xymm.x e_xymm.y e_xymm.w e_xymm.h],...
+        'BackgroundColor',editBGcolor,...
+        'String','',...
+        'Visible', 'off',...
+        'Tooltip','Set with joystick calibration');
     
     
     %% Panel : Operation mode
@@ -1078,30 +935,30 @@ end % function
 
 % -------------------------------------------------------------------------
 % function edit_Seqeunce_Callback(hObject, ~)
-% 
+%
 % NrTap = 8;
-% 
+%
 % sequence_str = get(hObject,'String');
-% 
+%
 % if length(sequence_str) ~= NrTap
 %     set(hObject,'String','')
 %     error('ComplexSequence must be %d non consecutive numbers', NrTap)
 % end
-% 
+%
 % sequence_vect = (  cellstr(sequence_str')' );
 % sequence_vect = cellfun(@str2double,sequence_vect);
 % if any(sequence_vect > 5  |  sequence_vect < 2  |  round(sequence_vect) ~= sequence_vect)
 %     set(hObject,'String','')
 %     error('ComplexSequence must be numbers from 2 to 5 (positive integers)')
 % end
-% 
+%
 % if any( diff(sequence_vect) == 0 )
 %     set(hObject,'String','')
 %     error('ComplexSequence not have two identical consecutive numbers')
 % end
-% 
+%
 % fprintf('ComplexSequence OK : %s \n', sequence_str)
-% 
+%
 % end % function
 
 
@@ -1133,19 +990,27 @@ handles = guidata(hObject);
 if isempty( which('joymex2') )
     disp('joymex2 NOT DETECTED : check https://github.com/escabe/joymex2')
     set(hObject,'SelectedObject',handles.radiobutton_Mouse);
+    set(handles.pushbutton_JoystickCalibration, 'Visible', 'off')
+    set(handles.edit_xmin_ymin_xmax_ymax, 'Visible', 'off')
 end
 
 try
     switch get(eventdata.NewValue,'Tag') % Get Tag of selected object.
         case 'radiobutton_Joystick'
             joymex2('open',0);
+            set(handles.pushbutton_JoystickCalibration, 'Visible', 'on')
+            set(handles.edit_xmin_ymin_xmax_ymax, 'Visible', 'on')
         case 'radiobutton_Mouse'
             % joymex2('close',0);
             clear joymex2 % more stable on linux than "joymex2('close',0);"
+            set(handles.pushbutton_JoystickCalibration, 'Visible', 'off')
+            set(handles.edit_xmin_ymin_xmax_ymax, 'Visible', 'off')
     end
     
 catch err
     set(hObject,'SelectedObject',handles.radiobutton_Mouse);
+    set(handles.pushbutton_JoystickCalibration, 'Visible', 'off')
+    set(handles.edit_xmin_ymin_xmax_ymax, 'Visible', 'off')
     rethrow(err)
 end
 

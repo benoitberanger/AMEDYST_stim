@@ -99,15 +99,6 @@ end
 S.OperationMode = OperationMode;
 
 
-%% GUI : ComplexSequence
-
-% ComplexSequence = get(handles.edit_ComplexSequence,'String');
-% if isempty(ComplexSequence)
-%     error('ComplexSequence is empty')
-% end
-% S.ComplexSequence = ComplexSequence;
-
-
 %% GUI : Low / High reward
 
 LowReward = str2double(get(handles.edit_LowReward,'String'));
@@ -244,20 +235,6 @@ switch Task
 end
 
 
-% %% GUI : Left or right handed ?
-% 
-% switch get(get(handles.uipanel_LeftRight,'SelectedObject'),'Tag')
-%     case 'radiobutton_LeftButtons'
-%         Side = 'Left';
-%     case 'radiobutton_RightButtons'
-%         Side = 'Right';
-%     otherwise
-%         warning('AMEDYST:LeftRight','Error in LeftRight')
-% end
-% 
-% S.Side = Side;
-
-
 %% GUI : SEQ : visual feedback ?
 
 switch Task
@@ -287,6 +264,7 @@ switch get(get(handles.uipanel_CursorInput,'SelectedObject'),'Tag')
     case 'radiobutton_Joystick'
         InputMethod = 'Joystick';
         joymex2('open',0);
+        xmin_ymin_xmax_ymax = str2num( get(handles.edit_xmin_ymin_xmax_ymax, 'String') );
     case 'radiobutton_Mouse'
         InputMethod = 'Mouse';
     otherwise
@@ -294,6 +272,7 @@ switch get(get(handles.uipanel_CursorInput,'SelectedObject'),'Tag')
 end
 
 S.InputMethod = InputMethod;
+S.xmin_ymin_xmax_ymax = xmin_ymin_xmax_ymax;
 
 
 %% GUI : Check if Eyelink toolbox is available

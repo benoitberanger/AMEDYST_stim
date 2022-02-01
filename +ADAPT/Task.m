@@ -100,7 +100,7 @@ try
             case {'Direct_Pre', 'Deviation', 'Direct_Post'} % --------------------------------
                 
                 % Echo in the command window
-                fprintf('#%3d deviation=%3d° target=%3d° value=%3d%% reward=%d \n', round( cell2mat(EP.Data(evt,[5 6 7 9 10])) ) )
+                fprintf('#%3d deviation=%3Â° target=%3dÂ° value=%3d%% reward=%d \n', round( cell2mat(EP.Data(evt,[5 6 7 9 10])) ) )
                 
                 
                 %% ~~~ Jitter between trials ~~~
