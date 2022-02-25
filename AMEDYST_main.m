@@ -267,6 +267,7 @@ switch get(get(handles.uipanel_CursorInput,'SelectedObject'),'Tag')
         xmin_ymin_xmax_ymax = str2num( get(handles.edit_xmin_ymin_xmax_ymax, 'String') );
     case 'radiobutton_Mouse'
         InputMethod = 'Mouse';
+        xmin_ymin_xmax_ymax = str2num( get(handles.edit_xmin_ymin_xmax_ymax, 'String') );
     otherwise
         warning('AMEDYST:InputMethod','Error in InputMethod')
 end

@@ -38,8 +38,11 @@ cal_history_plot = plot(a(2), cal_history_pos(:,1), cal_history_pos(:,2));
 
 %% Loop
 
+KbName('UnifyKeyNames');
+ESCAPE = KbName('ESCAPE');
+
 count = 0;
-while ~KbCheck
+while 1
     
     count = count + 1;
     
@@ -76,6 +79,13 @@ while ~KbCheck
     fprintf('raw = %6d %6d   //   cal = %4.2f %4.2f \n', raw_x, raw_y, cal_x, cal_y)
     
     drawnow
+    
+    [keyIsDown,~, keyCode] = KbCheck();
+    if keyIsDown
+        if keyCode(ESCAPE)
+            break
+        end
+    end
     
 end
 
