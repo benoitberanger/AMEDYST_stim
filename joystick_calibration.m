@@ -9,7 +9,7 @@ npoint = 1e5; % vector length for calibration (just for pre-allocation)
 joymex2('open',0);
 
 % Open figure
-f = figure('Name',mfilename,'NumberTitle','off');
+f = figure('Name',sprintf('[%s]: press ESCAPE to exit calibration', mfilename),'NumberTitle','off');
 
 
 %% Raw
